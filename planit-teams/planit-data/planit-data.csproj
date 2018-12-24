@@ -122,6 +122,7 @@
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
+    <Compile Include="Services\CardService.cs" />
     <Compile Include="Services\BoardService.cs" />
     <Compile Include="Services\CardListService.cs" />
     <Compile Include="Services\PermissionService.cs" />

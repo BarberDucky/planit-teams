@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using planit_data.DTOs;
 using planit_data.Entities;
 using planit_data.Repository;
 using planit_data.Services;
+using planit_data.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,72 +82,50 @@ namespace planit_data
             //context.SaveChanges();
 
 
-            ////List<Card> cards = newContext.Cards.ToList();
-            //Card c;
-            //using (UnitOfWork unit = new UnitOfWork())
-            //{
-            //    c = unit.CardRepository.GetById(3);
-            //    Comment com = new Comment()
-            //    {
-            //        Text = "Novi komentar",
-            //        Card = c
-            //    };
-            //    unit.CommentRepository.Insert(com);
-            //    unit.Save();
-            //}
-            //int a = 4;
-
-            //UserService service = new UserService();
-            //int id = service.InsertUser(new DTOs.CreateUserDTO()
-            //{
-            //    FirstName = "test",
-            //    LastName = "test",
-            //    Username = "test123",
-            //    Email = "test@gmail.com",
-            //    Password = "Test123!"
-
-            //});
-            //service.UpdateUser(new DTOs.UpdateUserDTO()
-            //{
-            //    UserID = 7,
-            //    FirstName = "Milica",
-            //    LastName = "Todorovic"
-            //});
-
-            //List<ReadUserDTO> dto = service.GetAllUsers();
-
-            //  BoardService service = new BoardService();
-            //service.InsertBoard(new CreateBoardDTO()
-            //{
-            //    Name = "Milica board",
-            //    CreatedByUser = 8
-            //});
-            // ReadBoardDTO board =  service.GetBoard(2);
-
-            //  CardListService service = new CardListService();
-            //service.InsertCardList(new CreateCardListDTO()
-            //{
-            //    BoardId = 1,
-            //    Name = "Test lista"
-            //});
-            //service.UpdateCardList(new UpdateCardListDTO()
-            //{
-            //    ListId = 2,
-            //    Name = "Test lista",
-            //    Color = "Red"
-            //});
-
-            /*PermissionService p = new PermissionService();
-            p.UpdatePermission(new UpdatePermissionDTO()
+            //List<Card> cards = newContext.Cards.ToList();
+            /*Card c;
+            using (UnitOfWork unit = new UnitOfWork())
             {
-                IsAdmin = false,
-                BoardId = 1,
-                UserId = 2
-            });*/
+                c = unit.CardRepository.GetById(3);
+                Comment com = new Comment()
+                {
+                    Text = "Novi komentar",
+                    Card = c
+                };
+                unit.CommentRepository.Insert(com);
+                unit.Save();
+            }
+            int a = 4;*/
+            //NotificationService ns = new NotificationService();
+            ////ns.DeleteNotification(1);
+            //CreateNotificationDTO dto = new CreateNotificationDTO()
+            //{
+            //    CardId = 1,
+            //    UserId = 1
+            //};
+            //ns.CreateNotification(dto);
 
-            UserService us = new UserService();
-            us.GetUserNotifications(1);
+            //CardService service = new CardService();
+            //CreateCardDTO cdto = new CreateCardDTO()
+            //{
+            //    Name = "Primeeer servisa",
+            //    Description = "OOoOOOOOpis",
+            //    ListId = 1,
+            //    UserId = 1
+            //};
+            //service.InsertCard(cdto);
 
+           // ReadCardDTO c = service.GetCardById(2);
+            //service.MoveCardToList(c.CardId, 2);
+
+            //UpdateCardDTO updto = new UpdateCardDTO()
+            //{
+            //    CardId = c.CardId,
+            //    Name = "Novaaaa",
+            //    Description = "Novaaaaa",
+
+            //};
+            //service.DeleteCard(c.CardId);
         }
     }
 }
