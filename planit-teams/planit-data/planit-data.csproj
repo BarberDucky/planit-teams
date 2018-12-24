@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationContext.cs" />
+    <Compile Include="DTOs\UserDTO.cs" />
     <Compile Include="Entities\Board.cs" />
     <Compile Include="Entities\Card.cs" />
     <Compile Include="Entities\CardList.cs" />
@@ -124,5 +125,6 @@
       <DependentUpon>201812221958180_BeforeDoubleRelations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
