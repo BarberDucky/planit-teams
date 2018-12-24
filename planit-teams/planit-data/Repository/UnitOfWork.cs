@@ -19,6 +19,7 @@ namespace planit_data.Repository
         private GenericRepository<Comment> commentRepository;
         private GenericRepository<Notification> notificationRepository;
         private GenericRepository<Permission> permissionRepository;
+        private ApplicationUserRepository applicationUserRepository;
 
         #region Property 
         public GenericRepository<User> UserRepository
@@ -82,6 +83,16 @@ namespace planit_data.Repository
                 if (permissionRepository == null)
                     permissionRepository = new GenericRepository<Permission>(context);
                 return permissionRepository;
+            }
+        }
+
+        public ApplicationUserRepository ApplicationUserRepository
+        {
+            get
+            {
+                if (applicationUserRepository == null)
+                    applicationUserRepository = new ApplicationUserRepository(context);
+                return applicationUserRepository;
             }
         }
         #endregion

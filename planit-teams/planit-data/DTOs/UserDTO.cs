@@ -15,6 +15,15 @@ namespace planit_data.DTOs
         public String Password { get; set; }
         public String FirstName { get; set; }
         public String LastName { get; set; }
+
+        public User FromDTO()
+        {
+            return new User()
+            {
+                FirstName = FirstName,
+                LastName = LastName
+            };
+        }
     }
 
     public class ReadUserDTO
@@ -32,12 +41,26 @@ namespace planit_data.DTOs
         public ReadUserDTO (User user)
         {
             UserID = user.UserId;
-            Username = user.IdentificationUser.UserName;
-            Email = user.IdentificationUser.Email;
             FirstName = user.FirstName;
             LastName = user.LastName;
 
+            if(user.IdentificationUser!=null)
+            {
+                Username = user.IdentificationUser.UserName;
+                Email = user.IdentificationUser.Email;
+            }
         }
+
+        public static List<ReadUserDTO> FromEntityList(List<User> users)
+        {
+            List<ReadUserDTO> list = new List<ReadUserDTO>();
+            foreach(User u in users)
+            {
+                list.Add(new ReadUserDTO(u));
+            }
+            return list;
+        }
+
     }
 
     public class UpdateUserDTO
@@ -46,10 +69,10 @@ namespace planit_data.DTOs
         public String Username { get; set; }
         public String FirstName { get; set; }
         public String LastName { get; set; }
-        public List<Notification> Notifications { get; set; }
-        public List<Card> Cards { get; set; }
-        public List<Card> WatchedCards { get; set; }
-        public List<Permission> Permissions { get; set; }
+        //public List<Notification> Notifications { get; set; }
+        //public List<Card> Cards { get; set; }
+        //public List<Card> WatchedCards { get; set; }
+        //public List<Permission> Permissions { get; set; }
     }
 
     public class DeleteUserDTO
