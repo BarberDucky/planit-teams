@@ -18,7 +18,7 @@ namespace planit_data.Repository
             this.set = context.Set<T>();
         }
 
-        public IEnumerable<T> GetAll()
+        public List<T> GetAll()
         {
             return set.ToList();
         }

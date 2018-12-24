@@ -8,7 +8,7 @@ namespace planit_data.Repository
 {
     public interface IRepository<T> where T:class
     {
-        IEnumerable<T> GetAll();
+        List<T> GetAll();
         T GetById(int id);
         bool Insert(T obj);
         void Update(T obj);

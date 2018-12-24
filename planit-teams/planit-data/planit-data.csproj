@@ -92,6 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationContext.cs" />
+    <Compile Include="DTOs\CardDTO.cs" />
+    <Compile Include="DTOs\CommentDTO.cs" />
+    <Compile Include="DTOs\NotificationDTO.cs" />
     <Compile Include="DTOs\UserDTO.cs" />
     <Compile Include="Entities\Board.cs" />
     <Compile Include="Entities\Card.cs" />
@@ -115,6 +118,7 @@
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
+    <Compile Include="Services\NotificationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -128,8 +132,6 @@
       <DependentUpon>201812221958180_BeforeDoubleRelations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

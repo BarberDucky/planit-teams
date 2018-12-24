@@ -13,6 +13,7 @@ namespace planit_data.Entities
         public int NotificationId { get; set; }
 
         public DateTime CreationTime { get; set; }
+        public bool IsRead { get; set; }
 
         public virtual User User { get; set; }
         public virtual Card Card { get; set; }

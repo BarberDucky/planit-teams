@@ -2,6 +2,8 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using planit_data.Entities;
 using planit_data.Repository;
+using planit_data.Services;
+using planit_data.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,7 +83,7 @@ namespace planit_data
 
 
             //List<Card> cards = newContext.Cards.ToList();
-            Card c;
+            /*Card c;
             using (UnitOfWork unit = new UnitOfWork())
             {
                 c = unit.CardRepository.GetById(3);
@@ -93,7 +95,10 @@ namespace planit_data
                 unit.CommentRepository.Insert(com);
                 unit.Save();
             }
-            int a = 4;
+            int a = 4;*/
+            NotificationService ns = new NotificationService();
+            ns.DeleteNotification(1);
+
 
         }
     }
