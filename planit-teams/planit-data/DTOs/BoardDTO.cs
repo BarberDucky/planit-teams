@@ -31,20 +31,32 @@ namespace planit_data.DTOs
     {
         public int BoardId { get; set; }
         public String Name { get; set; }
+        public List<ReadCardListDTO> CardList { get; set; }
 
         public ReadBoardDTO(Board b)
         {
+            CardList = new List<ReadCardListDTO>();
             this.BoardId = b.BoardId;
             this.Name = b.Name;
+            foreach(var c in b.CardLists)
+            {
+                CardList.Add(new ReadCardListDTO(c));
+            }
         }
 
         public static List<ReadBoardDTO> FromEntityList(List<Board> boards)
         {
             List<ReadBoardDTO> list = new List<ReadBoardDTO>();
+
             foreach (Board b in boards)
             {
-                list.Add(new ReadBoardDTO(b));
+                if (b != null)
+                {
+                    list.Add(new ReadBoardDTO(b));
+                }
+
             }
+
             return list;
         }
     }

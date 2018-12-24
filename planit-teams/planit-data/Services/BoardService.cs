@@ -11,8 +11,6 @@ namespace planit_data.Services
 {
     public class BoardService
     {
-        //FALI NESTO TIPA GET BOARDS OF USER
-
         public ReadBoardDTO GetBoard(int boardId)
         {
             ReadBoardDTO boardDTO = null;
@@ -27,6 +25,25 @@ namespace planit_data.Services
             }
 
             return boardDTO;
+        }
+
+        public List<ReadBoardDTO> GetBoardsByUser(int userId)
+        {
+            List<ReadBoardDTO> dtos;
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                List<Board> boardList = new List<Board>();
+                User user = unit.UserRepository.GetById(userId);
+
+                foreach(var p in user.Permissions)
+                {
+                    boardList.Add(p.Board);
+                }
+
+                dtos = ReadBoardDTO.FromEntityList(boardList);
+            }
+
+            return dtos;
         }
 
         //Ako ne uspe dodavanje board-a vratice se 0

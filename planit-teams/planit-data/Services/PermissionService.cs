@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace planit_data.Services
 {
-    //DODATI FJE UZ POMOC FILTERA
     public class PermissionService
     {
         public bool UpdatePermission(UpdatePermissionDTO permisionDTO)

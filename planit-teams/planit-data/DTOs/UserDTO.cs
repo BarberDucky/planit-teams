@@ -38,13 +38,13 @@ namespace planit_data.DTOs
         public List<Card> WatchedCards { get; set; }
         public List<Permission> Permissions { get; set; }
 
-        public ReadUserDTO (User user)
+        public ReadUserDTO(User user)
         {
             UserID = user.UserId;
             FirstName = user.FirstName;
             LastName = user.LastName;
 
-            if(user.IdentificationUser!=null)
+            if (user.IdentificationUser != null)
             {
                 Username = user.IdentificationUser.UserName;
                 Email = user.IdentificationUser.Email;
@@ -54,10 +54,15 @@ namespace planit_data.DTOs
         public static List<ReadUserDTO> FromEntityList(List<User> users)
         {
             List<ReadUserDTO> list = new List<ReadUserDTO>();
-            foreach(User u in users)
+            foreach (User u in users)
             {
-                list.Add(new ReadUserDTO(u));
+                if (u != null)
+                {
+                    list.Add(new ReadUserDTO(u));
+                }
+
             }
+
             return list;
         }
 

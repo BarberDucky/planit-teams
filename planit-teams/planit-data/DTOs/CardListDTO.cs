@@ -39,10 +39,16 @@ namespace planit_data.DTOs
         public List<ReadCardListDTO> FromEntityList(List<CardList> list)
         {
             List<ReadCardListDTO> newList = new List<ReadCardListDTO>();
+
             foreach (CardList c in list)
             {
-                newList.Add(new ReadCardListDTO(c));
+                if (c != null)
+                {
+                    newList.Add(new ReadCardListDTO(c));
+                }
+
             }
+
             return newList;
         }
     }
