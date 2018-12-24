@@ -28,6 +28,19 @@ namespace planit_data.Services
             return userDTO;
         }
 
+        public List<ReadNotificationDTO> GetUserNotifications(int userId)
+        {
+            using (UnitOfWork uw = new UnitOfWork())
+            {
+                User u = uw.UserRepository.GetById(userId);
+
+                if (u == null)
+                    return null;
+
+                return ReadNotificationDTO.FromList(u.Notifications.ToList());
+            }
+        }
+
         public List<ReadUserDTO> GetAllUsers()
         {
             List<ReadUserDTO> dtos;

@@ -39,5 +39,15 @@ namespace planit_data.DTOs
             CardId = notification.Card.CardId;
             UserId = notification.User.UserId;
         }
+
+        public static List<ReadNotificationDTO> FromList(List<Notification> notifList)
+        {
+            List<ReadNotificationDTO> dtoList = new List<ReadNotificationDTO>();
+            foreach (Notification notif in notifList)
+            {
+                dtoList.Add(new ReadNotificationDTO(notif));
+            }
+            return dtoList;
+        }
     }
 }

@@ -124,7 +124,7 @@ namespace planit_data
             //});
             // ReadBoardDTO board =  service.GetBoard(2);
 
-          //  CardListService service = new CardListService();
+            //  CardListService service = new CardListService();
             //service.InsertCardList(new CreateCardListDTO()
             //{
             //    BoardId = 1,
@@ -137,13 +137,16 @@ namespace planit_data
             //    Color = "Red"
             //});
 
-            PermissionService p = new PermissionService();
+            /*PermissionService p = new PermissionService();
             p.UpdatePermission(new UpdatePermissionDTO()
             {
                 IsAdmin = false,
                 BoardId = 1,
                 UserId = 2
-            });
+            });*/
+
+            UserService us = new UserService();
+            us.GetUserNotifications(1);
 
         }
     }

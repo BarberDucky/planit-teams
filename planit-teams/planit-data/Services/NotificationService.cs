@@ -30,14 +30,10 @@ namespace planit_data.Services
             { 
                 Notification notificationFromDB = uw.NotificationRepository.GetById(notificationId);
 
-                if (notificationFromDB != null)
-                {
-                    return new ReadNotificationDTO(notificationFromDB);
-                }
-                else
-                {
+                if (notificationFromDB == null)
                     return null;
-                }
+
+                return new ReadNotificationDTO(notificationFromDB);
             }
         }
 
