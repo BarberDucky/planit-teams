@@ -118,6 +118,7 @@
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
+    <Compile Include="Services\CommentService.cs" />
     <Compile Include="Services\NotificationService.cs" />
   </ItemGroup>
   <ItemGroup>

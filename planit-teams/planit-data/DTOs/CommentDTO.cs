@@ -13,11 +13,23 @@ namespace planit_data.DTOs
         public DateTime TimeStamp { get; set; }
         public int CardId { get; set; }
         public int UserId { get; set; }
+
+        public static Comment FromDTO(CreateCommentDTO dto)
+        {
+            Comment com = new Comment()
+            {
+                Text = dto.Text,
+                TimeStamp = dto.TimeStamp
+            };
+            return com;
+        }
+
     }
 
     public class ReadCommentDTO
     {
         public int CommentId { get; set; }
+        public String Text { get; set; }
         public DateTime TimeStamp { get; set; }
         public Card Card { get; set; }
         public User User { get; set; }
@@ -25,6 +37,7 @@ namespace planit_data.DTOs
         public ReadCommentDTO (Comment comment)
         {
             CommentId = comment.CommentId;
+            Text = comment.Text;
             TimeStamp = comment.TimeStamp;
             Card = comment.Card;
             User = comment.User;
@@ -35,6 +48,16 @@ namespace planit_data.DTOs
     {
         public int CommentId { get; set; }
         public String Text { get; set; }
+
+        public static Comment FromDTO(UpdateCommentDTO dto)
+        {
+            Comment com = new Comment()
+            {
+                CommentId = dto.CommentId,
+                Text = dto.Text
+            };
+            return com;
+        }
     }
 
     public class DeleteCommentDTO
