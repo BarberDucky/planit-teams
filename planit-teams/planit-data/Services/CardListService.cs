@@ -29,11 +29,11 @@ namespace planit_data.Services
             using (UnitOfWork unit = new UnitOfWork())
             {
                 CardList c = unit.CardListRepository.GetById(id);
-                if(c!=null)
+                if (c != null)
                 {
                     cardListDTO = new ReadCardListDTO(c);
                 }
- 
+
             }
 
             return cardListDTO;
@@ -45,10 +45,14 @@ namespace planit_data.Services
             using (UnitOfWork unit = new UnitOfWork())
             {
                 Board board = unit.BoardRepository.GetById(cardListDto.BoardId);
-                list.Board = board;
 
-                unit.CardListRepository.Insert(list);
-                unit.Save();
+                if (board != null)
+                {
+                    list.Board = board;
+
+                    unit.CardListRepository.Insert(list);
+                    unit.Save();
+                }
             }
 
             return list.ListId;
@@ -69,7 +73,7 @@ namespace planit_data.Services
                     unit.CardListRepository.Update(cardList);
                     ret = unit.Save();
                 }
-                
+
             }
 
             return ret;

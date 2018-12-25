@@ -16,11 +16,16 @@ namespace planit_data.Services
             using (UnitOfWork uw = new UnitOfWork())
             {
                 Notification obj = notificationDTO.FromDTO();
-                obj.User = uw.UserRepository.GetById(notificationDTO.UserId);
-                obj.Card = uw.CardRepository.GetById(notificationDTO.CardId);
+                User user = uw.UserRepository.GetById(notificationDTO.UserId);
+                Card card = uw.CardRepository.GetById(notificationDTO.CardId);
 
-                uw.NotificationRepository.Insert(obj);
-                uw.Save();
+                if(user!=null && card!=null)
+                {
+                    obj.User = user;
+                    obj.Card = card;
+                    uw.NotificationRepository.Insert(obj);
+                    uw.Save();
+                }
             }
         }
 

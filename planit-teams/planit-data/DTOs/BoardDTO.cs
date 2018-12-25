@@ -38,10 +38,11 @@ namespace planit_data.DTOs
             CardList = new List<ReadCardListDTO>();
             this.BoardId = b.BoardId;
             this.Name = b.Name;
-            foreach(var c in b.CardLists)
-            {
-                CardList.Add(new ReadCardListDTO(c));
-            }
+            CardList = ReadCardListDTO.FromEntityList(b.CardLists.ToList());
+            //foreach(var c in b.CardLists)
+            //{
+            //    CardList.Add(new ReadCardListDTO(c));
+            //}
         }
 
         public static List<ReadBoardDTO> FromEntityList(List<Board> boards)

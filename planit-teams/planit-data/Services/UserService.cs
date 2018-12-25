@@ -79,11 +79,15 @@ namespace planit_data.Services
             using (UnitOfWork unit = new UnitOfWork())
             {
                 User user = unit.UserRepository.GetById(userDTO.UserID);
-                user.FirstName = userDTO.FirstName;
-                user.LastName = userDTO.LastName;
+                if (user != null)
+                {
+                    user.FirstName = userDTO.FirstName;
+                    user.LastName = userDTO.LastName;
 
-                unit.UserRepository.Update(user);
-                ret = unit.Save();
+                    unit.UserRepository.Update(user);
+                    ret = unit.Save();
+                }
+
             }
 
             return ret;

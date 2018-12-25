@@ -58,8 +58,8 @@ namespace planit_data.Services
             {
                 CardList list = uw.CardListRepository.GetById(dto.ListId);
                 User user = uw.UserRepository.GetById(dto.UserId);
-                card = CreateCardDTO.FromDTO(dto);
-                if (user == null || card == null) return 0;
+                Card card = CreateCardDTO.FromDTO(dto);
+                if (user == null || card == null || list == null) return false;
                 card.User = user;
                 card.List = list;
                 uw.CardRepository.Insert(card);

@@ -30,7 +30,7 @@ namespace planit_data.Services
             {
                 Board b = unit.BoardRepository.GetById(boardId);
 
-                if(b!=null)
+                if (b != null)
                 {
                     boardDTO = new ReadBoardDTO(b);
                 }
@@ -41,18 +41,24 @@ namespace planit_data.Services
 
         public List<ReadBoardDTO> GetBoardsByUser(int userId)
         {
-            List<ReadBoardDTO> dtos;
+            List<ReadBoardDTO> dtos = new List<ReadBoardDTO>();
             using (UnitOfWork unit = new UnitOfWork())
             {
                 List<Board> boardList = new List<Board>();
                 User user = unit.UserRepository.GetById(userId);
 
-                foreach(var p in user.Permissions)
+                if (user != null)
                 {
-                    boardList.Add(p.Board);
+                    foreach (var p in user.Permissions)
+                    {
+                        if (p != null)
+                        {
+                            boardList.Add(p.Board);
+                        }
+                    }
+                    dtos = ReadBoardDTO.FromEntityList(boardList);
                 }
 
-                dtos = ReadBoardDTO.FromEntityList(boardList);
             }
 
             return dtos;
@@ -61,20 +67,23 @@ namespace planit_data.Services
         //Ako ne uspe dodavanje board-a vratice se 0
         public int InsertBoard(CreateBoardDTO boardDTO)
         {
-            Board board = boardDTO.FromDTO(); 
+            Board board = boardDTO.FromDTO();
             using (UnitOfWork unit = new UnitOfWork())
             {
                 User creator = unit.UserRepository.GetById(boardDTO.CreatedByUser);
 
-                Permission permision = new Permission()
+                if (board != null && creator != null)
                 {
-                    IsAdmin = true,
-                    Board = board,
-                    User = creator
-                };
+                    Permission permision = new Permission()
+                    {
+                        IsAdmin = true,
+                        Board = board,
+                        User = creator
+                    };
 
-                unit.PermissionRepository.Insert(permision);
-                unit.Save();
+                    unit.PermissionRepository.Insert(permision);
+                    unit.Save();
+                }
             }
 
             return board.BoardId;
@@ -82,14 +91,18 @@ namespace planit_data.Services
 
         public bool UpdateBoard(UpdateBoardDTO boardDTO)
         {
-            bool ret;
+            bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
                 Board board = unit.BoardRepository.GetById(boardDTO.BoardId);
-                board.Name = boardDTO.Name;
 
-                unit.BoardRepository.Update(board);
-                ret = unit.Save();
+                if (board != null)
+                {
+                    board.Name = boardDTO.Name;
+
+                    unit.BoardRepository.Update(board);
+                    ret = unit.Save();
+                }
             }
 
             return ret;

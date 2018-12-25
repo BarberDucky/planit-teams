@@ -21,6 +21,9 @@ namespace planit_data.Repository
             var store = new UserStore<ApplicationUser>(context);
             var manager = new UserManager<ApplicationUser>(store);
 
+            if (username == null || email == null || password == null)
+                return null;
+
             var user = new ApplicationUser()
             {
                 Email = email,
