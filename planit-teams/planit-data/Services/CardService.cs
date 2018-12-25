@@ -9,8 +9,19 @@ using planit_data.Repository;
 
 namespace planit_data.Services
 {
-    class CardService
+    public class CardService
     {
+
+        public List<ReadCardDTO> GetAllCards()
+        {
+            using (UnitOfWork uw = new UnitOfWork())
+            {
+                List<Card> cards = uw.CardRepository.GetAll();
+
+                return ReadCardDTO.FromEntityList(cards);
+            }
+        }
+
         public ReadCardDTO GetCardById(int id)
         {
             ReadCardDTO dto;

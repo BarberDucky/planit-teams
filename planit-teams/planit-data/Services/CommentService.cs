@@ -9,7 +9,7 @@ using planit_data.Entities;
 
 namespace planit_data.Services
 {
-    class CommentService
+    public class CommentService
     {
         public ReadCommentDTO GetCommentById(int id)
         {
@@ -23,22 +23,18 @@ namespace planit_data.Services
             return dto;
         }
 
-        /*
-         * //Treba get all za 1 karticu
+        
+        //Treba get all za 1 karticu
         public List<ReadCommentDTO> GetAllComments()
         {
-            List<ReadCommentDTO> listDTO = new List<ReadCommentDTO>();
-            List<Comment> retList;
+            List<ReadCommentDTO> listDTO;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                retList = uw.CommentRepository.GetAll();
-                foreach(Comment c in retList)
-                {
-                    listDTO.Add(new ReadCommentDTO(c));
-                }
+                List<Comment> retList = uw.CommentRepository.GetAll();
+                listDTO = ReadCommentDTO.FromEntityList(retList);
             }
             return listDTO;
-        }*/
+        }
 
         public bool InsertComment(CreateCommentDTO dto)
         {
@@ -57,14 +53,16 @@ namespace planit_data.Services
             return success;
         }
 
-        public void UpdateComment(UpdateCommentDTO dto)
+        public bool UpdateComment(UpdateCommentDTO dto)
         {
+            bool ret = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
                 Comment com = UpdateCommentDTO.FromDTO(dto);
                 uw.CommentRepository.Update(com);
-                uw.Save();
+                ret = uw.Save();
             }
+            return ret;
         }
 
         public bool DeleteComment(int id)
@@ -72,8 +70,8 @@ namespace planit_data.Services
             bool success = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                success = uw.CommentRepository.Delete(id);
-                uw.Save();
+                uw.CommentRepository.Delete(id);
+                success = uw.Save();
             }
             return success;
         }

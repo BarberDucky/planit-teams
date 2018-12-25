@@ -38,7 +38,7 @@ namespace planit_data.DTOs
             this.Cards = ReadCardDTO.FromEntityList(list.Cards.ToList());
         }
 
-        public List<ReadCardListDTO> FromEntityList(List<CardList> list)
+        public static List<ReadCardListDTO> FromEntityList(List<CardList> list)
         {
             List<ReadCardListDTO> newList = new List<ReadCardListDTO>();
 
