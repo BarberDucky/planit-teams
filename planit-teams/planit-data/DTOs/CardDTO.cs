@@ -49,10 +49,7 @@ namespace planit_data.DTOs
             DueDate = card.DueDate;
             ListName = card.List.Name;
             BoardName = card.List.Board.Name;
-            foreach (Comment c in card.Comments)
-            {
-                Comments.Add(new ReadCommentDTO(c));
-            }
+            this.Comments = ReadCommentDTO.FromEntityList(card.Comments.ToList());
         }
 
         public static List<ReadCardDTO> FromEntityList(List<Card> list)

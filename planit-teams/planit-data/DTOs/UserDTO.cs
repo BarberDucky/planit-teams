@@ -33,10 +33,10 @@ namespace planit_data.DTOs
         public String Email { get; set; }
         public String FirstName { get; set; }
         public String LastName { get; set; }
-        public List<Notification> Notifications { get; set; }
-        public List<Card> Cards { get; set; }
-        public List<Card> WatchedCards { get; set; }
-        public List<Permission> Permissions { get; set; }
+        //public List<Notification> Notifications { get; set; }
+        //public List<Card> Cards { get; set; }
+        //public List<Card> WatchedCards { get; set; }
+        //public List<Permission> Permissions { get; set; }
 
         public ReadUserDTO(User user)
         {

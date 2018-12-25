@@ -11,6 +11,18 @@ namespace planit_data.Services
 {
     public class BoardService
     {
+        public List<ReadBoardDTO> GetAllBoards()
+        {
+            List<ReadBoardDTO> dtos;
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                List<Board> boards = unit.BoardRepository.GetAll();
+                dtos = ReadBoardDTO.FromEntityList(boards);
+            }
+
+            return dtos;
+        }
+
         public ReadBoardDTO GetBoard(int boardId)
         {
             ReadBoardDTO boardDTO = null;

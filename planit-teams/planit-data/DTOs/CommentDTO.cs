@@ -34,15 +34,36 @@ namespace planit_data.DTOs
         public int CardId { get; set; }
         public int UserId { get; set; }
 
-        public ReadCommentDTO (Comment comment)
+        public ReadCommentDTO(Comment comment)
         {
             CommentId = comment.CommentId;
             Text = comment.Text;
             TimeStamp = comment.TimeStamp;
             if (comment.Card != null)
+            {
                 CardId = comment.Card.CardId;
+            }
             if (comment.User != null)
+            {
                 UserId = comment.User.UserId;
+            }
+
+        }
+
+        public static List<ReadCommentDTO> FromEntityList(List<Comment> comments)
+        {
+            List<ReadCommentDTO> newList = new List<ReadCommentDTO>();
+
+            foreach (Comment c in comments)
+            {
+                if (c != null)
+                {
+                    newList.Add(new ReadCommentDTO(c));
+                }
+
+            }
+
+            return newList;
         }
     }
 

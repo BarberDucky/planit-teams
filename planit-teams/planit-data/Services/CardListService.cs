@@ -11,6 +11,18 @@ namespace planit_data.Services
 {
     public class CardListService
     {
+        public List<ReadCardListDTO> GetAllCardList()
+        {
+            List<ReadCardListDTO> dtos;
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                List<CardList> list = unit.CardListRepository.GetAll();
+                dtos = ReadCardListDTO.FromEntityList(list);
+            }
+
+            return dtos;
+        }
+
         public ReadCardListDTO GetCardList(int id)
         {
             ReadCardListDTO cardListDTO = null;
@@ -44,15 +56,20 @@ namespace planit_data.Services
 
         public bool UpdateCardList(UpdateCardListDTO cardListDTO)
         {
-            bool ret;
+            bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
                 CardList cardList = unit.CardListRepository.GetById(cardListDTO.ListId);
-                cardList.Name = cardListDTO.Name;
-                cardList.Color = cardListDTO.Color;
 
-                unit.CardListRepository.Update(cardList);
-                ret = unit.Save();
+                if (cardList != null)
+                {
+                    cardList.Name = cardListDTO.Name;
+                    cardList.Color = cardListDTO.Color;
+
+                    unit.CardListRepository.Update(cardList);
+                    ret = unit.Save();
+                }
+                
             }
 
             return ret;
