@@ -11,12 +11,12 @@ namespace planit_data.Entities
     {
         [Key]
         public int UserId { get; set; }
+        [Required]
         public String FirstName { get; set; }
+        [Required]
         public String LastName { get; set; }
-
-        //public String IdentificationUserId { get; set; }
+        [Required]
         public virtual ApplicationUser IdentificationUser { get; set; }
-
         public virtual ICollection<Permission> Permissions { get; set; }
         public virtual ICollection<Card> Cards { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }

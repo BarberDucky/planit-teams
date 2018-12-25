@@ -11,9 +11,10 @@ namespace planit_data.Entities
     {
         [Key]
         public int ListId { get; set; }
+        [Required]
         public String Name { get; set; }
         public String Color { get; set; }
-
+        [Required]
         public virtual Board Board { get; set; }
         
         public virtual ICollection<Card> Cards { get; set; }

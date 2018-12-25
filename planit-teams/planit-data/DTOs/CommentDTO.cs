@@ -10,7 +10,6 @@ namespace planit_data.DTOs
     public class CreateCommentDTO
     {
         public String Text { get; set; }
-        public DateTime TimeStamp { get; set; }
         public int CardId { get; set; }
         public int UserId { get; set; }
 
@@ -19,7 +18,6 @@ namespace planit_data.DTOs
             Comment com = new Comment()
             {
                 Text = dto.Text,
-                TimeStamp = dto.TimeStamp
             };
             return com;
         }

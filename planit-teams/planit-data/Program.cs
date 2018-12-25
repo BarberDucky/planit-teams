@@ -116,7 +116,7 @@ namespace planit_data
 
             //List<ReadUserDTO> dto = service.GetAllUsers();
 
-            BoardService service = new BoardService();
+            //BoardService service = new BoardService();
             //service.InsertBoard(new CreateBoardDTO()
             //{
             //    Name = "Milica board",
@@ -146,8 +146,63 @@ namespace planit_data
             //});
             //service.GetBoardsByUser(8);
             //ReadBoardDTO b = service.GetBoard(1);
-            CardListService c = new CardListService();
-            c.GetCardList(1);
+            //CardListService c = new CardListService();
+            //c.GetCardList(1);
+            BoardService bs = new BoardService();
+            CardListService cs = new CardListService();
+            CardService cards = new CardService();
+            CommentService coms = new CommentService();
+            NotificationService ns = new NotificationService();
+            PermissionService ps = new PermissionService();
+            UserService us = new UserService();
+
+            //CreateBoardDTO boarddto = new CreateBoardDTO()
+            //{
+            //    Name = "TestBoard"
+            //};
+            //CreateUserDTO createuser = new CreateUserDTO()
+            //{
+            //    FirstName = "Milica",
+            //    LastName = "Todorovic",
+            //    Username = "mimi.nish",
+            //    Email = "mimi.nish@gmail.com",
+            //    Password = "Mimi96hehe!"
+
+            //};
+            //int id = us.InsertUser(createuser);
+            //boarddto.CreatedByUser = id;
+            //bs.InsertBoard(boarddto);
+
+            //CreateCardListDTO cdto = new CreateCardListDTO()
+            //{
+            //    Name = "Listaa2",
+            //    //BoardId = 1,
+
+            //};
+            //cs.InsertCardList(cdto);
+
+            //CreateCardDTO card = new CreateCardDTO()
+            //{
+            //    Name = "Karticaa",
+            //    ListId = 1,
+            //    UserId = 1
+            //};
+            //cards.InsertCard(card);
+
+            //CreateCommentDTO com = new CreateCommentDTO()
+            //{
+            //    Text = "Teeeest",
+            //    CardId = 1,
+            //    //UserId = 1
+            //};
+            //coms.InsertComment(com);
+
+            //CreateNotificationDTO notif = new CreateNotificationDTO()
+            //{
+            //    UserId = 1,
+            //    CardId = 1,
+            //};
+            //ns.CreateNotification(notif);
         }
     }
 }

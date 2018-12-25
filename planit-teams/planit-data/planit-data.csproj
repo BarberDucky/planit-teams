@@ -107,14 +107,6 @@
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="IdentityModels.cs" />
-    <Compile Include="Migrations\201812221930371_Initial.cs" />
-    <Compile Include="Migrations\201812221930371_Initial.Designer.cs">
-      <DependentUpon>201812221930371_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201812221958180_BeforeDoubleRelations.cs" />
-    <Compile Include="Migrations\201812221958180_BeforeDoubleRelations.Designer.cs">
-      <DependentUpon>201812221958180_BeforeDoubleRelations.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -134,14 +126,6 @@
     <None Include="App.config" />
     <None Include="libman.json" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201812221930371_Initial.resx">
-      <DependentUpon>201812221930371_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201812221958180_BeforeDoubleRelations.resx">
-      <DependentUpon>201812221958180_BeforeDoubleRelations.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

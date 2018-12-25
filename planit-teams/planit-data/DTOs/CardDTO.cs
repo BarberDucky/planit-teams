@@ -11,10 +11,15 @@ namespace planit_data.DTOs
     {
         public String Name { get; set; }
         public String Description { get; set; }
-        public DateTime TimeStamp { get; set; }
+        public DateTime TimeStamp { get; protected set; }
         public DateTime DueDate { get; set; }
         public int ListId { get; set; }
         public int UserId { get; set; }
+
+        public CreateCardDTO()
+        {
+            TimeStamp = DateTime.Now;
+        }
 
         public static Card FromDTO(CreateCardDTO dto)
         {

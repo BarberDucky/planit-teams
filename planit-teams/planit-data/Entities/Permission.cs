@@ -11,10 +11,11 @@ namespace planit_data.Entities
     {
         [Key]
         public int PermissionId { get; set; }
+        [Required]
         public bool IsAdmin { get; set; }
-
+        [Required]
         public virtual Board Board { get; set; }
-
+        [Required]
         public virtual User User { get; set; }
     }
 }

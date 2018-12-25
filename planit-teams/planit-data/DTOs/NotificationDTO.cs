@@ -9,7 +9,6 @@ namespace planit_data.DTOs
 {
     public class CreateNotificationDTO
     {
-        public DateTime TimeStamp { get; set; }
         public int CardId { get; set; }
         public int UserId { get; set; }
 
@@ -17,7 +16,6 @@ namespace planit_data.DTOs
         {
             return new Notification()
             {
-                CreationTime = TimeStamp,
                 IsRead = false
             };
         }
