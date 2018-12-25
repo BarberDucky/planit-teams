@@ -28,12 +28,14 @@ namespace planit_data.DTOs
         public int ListId { get; set; }
         public String Name { get; set; }
         public String Color { get; set; }
+        public List<ReadCardDTO> Cards { get; set; }
 
         public ReadCardListDTO(CardList list)
         {
             this.ListId = list.ListId;
             this.Name = list.Name;
             this.Color = list.Color;
+            this.Cards = ReadCardDTO.FromEntityList(list.Cards.ToList());
         }
 
         public List<ReadCardListDTO> FromEntityList(List<CardList> list)

@@ -145,8 +145,9 @@ namespace planit_data
             //    UserId = 2
             //});
             //service.GetBoardsByUser(8);
-            ReadBoardDTO b = service.GetBoard(1);
-
+            //ReadBoardDTO b = service.GetBoard(1);
+            CardListService c = new CardListService();
+            c.GetCardList(1);
         }
     }
 }

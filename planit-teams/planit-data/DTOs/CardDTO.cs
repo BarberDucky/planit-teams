@@ -53,6 +53,20 @@ namespace planit_data.DTOs
                 Comments.Add(new ReadCommentDTO(c));
             }
         }
+
+        public static List<ReadCardDTO> FromEntityList(List<Card> list)
+        {
+            List<ReadCardDTO> dtoList = new List<ReadCardDTO>();
+            foreach(var c in list)
+            {
+                if (c != null)
+                {
+                    dtoList.Add(new ReadCardDTO(c));
+                }
+            }
+
+            return dtoList;
+        }
     }
 
     public class UpdateCardDTO
