@@ -24,6 +24,16 @@ namespace planit_data.Services
             }
         }
 
+        public List<ReadNotificationDTO> GetAllNotifications ()
+        {
+            using (UnitOfWork uw = new UnitOfWork())
+            {
+                List<Notification> notificationsFromDB = uw.NotificationRepository.GetAll();
+
+                return ReadNotificationDTO.FromList(notificationsFromDB);
+            }
+        }
+
         public ReadNotificationDTO GetNotification (int notificationId)
         {
             using (UnitOfWork uw = new UnitOfWork())

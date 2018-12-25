@@ -41,6 +41,7 @@ namespace planit_data.DTOs
         public List<ReadCommentDTO> Comments { get; set; }
         public ReadCardDTO(Card card)
         {
+            Comments = new List<ReadCommentDTO>();
             CardId = card.CardId;
             Name = card.Name;
             Description = card.Description;

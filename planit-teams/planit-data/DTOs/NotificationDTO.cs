@@ -45,7 +45,10 @@ namespace planit_data.DTOs
             List<ReadNotificationDTO> dtoList = new List<ReadNotificationDTO>();
             foreach (Notification notif in notifList)
             {
-                dtoList.Add(new ReadNotificationDTO(notif));
+                if (notif != null)
+                {
+                    dtoList.Add(new ReadNotificationDTO(notif));
+                }
             }
             return dtoList;
         }
