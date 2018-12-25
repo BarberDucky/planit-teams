@@ -15,7 +15,7 @@ namespace planit_data.Entities
         public String Name { get; set; }
         public String Description { get; set; }
         [Required]
-        public DateTime CreationDate { get; set; }
+        public DateTime CreationDate { get; protected set; }
         public DateTime DueDate { get; set; }
         [Required]
         public virtual CardList List { get; set; }
@@ -29,6 +29,7 @@ namespace planit_data.Entities
         {
             Comments = new HashSet<Comment>();
             ObserverUsers = new HashSet<User>();
+            CreationDate = DateTime.Now;
         }
     }
 }

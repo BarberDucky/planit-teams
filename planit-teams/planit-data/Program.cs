@@ -148,59 +148,59 @@ namespace planit_data
             //ReadBoardDTO b = service.GetBoard(1);
             //CardListService c = new CardListService();
             //c.GetCardList(1);
-            BoardService bs = new BoardService();
-            CardListService cs = new CardListService();
-            CardService cards = new CardService();
-            CommentService coms = new CommentService();
-            NotificationService ns = new NotificationService();
-            PermissionService ps = new PermissionService();
-            UserService us = new UserService();
+            //BoardService bs = new BoardService();
+            //CardListService cs = new CardListService();
+            //CardService cards = new CardService();
+            //CommentService coms = new CommentService();
+            //NotificationService ns = new NotificationService();
+            //PermissionService ps = new PermissionService();
+            //UserService us = new UserService();
 
             //CreateBoardDTO boarddto = new CreateBoardDTO()
             //{
-            //    Name = "TestBoard"
+            //    Name = "Damjanov Board"
             //};
             //CreateUserDTO createuser = new CreateUserDTO()
             //{
-            //    FirstName = "Milica",
-            //    LastName = "Todorovic",
-            //    Username = "mimi.nish",
-            //    Email = "mimi.nish@gmail.com",
-            //    Password = "Mimi96hehe!"
+            //    FirstName = "Damjan",
+            //    LastName = "Trifunovic",
+            //    Username = "damjan.trifunovic",
+            //    Email = "damjan.trifunovic@gmail.com",
+            //    Password = "Damjan96hehe!"
 
             //};
             //int id = us.InsertUser(createuser);
             //boarddto.CreatedByUser = id;
-            //bs.InsertBoard(boarddto);
+            //int board = bs.InsertBoard(boarddto);
 
             //CreateCardListDTO cdto = new CreateCardListDTO()
             //{
-            //    Name = "Listaa2",
-            //    //BoardId = 1,
+            //    Name = "Damjanova lista",
+            //    BoardId = board,
 
             //};
-            //cs.InsertCardList(cdto);
+            //int cardlistid = cs.InsertCardList(cdto);
 
             //CreateCardDTO card = new CreateCardDTO()
             //{
-            //    Name = "Karticaa",
-            //    ListId = 1,
-            //    UserId = 1
+            //    Name = "Damjanova kartica",
+            //    ListId = cardlistid,
+            //    UserId = id
             //};
-            //cards.InsertCard(card);
+            //int cardid = cards.InsertCard(card);
 
             //CreateCommentDTO com = new CreateCommentDTO()
             //{
-            //    Text = "Teeeest",
-            //    CardId = 1,
-            //    //UserId = 1
+            //    Text = "Damjanov comment",
+            //    CardId = cardid,
+            //    UserId = id
             //};
             //coms.InsertComment(com);
 
             //CreateNotificationDTO notif = new CreateNotificationDTO()
             //{
-            //    UserId = 1,
-            //    CardId = 1,
+            //    UserId = id,
+            //    CardId = cardid,
             //};
             //ns.CreateNotification(notif);
         }

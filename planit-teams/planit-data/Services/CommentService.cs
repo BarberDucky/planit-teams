@@ -36,21 +36,21 @@ namespace planit_data.Services
             return listDTO;
         }
 
-        public bool InsertComment(CreateCommentDTO dto)
+        public int InsertComment(CreateCommentDTO dto)
         {
-            bool success = false;
+            Comment comment;
             using (UnitOfWork uw = new UnitOfWork())
             {
                 Card card = uw.CardRepository.GetById(dto.CardId);
                 User user = uw.UserRepository.GetById(dto.UserId);
-                if (card == null || card == null) return false;
-                Comment comment = CreateCommentDTO.FromDTO(dto);
+                if (card == null || card == null) return 0;
+                comment = CreateCommentDTO.FromDTO(dto);
                 comment.Card = card;
                 comment.User = user;
-                success = uw.CommentRepository.Insert(comment);
+                uw.CommentRepository.Insert(comment);
                 uw.Save();
             }
-            return success;
+            return comment.CommentId;
         }
 
         public bool UpdateComment(UpdateCommentDTO dto)

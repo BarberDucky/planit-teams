@@ -51,21 +51,21 @@ namespace planit_data.Services
             return listDTO;
         }*/
 
-        public bool InsertCard(CreateCardDTO dto)
+        public int InsertCard(CreateCardDTO dto)
         {
-            bool success = false;
+            Card card;
             using (UnitOfWork uw = new UnitOfWork())
             {
                 CardList list = uw.CardListRepository.GetById(dto.ListId);
                 User user = uw.UserRepository.GetById(dto.UserId);
-                Card card = CreateCardDTO.FromDTO(dto);
-                if (user == null || card == null) return false;
+                card = CreateCardDTO.FromDTO(dto);
+                if (user == null || card == null) return 0;
                 card.User = user;
                 card.List = list;
                 uw.CardRepository.Insert(card);
                 uw.Save();
             }
-            return success;
+            return card.CardId;
         }
 
         public void UpdateCard(UpdateCardDTO dto)

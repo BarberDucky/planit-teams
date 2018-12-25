@@ -9,10 +9,6 @@ namespace planit_data.Entities
 {
     public class Comment
     {
-        public Comment()
-        {
-            TimeStamp = DateTime.Now;
-        }
         [Key]
         public int CommentId { get; set; }
         [Required]
@@ -23,6 +19,11 @@ namespace planit_data.Entities
         public virtual Card Card { get; set; }
         [Required]
         public virtual User User { get; set; }
+
+        public Comment()
+        {
+            TimeStamp = DateTime.Now;
+        }
 
     }
 }
