@@ -28,30 +28,32 @@ namespace planit_api.Controllers
         }
 
         // POST: api/Card
-        public void Post([FromBody]CreateCardDTO value)
+        public bool Post([FromBody]CreateCardDTO value)
         {
             if (value != null)
-                cs.InsertCard(value);
+                return (cs.InsertCard(value) != 0);
+            return false;
         }
 
         // PUT: api/Card/5
-        public void Put([FromBody]UpdateCardDTO value)
+        public bool Put(int id, [FromBody]UpdateCardDTO value)
         {
             if (value != null)
-                cs.UpdateCard(value);
+                return cs.UpdateCard(value);
+            return false;
         }
 
         [Route("api/Card/{cardId:int}/Move/{listId:int}")]
         [HttpPut]
-        public void Move(int cardId, int listId)
+        public bool Move(int cardId, int listId)
         {
-            cs.MoveCardToList(cardId, listId);
+            return cs.MoveCardToList(cardId, listId);
         }
 
         // DELETE: api/Card/5
-        public void Delete(int id)
+        public bool Delete(int id)
         {
-            cs.DeleteCard(id);
+            return cs.DeleteCard(id);
         }
     }
 }

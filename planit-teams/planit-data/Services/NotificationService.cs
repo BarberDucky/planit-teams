@@ -11,11 +11,12 @@ namespace planit_data.Services
 {
     public class NotificationService
     {
-        public void CreateNotification (CreateNotificationDTO notificationDTO)
+        public bool CreateNotification (CreateNotificationDTO notificationDTO)
         {
+            bool ret = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                Notification obj = notificationDTO.FromDTO();
+                Notification obj = new Notification();//notificationDTO.FromDTO();
                 User user = uw.UserRepository.GetById(notificationDTO.UserId);
                 Card card = uw.CardRepository.GetById(notificationDTO.CardId);
 
@@ -24,9 +25,10 @@ namespace planit_data.Services
                     obj.User = user;
                     obj.Card = card;
                     uw.NotificationRepository.Insert(obj);
-                    uw.Save();
+                    ret = uw.Save();
                 }
             }
+            return ret;
         }
 
         public List<ReadNotificationDTO> GetAllNotifications ()
@@ -61,7 +63,7 @@ namespace planit_data.Services
                 if (notificationFromDB == null)
                     return null;
 
-                notificationFromDB.IsRead = true;
+                //notificationFromDB.IsRead = true;
                 uw.NotificationRepository.Update(notificationFromDB);
                 uw.Save();
                 return new ReadNotificationDTO(notificationFromDB);

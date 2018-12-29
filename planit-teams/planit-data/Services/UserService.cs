@@ -30,15 +30,17 @@ namespace planit_data.Services
 
         public List<ReadNotificationDTO> GetUserNotifications(int userId)
         {
+            List<ReadNotificationDTO> list = null;
             using (UnitOfWork uw = new UnitOfWork())
             {
                 User u = uw.UserRepository.GetById(userId);
 
-                if (u == null)
-                    return null;
-
-                return ReadNotificationDTO.FromList(u.Notifications.ToList());
+                if (u != null)
+                {
+                    list = ReadNotificationDTO.FromList(u.Notifications.ToList());
+                }
             }
+            return list;
         }
 
         public List<ReadUserDTO> GetAllUsers()
@@ -49,7 +51,6 @@ namespace planit_data.Services
                 List<User> users = unit.UserRepository.GetAll();
                 dtos = ReadUserDTO.FromEntityList(users);
             }
-
             return dtos;
         }
 
@@ -83,7 +84,7 @@ namespace planit_data.Services
                 {
                     user.FirstName = userDTO.FirstName;
                     user.LastName = userDTO.LastName;
-
+                    ApplicationUser a = user.IdentificationUser;
                     unit.UserRepository.Update(user);
                     ret = unit.Save();
                 }

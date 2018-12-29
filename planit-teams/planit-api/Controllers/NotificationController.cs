@@ -34,10 +34,10 @@ namespace planit_api.Controllers
 
         // PUT: api/Notification/5
         // radi citanje notifikacije
-        public void Put(int id)
-        {
-            ns.ReadNotification(id);
-        }
+        //public void Put(int id)
+        //{
+        //    ns.ReadNotification(id);
+        //}
 
         // DELETE: api/Notification/5
         public void Delete(int id)

@@ -11,9 +11,6 @@ namespace planit_api.Controllers
 {
     public class BoardController : ApiController
     {
-        //TREBA DA DODAM SVI BOARDOVI JEDNOG USERA
-        //NECE DA SE OBRISE BOARD ---> SREDITI ON DELETE CASCADE
-
         BoardService service = new BoardService();
         // GET: api/Board
         public IEnumerable<ReadBoardDTO> Get()
@@ -41,7 +38,7 @@ namespace planit_api.Controllers
         }
 
         // PUT: api/Board/5
-        public bool Put([FromBody]UpdateBoardDTO board)
+        public bool Put(int id, [FromBody]UpdateBoardDTO board)
         {
             if (board != null)
             {

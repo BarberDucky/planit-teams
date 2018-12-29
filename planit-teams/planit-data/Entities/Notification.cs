@@ -14,8 +14,8 @@ namespace planit_data.Entities
         public int NotificationId { get; set; }
         [Required]
         public DateTime CreationTime { get; protected set; }
-        [DefaultValue("false")]
-        public bool IsRead { get; set; }
+        //[DefaultValue("false")]
+        //public bool IsRead { get; set; }
         [Required]
         public virtual User User { get; set; }
         [Required]

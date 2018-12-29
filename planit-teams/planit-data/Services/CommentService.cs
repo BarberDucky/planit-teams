@@ -58,9 +58,13 @@ namespace planit_data.Services
             bool ret = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                Comment com = UpdateCommentDTO.FromDTO(dto);
-                uw.CommentRepository.Update(com);
-                ret = uw.Save();
+                Comment c = uw.CommentRepository.GetById(dto.CommentId);
+                if(c != null)
+                {
+                    c.Text = dto.Text;
+                    uw.CommentRepository.Update(c);
+                    ret = uw.Save();
+                }              
             }
             return ret;
         }

@@ -110,6 +110,10 @@
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="IdentityModels.cs" />
+    <Compile Include="Migrations\201812252215202_Initial.cs" />
+    <Compile Include="Migrations\201812252215202_Initial.Designer.cs">
+      <DependentUpon>201812252215202_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -130,6 +134,10 @@
     <None Include="libman.json" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201812252215202_Initial.resx">
+      <DependentUpon>201812252215202_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

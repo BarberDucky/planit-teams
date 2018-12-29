@@ -58,8 +58,8 @@ namespace planit_data.Services
             {
                 CardList list = uw.CardListRepository.GetById(dto.ListId);
                 User user = uw.UserRepository.GetById(dto.UserId);
-                Card card = CreateCardDTO.FromDTO(dto);
-                if (user == null || card == null || list == null) return false;
+                card = CreateCardDTO.FromDTO(dto);
+                if (user == null || card == null || list == null) return 0;
                 card.User = user;
                 card.List = list;
                 uw.CardRepository.Insert(card);
@@ -68,14 +68,23 @@ namespace planit_data.Services
             return card.CardId;
         }
 
-        public void UpdateCard(UpdateCardDTO dto)
+        public bool UpdateCard(UpdateCardDTO dto)
         {
+            bool succ = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                Card card = UpdateCardDTO.FromDTO(dto);
-                uw.CardRepository.Update(card);
-                uw.Save();
+                Card card = uw.CardRepository.GetById(dto.CardId);
+                if (card != null)
+                {
+                    card.Name = dto.Name;
+                    card.Description = dto.Description;
+                    card.DueDate = dto.DueDate;
+                    uw.CardRepository.Update(card);
+                    succ = uw.Save();                   
+                }
+               
             }
+            return succ;
         }
 
         public bool MoveCardToList(int cardId, int listId)

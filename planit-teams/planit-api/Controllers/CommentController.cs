@@ -30,7 +30,7 @@ namespace planit_api.Controllers
         {
             if (comment != null)
             {
-                return service.InsertComment(comment);
+                return (service.InsertComment(comment) != 0);
             }
             return false;
         }
