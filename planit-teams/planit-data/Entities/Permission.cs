@@ -13,9 +13,9 @@ namespace planit_data.Entities
         public int PermissionId { get; set; }
         [Required]
         public bool IsAdmin { get; set; }
-        [Required]
+        //[Required]
         public virtual Board Board { get; set; }
-        [Required]
+        //[Required]
         public virtual User User { get; set; }
     }
 }

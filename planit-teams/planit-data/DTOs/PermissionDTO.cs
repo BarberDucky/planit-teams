@@ -12,4 +12,10 @@ namespace planit_data.DTOs
         public int BoardId { get; set; }
         public int UserId { get; set; }
     }
+
+    public class AddUserBoardPermisionDTO
+    {
+        public int BoardId { get; set; }
+        public int UserId { get; set; }
+    }
 }

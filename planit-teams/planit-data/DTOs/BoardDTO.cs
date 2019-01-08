@@ -31,6 +31,7 @@ namespace planit_data.DTOs
     {
         public int BoardId { get; set; }
         public String Name { get; set; }
+        public String ExchangeName { get; set; }
         public List<ReadCardListDTO> CardList { get; set; }
 
         public ReadBoardDTO(Board b)
@@ -38,6 +39,7 @@ namespace planit_data.DTOs
             CardList = new List<ReadCardListDTO>();
             this.BoardId = b.BoardId;
             this.Name = b.Name;
+            this.ExchangeName = b.ExchangeName;
             CardList = ReadCardListDTO.FromEntityList(b.CardLists.ToList());
             //foreach(var c in b.CardLists)
             //{

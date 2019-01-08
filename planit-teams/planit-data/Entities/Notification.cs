@@ -16,9 +16,9 @@ namespace planit_data.Entities
         public DateTime CreationTime { get; protected set; }
         //[DefaultValue("false")]
         //public bool IsRead { get; set; }
-        [Required]
+        //[Required]
         public virtual User User { get; set; }
-        [Required]
+        //[Required]
         public virtual Card Card { get; set; }
 
         public virtual ICollection<User> Users { get; set; }

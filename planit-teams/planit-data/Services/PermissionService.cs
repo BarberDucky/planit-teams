@@ -30,5 +30,29 @@ namespace planit_data.Services
 
             return ret;
         }
+
+        public bool AddUserBoardPermision(AddUserBoardPermisionDTO dto)
+        {
+            bool ret = false;
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                Board b = unit.BoardRepository.GetById(dto.BoardId);
+                User u = unit.UserRepository.GetById(dto.UserId);
+
+                if(u!=null && b!=null)
+                {
+                    Permission p = new Permission()
+                    {
+                        Board = b,
+                        User = u
+                    };
+
+                    unit.PermissionRepository.Insert(p);
+                    ret = unit.Save();
+                }
+            }
+
+            return ret;
+        }
     }
 }

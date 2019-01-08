@@ -15,9 +15,9 @@ namespace planit_data.Entities
         public String Text { get; set; }
         [Required]
         public DateTime TimeStamp { get; protected set; }
-        [Required]
+        //[Required]
         public virtual Card Card { get; set; }
-        [Required]
+        //[Required]
         public virtual User User { get; set; }
 
         public Comment()

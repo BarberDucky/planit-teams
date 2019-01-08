@@ -15,7 +15,7 @@ namespace planit_data.Entities
         public String FirstName { get; set; }
         [Required]
         public String LastName { get; set; }
-        [Required]
+        //[Required]
         public virtual ApplicationUser IdentificationUser { get; set; }
         public virtual ICollection<Permission> Permissions { get; set; }
         public virtual ICollection<Card> Cards { get; set; }

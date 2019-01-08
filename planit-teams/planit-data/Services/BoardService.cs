@@ -1,5 +1,6 @@
 ﻿using planit_data.DTOs;
 using planit_data.Entities;
+using planit_data.RabbitMQ;
 using planit_data.Repository;
 using System;
 using System.Collections.Generic;
@@ -68,6 +69,7 @@ namespace planit_data.Services
         public int InsertBoard(CreateBoardDTO boardDTO)
         {
             Board board = boardDTO.FromDTO();
+            board.ExchangeName = Guid.NewGuid().ToString();
             using (UnitOfWork unit = new UnitOfWork())
             {
                 User creator = unit.UserRepository.GetById(boardDTO.CreatedByUser);
@@ -82,7 +84,10 @@ namespace planit_data.Services
                     };
 
                     unit.PermissionRepository.Insert(permision);
-                    unit.Save();
+                    if (unit.Save())
+                    {
+                        RabbitMQService.DeclareExchange(board.ExchangeName);
+                    }
                 }
             }
 
@@ -102,6 +107,10 @@ namespace planit_data.Services
 
                     unit.BoardRepository.Update(board);
                     ret = unit.Save();
+                    if (ret)
+                    {
+                        RabbitMQService.PublishToExchange(board.ExchangeName, $"Novo ime board {board.Name}");
+                    }
                 }
             }
 
@@ -119,5 +128,7 @@ namespace planit_data.Services
 
             return ret;
         }
+
+
     }
 }

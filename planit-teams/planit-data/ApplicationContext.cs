@@ -16,7 +16,7 @@ namespace planit_data
         public ApplicationContext()
             :base("name=ApplicationContext")
         {
-
+            Database.SetInitializer<ApplicationContext>(new DropCreateDatabaseIfModelChanges<ApplicationContext>());
         }
 
         public static ApplicationContext Create()

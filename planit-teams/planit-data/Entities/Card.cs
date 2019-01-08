@@ -17,9 +17,9 @@ namespace planit_data.Entities
         [Required]
         public DateTime CreationDate { get; protected set; }
         public DateTime DueDate { get; set; }
-        [Required]
+        //[Required]
         public virtual CardList List { get; set; }
-        [Required]
+        //[Required]
         public virtual User User { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }

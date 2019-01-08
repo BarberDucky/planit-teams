@@ -13,6 +13,8 @@ namespace planit_data.Entities
         public int BoardId { get; set; }
         [Required]
         public String Name { get; set; }
+        [Required]
+        public String ExchangeName { get; set; }
         public virtual ICollection<Permission> Permissions { get; set; }
         public virtual ICollection<CardList> CardLists { get; set; }
 
