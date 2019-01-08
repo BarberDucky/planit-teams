@@ -25,15 +25,15 @@ namespace planit_api.Controllers
         }
 
         // POST: api/Board
-        public bool Post([FromBody]CreateBoardDTO board)
+        public int Post([FromBody]CreateBoardDTO board)
         {
-            if (board != null && service.InsertBoard(board) != 0)
+            if (board != null)
             {
-                return true;
+                return service.InsertBoard(board);
             }
             else
             {
-                return false;
+                return 0;
             }
         }
 
