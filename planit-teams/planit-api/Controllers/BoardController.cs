@@ -6,9 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace planit_api.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class BoardController : ApiController
     {
         BoardService service = new BoardService();
@@ -25,15 +27,15 @@ namespace planit_api.Controllers
         }
 
         // POST: api/Board
-        public bool Post([FromBody]CreateBoardDTO board)
+        public int Post([FromBody]CreateBoardDTO board)
         {
-            if (board != null && service.InsertBoard(board) != 0)
+            if (board != null)
             {
-                return true;
+                return service.InsertBoard(board);
             }
             else
             {
-                return false;
+                return 0;
             }
         }
 
