@@ -55,5 +55,12 @@ namespace planit_api.Controllers
         {
             return service.DeleteBoard(id);
         }
+
+        [HttpGet]
+        [Route("api/Board/BoardsByUser/{id:int}")]
+        public IEnumerable<ReadBoardDTO> BoardsByUser(int id)
+        {
+            return service.GetBoardsByUser(id);
+        }
     }
 }

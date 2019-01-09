@@ -51,7 +51,11 @@ namespace planit_data.Services
                     list.Board = board;
 
                     unit.CardListRepository.Insert(list);
-                    unit.Save();
+                    if (unit.Save())
+                    {
+                        var message = $"Dodata lista - {list.Name}";
+                        RabbitMQ.RabbitMQService.PublishToExchange(board.ExchangeName, message);
+                    }
                 }
             }
 

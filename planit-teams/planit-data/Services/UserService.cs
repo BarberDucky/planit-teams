@@ -58,6 +58,7 @@ namespace planit_data.Services
         public int InsertUser(CreateUserDTO userDTO)
         {
             User newUser = userDTO.FromDTO();
+            newUser.ExchangeName = $"user{Guid.NewGuid()}";
 
             using (UnitOfWork unit = new UnitOfWork())
             {
@@ -67,7 +68,10 @@ namespace planit_data.Services
                 {
                     newUser.IdentificationUser = identityUser;
                     unit.UserRepository.Insert(newUser);
-                    unit.Save();
+                    if (unit.Save())
+                    {
+                        RabbitMQ.RabbitMQService.DeclareExchange(newUser.ExchangeName);
+                    }
                 }
 
             }

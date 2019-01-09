@@ -19,5 +19,16 @@ namespace planit_api.Controllers
         {
             ps.UpdatePermission(value);
         }
+
+        //POST: api/Permission
+        public bool Post([FromBody]AddUserBoardPermisionDTO value)
+        {
+            if (value != null)
+            {
+                return ps.AddUserBoardPermision(value);
+            }
+            return false;
+        }
+
     }
 }

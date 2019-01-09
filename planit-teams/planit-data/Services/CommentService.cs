@@ -23,7 +23,7 @@ namespace planit_data.Services
             return dto;
         }
 
-        
+
         //Treba get all za 1 karticu
         public List<ReadCommentDTO> GetAllComments()
         {
@@ -48,7 +48,11 @@ namespace planit_data.Services
                 comment.Card = card;
                 comment.User = user;
                 uw.CommentRepository.Insert(comment);
-                uw.Save();
+                if (uw.Save())
+                {
+                    var message = $"Dodat komentar - {comment.Text} na karticu {card.Name}";
+                    RabbitMQ.RabbitMQService.PublishToExchange(card.List.Board.ExchangeName, message);
+                }
             }
             return comment.CommentId;
         }
@@ -59,12 +63,12 @@ namespace planit_data.Services
             using (UnitOfWork uw = new UnitOfWork())
             {
                 Comment c = uw.CommentRepository.GetById(dto.CommentId);
-                if(c != null)
+                if (c != null)
                 {
                     c.Text = dto.Text;
                     uw.CommentRepository.Update(c);
                     ret = uw.Save();
-                }              
+                }
             }
             return ret;
         }

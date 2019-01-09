@@ -63,7 +63,11 @@ namespace planit_data.Services
                 card.User = user;
                 card.List = list;
                 uw.CardRepository.Insert(card);
-                uw.Save();
+                if (uw.Save())
+                {
+                    var message = $"Dodata kartica - {card.Name} na listu {list.Name}";
+                    RabbitMQ.RabbitMQService.PublishToExchange(list.Board.ExchangeName, message);
+                }
             }
             return card.CardId;
         }

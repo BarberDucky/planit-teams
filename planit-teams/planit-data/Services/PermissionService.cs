@@ -49,6 +49,11 @@ namespace planit_data.Services
 
                     unit.PermissionRepository.Insert(p);
                     ret = unit.Save();
+                    if(ret)
+                    {
+                        string message = $"User dodat na board {b.BoardId}";
+                        RabbitMQ.RabbitMQService.PublishToExchange(u.ExchangeName, message);
+                    }
                 }
             }
 
