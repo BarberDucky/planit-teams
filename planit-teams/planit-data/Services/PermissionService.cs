@@ -59,5 +59,22 @@ namespace planit_data.Services
 
             return ret;
         }
+
+        public bool GetPermission(int boardId, int userId)
+        {
+            bool ret = false;
+
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                List<Permission> p = unit.PermissionRepository
+                    .Get(x => (x.User.UserId == userId) && (x.Board.BoardId == boardId)).ToList();
+                if (p.Count > 0)
+                {
+                    ret = true;
+                }
+            }
+
+            return ret;
+        }
     }
 }

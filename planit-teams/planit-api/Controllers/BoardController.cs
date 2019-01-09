@@ -1,4 +1,5 @@
 ﻿using planit_data.DTOs;
+using planit_data.Helpers;
 using planit_data.Services;
 using System;
 using System.Collections.Generic;
@@ -40,9 +41,11 @@ namespace planit_api.Controllers
         }
 
         // PUT: api/Board/5
-        public bool Put(int id, [FromBody]UpdateBoardDTO board)
+        [HttpPut]
+        [Route("api/Board/{userId:int}")]
+        public bool Put(int userId, [FromBody]UpdateBoardDTO board)
         {
-            if (board != null)
+            if (board != null && PermissionHelper.HasPermission(board.BoardId, userId))
             {
                 return service.UpdateBoard(board);
             }
@@ -61,6 +64,17 @@ namespace planit_api.Controllers
         public IEnumerable<ReadBoardDTO> BoardsByUser(int id)
         {
             return service.GetBoardsByUser(id);
+        }
+
+        [HttpGet]
+        [Route("api/Board/{idBoard:int}/User/{idUser:int}")]
+        public ReadBoardDTO BoardUser(int idBoard, int idUser)
+        {
+            if (PermissionHelper.HasPermission(idBoard, idUser))
+            {
+                return service.GetBoard(idBoard);
+            }
+            return null;
         }
     }
 }

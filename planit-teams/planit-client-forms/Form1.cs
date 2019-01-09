@@ -17,6 +17,7 @@ namespace planit_client_forms
     public partial class Form1 : Form
     {
         MQ.MQService MQService = new MQ.MQService();
+        private delegate void SetControlPropertyThreadSafeDel(Control control, string propertyName, string val);
 
         public Form1()
         {
@@ -26,7 +27,7 @@ namespace planit_client_forms
 
         private async void getBoards_Click(object sender, EventArgs e)
         {
-            var list = await BoardService.GetAllBoards();
+            var list = await BoardService.GetAllBoards(1);
             getBoardsTextBox.Text = "";
             foreach (var el in list)
             {
@@ -36,12 +37,23 @@ namespace planit_client_forms
 
         private async void getBoard_Click(object sender, EventArgs e)
         {
-            var board = (await BoardService.GetBoard(boardIdTextbox.Text));
-            getBoardTextBox.Text = board.ToString();
-            MQService.SubscribeToExchange(board["ExchangeName"].ToString(), (message) => {
-                MessageBox.Show(message.ToString());
-                return true;
-            });
+            int userId = 1;
+            var board = (await BoardService.GetBoard(boardIdTextbox.Text, userId));
+            if(board!=null)
+            {
+                getBoardTextBox.Text = board.ToString();
+                MQService.SubscribeToExchange(board["ExchangeName"].ToString(), (message) => {
+                    // var noviString = boardChangesTextbox + message.ToString();
+                    // SetControlPropertyThreadSafe(boardChangesTextbox, "Text", message.ToString());
+                    AddChanges(boardChangesTextbox, message.ToString());
+                    return true;
+                });
+            }
+            else
+            {
+                MessageBox.Show("No permission for this board!");
+            }
+          
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -58,7 +70,43 @@ namespace planit_client_forms
         {
             string id = updateIdBoardTextbox.Text;
             string newName = updateNameBoardTextbox.Text;
-            await BoardService.PutBoard(id, newName);
+            int UserId = 1;
+            await BoardService.PutBoard(id, newName, UserId);
+        }
+
+        public static void SetControlPropertyThreadSafe(Control control, string propertyName, string value)
+        {
+            if (control.InvokeRequired)
+            {
+                control.Invoke(new SetControlPropertyThreadSafeDel(SetControlPropertyThreadSafe),
+                    new object[] { control, propertyName, control.Text + value });
+                
+            }
+            else
+            {
+                control.GetType().InvokeMember(propertyName,
+                    System.Reflection.BindingFlags.SetProperty,
+                    null,
+                    control,
+                    new object[] { control.Text + value }
+                    );
+            }
+            
+        }
+
+        private void AddChanges(Control control, string message)
+        {
+            if(control.InvokeRequired)
+            {
+                control.BeginInvoke(new MethodInvoker(delegate ()
+                {
+                    control.Text += $"\n {message}";
+                }));
+            }
+            else
+            {
+                control.Text += message;
+            }
         }
 
         private async void getAllListsButton_Click(object sender, EventArgs e)

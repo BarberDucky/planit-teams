@@ -12,11 +12,11 @@ namespace planit_client_forms.Services
 {
     public class BoardService
     {
-        public static async Task<List<JObject>> GetAllBoards()
+        public static async Task<List<JObject>> GetAllBoards(int userId)
         {
             using (HttpClient client = new HttpClient())
             {
-                var response = await client.GetAsync("http://localhost:52816/api/Board");
+                var response = await client.GetAsync("http://localhost:52816/api/Board/BoardsByUser/" + userId);
                 var jsonString = await response.Content.ReadAsStringAsync();
                 var boardArray = JsonConvert.DeserializeObject<List<JObject>>(jsonString);
                 //var boardObj = JObject.Parse(jsonString);
@@ -24,18 +24,27 @@ namespace planit_client_forms.Services
             }
         }
 
-        public static async Task<JObject> GetBoard(string id)
+        public static async Task<JObject> GetBoard(string id, int userId)
         {
             using (HttpClient client = new HttpClient())
             {
-                var response = await client.GetAsync("http://localhost:52816/api/Board/" + id);
+                var response = await client.GetAsync($"http://localhost:52816/api/Board/{id}/User/{userId}");
+
                 var jsonString = await response.Content.ReadAsStringAsync();
-                var boardObj = JObject.Parse(jsonString);
-                return boardObj;
+                if (jsonString != "null")
+                {
+                    var boardObj = JObject.Parse(jsonString);
+                    return boardObj;
+                }
+                else
+                {
+                    return null;
+
+                }
             }
         }
 
-        public static async Task PutBoard(string id, string newName)
+        public static async Task PutBoard(string id, string newName, int userId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -47,7 +56,7 @@ namespace planit_client_forms.Services
 
                 byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                var response = await client.PutAsync("http://localhost:52816/api/Board/" + id, byteContent);
+                var response = await client.PutAsync("http://localhost:52816/api/Board/" + userId, byteContent);
             }
         }
     }

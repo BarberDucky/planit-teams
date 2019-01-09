@@ -40,6 +40,23 @@ namespace planit_data.Services
             return boardDTO;
         }
 
+        public ReadBoardDTO GetBoardUser(int boardId, int userId)
+        {
+            ReadBoardDTO boardDTO = null;
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                List<Permission> p = unit.PermissionRepository.Get(x => (x.User.UserId == userId && x.Board.BoardId == boardId)).ToList();
+
+                if (p != null && p.Count > 0)
+                {
+                    Board b = p[0].Board;
+                    boardDTO = new ReadBoardDTO(b);
+                }
+            }
+
+            return boardDTO;
+        }
+
         public List<ReadBoardDTO> GetBoardsByUser(int userId)
         {
             List<ReadBoardDTO> dtos = new List<ReadBoardDTO>();
