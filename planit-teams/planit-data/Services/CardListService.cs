@@ -60,12 +60,8 @@ namespace planit_data.Services
                     unit.CardListRepository.Insert(list);
                     if (unit.Save())
                     {
-                        Message message = new Message()
-                        {
-                            MessageType = MessageType.CardList,
-                            ObjectId = list.ListId
-                        };
-                        RabbitMQ.RabbitMQService.PublishToExchange(board.ExchangeName, message);
+                        ReadCardListDTO dto = new ReadCardListDTO(list);
+                        RabbitMQService.PublishToExchange(board.ExchangeName, new MessageContext(new CardListMessageStrategy(dto)));
                     }
                 }
             }

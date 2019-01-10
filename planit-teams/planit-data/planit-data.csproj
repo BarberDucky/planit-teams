@@ -124,6 +124,9 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RabbitMQ\IMessageStrategy.cs" />
+    <Compile Include="RabbitMQ\MessageContext.cs" />
+    <Compile Include="RabbitMQ\MessageStrategy.cs" />
     <Compile Include="RabbitMQ\MQMessages.cs" />
     <Compile Include="RabbitMQ\RabbitMQService.cs" />
     <Compile Include="Repository\ApplicationUserRepository.cs" />

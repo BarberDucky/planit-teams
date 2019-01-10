@@ -94,12 +94,8 @@ namespace planit_data.Services
                 uw.CardRepository.Insert(card);
                 if (uw.Save())
                 {
-                    Message message = new Message()
-                    {
-                        MessageType = MessageType.Card,
-                        ObjectId = card.CardId
-                    };
-                    RabbitMQ.RabbitMQService.PublishToExchange(list.Board.ExchangeName, message);
+                    ReadCardDTO cardDto = new ReadCardDTO(card);
+                    RabbitMQService.PublishToExchange(list.Board.ExchangeName, new MessageContext(new CardMessageStrategy(cardDto)));
                 }
             }
             return card.CardId;

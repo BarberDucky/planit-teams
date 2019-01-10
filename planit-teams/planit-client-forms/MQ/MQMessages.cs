@@ -11,7 +11,8 @@ namespace planit_client_forms.MQ
         Board,
         CardList,
         Card,
-        Comment
+        Comment,
+        Error
     }
     public class Message
     {

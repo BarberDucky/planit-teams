@@ -49,15 +49,7 @@ namespace planit_data.Services
                 comment.Card = card;
                 comment.User = user;
                 uw.CommentRepository.Insert(comment);
-                if (uw.Save())
-                {
-                    Message message = new Message()
-                    {
-                        MessageType = MessageType.Comment,
-                        ObjectId = comment.CommentId
-                    };
-                    RabbitMQ.RabbitMQService.PublishToExchange(card.List.Board.ExchangeName, message);
-                }
+                uw.Save();
             }
             return comment.CommentId;
         }

@@ -20,13 +20,13 @@ namespace planit_data.RabbitMQ
             }
         }
 
-        public static void PublishToExchange(string exchName, Message message)
+        public static void PublishToExchange(string exchName, MessageContext message)
         {
             var factory = new ConnectionFactory() { HostName = "localhost" };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                var jsonMessage = JsonConvert.SerializeObject(message);
+                var jsonMessage = message.Serialize();
                 var body = Encoding.UTF8.GetBytes(jsonMessage);
 
                 channel.BasicPublish(exchange: exchName,

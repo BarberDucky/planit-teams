@@ -126,12 +126,8 @@ namespace planit_data.Services
                     ret = unit.Save();
                     if (ret)
                     {
-                        Message message = new Message()
-                        {
-                            MessageType = MessageType.Board,
-                            ObjectId = board.BoardId
-                        };
-                        RabbitMQService.PublishToExchange(board.ExchangeName, message);
+                        ReadBoardDTO dto = new ReadBoardDTO(board);
+                        RabbitMQService.PublishToExchange(board.ExchangeName, new MessageContext(new BoardMessageStrategy(dto)));
                     }
                 }
             }
