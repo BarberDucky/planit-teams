@@ -12,6 +12,7 @@ namespace planit_data.DTOs
         public String Name { get; set; }
         public String Color { get; set; }
         public int BoardId { get; set; }
+        public int UserId { get; set; }
 
         public CardList FromDTO()
         {

@@ -45,7 +45,7 @@ namespace planit_api.Controllers
         [Route("api/Board/{userId:int}")]
         public bool Put(int userId, [FromBody]UpdateBoardDTO board)
         {
-            if (board != null && PermissionHelper.HasPermission(board.BoardId, userId))
+            if (board != null && PermissionHelper.HasPermissionOnBoard(board.BoardId, userId))
             {
                 return service.UpdateBoard(board);
             }
@@ -70,7 +70,7 @@ namespace planit_api.Controllers
         [Route("api/Board/{idBoard:int}/User/{idUser:int}")]
         public ReadBoardDTO BoardUser(int idBoard, int idUser)
         {
-            if (PermissionHelper.HasPermission(idBoard, idUser))
+            if (PermissionHelper.HasPermissionOnBoard(idBoard, idUser))
             {
                 return service.GetBoard(idBoard);
             }

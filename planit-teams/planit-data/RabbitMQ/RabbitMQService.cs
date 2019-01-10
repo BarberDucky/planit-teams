@@ -1,4 +1,5 @@
-﻿using RabbitMQ.Client;
+﻿using Newtonsoft.Json;
+using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,23 @@ namespace planit_data.RabbitMQ
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.ExchangeDeclare(exchange: exchName, type: "fanout");
+                channel.ExchangeDeclare(exchange: exchName, type: "fanout", durable: true);
+            }
+        }
+
+        public static void PublishToExchange(string exchName, Message message)
+        {
+            var factory = new ConnectionFactory() { HostName = "localhost" };
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                var jsonMessage = JsonConvert.SerializeObject(message);
+                var body = Encoding.UTF8.GetBytes(jsonMessage);
+
+                channel.BasicPublish(exchange: exchName,
+                    routingKey: "",
+                    basicProperties: null,
+                    body: body);
             }
         }
 

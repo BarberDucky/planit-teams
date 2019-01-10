@@ -76,5 +76,28 @@ namespace planit_data.Services
 
             return ret;
         }
+
+        public bool GetPermissionOnList(int listId, int userId)
+        {
+            bool ret = false;
+
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                CardList list = unit.CardListRepository.GetById(listId);
+
+                if (list != null)
+                {
+                    List<Permission> p = unit.PermissionRepository
+                    .Get(x => (x.User.UserId == userId) && (x.Board.BoardId == list.Board.BoardId)).ToList();
+                    if (p.Count > 0)
+                    {
+                        ret = true;
+                    }
+                }
+                
+            }
+
+            return ret;
+        }
     }
 }

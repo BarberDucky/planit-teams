@@ -7,6 +7,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Threading;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace planit_client_forms.MQ
 {
@@ -44,8 +45,9 @@ namespace planit_client_forms.MQ
             consumer.Received += (model, ea) =>
             {
                 var body = ea.Body;
-                var message = Encoding.UTF8.GetString(body);
-                Method(message);
+                var jsonMessage = Encoding.UTF8.GetString(body);
+                var messageObj = JsonConvert.DeserializeObject<Message>(jsonMessage);
+                Method(messageObj.ToString());
             };
             channel.BasicConsume(queue: queueName,
                                  autoAck: true,

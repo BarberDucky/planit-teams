@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using planit_data.DTOs;
 using planit_data.Repository;
 using planit_data.Entities;
+using planit_data.RabbitMQ;
 
 namespace planit_data.Services
 {
@@ -50,7 +51,11 @@ namespace planit_data.Services
                 uw.CommentRepository.Insert(comment);
                 if (uw.Save())
                 {
-                    var message = $"Dodat komentar - {comment.Text} na karticu {card.Name}";
+                    Message message = new Message()
+                    {
+                        MessageType = MessageType.Comment,
+                        ObjectId = comment.CommentId
+                    };
                     RabbitMQ.RabbitMQService.PublishToExchange(card.List.Board.ExchangeName, message);
                 }
             }

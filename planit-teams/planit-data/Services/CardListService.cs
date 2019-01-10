@@ -1,5 +1,7 @@
 ﻿using planit_data.DTOs;
 using planit_data.Entities;
+using planit_data.Helpers;
+using planit_data.RabbitMQ;
 using planit_data.Repository;
 using System;
 using System.Collections.Generic;
@@ -41,6 +43,11 @@ namespace planit_data.Services
 
         public int InsertCardList(CreateCardListDTO cardListDto)
         {
+            if (!PermissionHelper.HasPermissionOnBoard(cardListDto.BoardId, cardListDto.UserId))
+            {
+                return 0;
+            }
+
             CardList list = cardListDto.FromDTO();
             using (UnitOfWork unit = new UnitOfWork())
             {
@@ -53,7 +60,11 @@ namespace planit_data.Services
                     unit.CardListRepository.Insert(list);
                     if (unit.Save())
                     {
-                        var message = $"Dodata lista - {list.Name}";
+                        Message message = new Message()
+                        {
+                            MessageType = MessageType.CardList,
+                            ObjectId = list.ListId
+                        };
                         RabbitMQ.RabbitMQService.PublishToExchange(board.ExchangeName, message);
                     }
                 }

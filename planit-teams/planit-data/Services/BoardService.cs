@@ -126,7 +126,12 @@ namespace planit_data.Services
                     ret = unit.Save();
                     if (ret)
                     {
-                        RabbitMQService.PublishToExchange(board.ExchangeName, $"Novo ime board {board.Name}");
+                        Message message = new Message()
+                        {
+                            MessageType = MessageType.Board,
+                            ObjectId = board.BoardId
+                        };
+                        RabbitMQService.PublishToExchange(board.ExchangeName, message);
                     }
                 }
             }

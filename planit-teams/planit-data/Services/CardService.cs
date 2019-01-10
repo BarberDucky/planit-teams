@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using planit_data.DTOs;
 using planit_data.Entities;
+using planit_data.Helpers;
+using planit_data.RabbitMQ;
 using planit_data.Repository;
 
 namespace planit_data.Services
@@ -53,6 +55,10 @@ namespace planit_data.Services
 
         public int InsertCard(CreateCardDTO dto)
         {
+            if(!PermissionHelper.HasPermissionOnList(dto.ListId,dto.UserId))
+            {
+                return 0;
+            }
             Card card;
             using (UnitOfWork uw = new UnitOfWork())
             {
@@ -65,7 +71,11 @@ namespace planit_data.Services
                 uw.CardRepository.Insert(card);
                 if (uw.Save())
                 {
-                    var message = $"Dodata kartica - {card.Name} na listu {list.Name}";
+                    Message message = new Message()
+                    {
+                        MessageType = MessageType.Card,
+                        ObjectId = card.CardId
+                    };
                     RabbitMQ.RabbitMQService.PublishToExchange(list.Board.ExchangeName, message);
                 }
             }
