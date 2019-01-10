@@ -28,6 +28,7 @@ namespace planit_data.DTOs
         public int ListId { get; set; }
         public String Name { get; set; }
         public String Color { get; set; }
+        public String BoardName { get; set; }
         public List<ReadCardDTO> Cards { get; set; }
 
         public ReadCardListDTO(CardList list)
@@ -35,6 +36,7 @@ namespace planit_data.DTOs
             this.ListId = list.ListId;
             this.Name = list.Name;
             this.Color = list.Color;
+            this.BoardName = list.Board.Name;
             this.Cards = ReadCardDTO.FromEntityList(list.Cards.ToList());
         }
 

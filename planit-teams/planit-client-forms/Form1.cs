@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using planit_client_forms.Services;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using planit_client_forms.DTOs;
 
 namespace planit_client_forms
 {
@@ -27,7 +28,9 @@ namespace planit_client_forms
 
         private async void getBoards_Click(object sender, EventArgs e)
         {
-            var list = await BoardService.GetAllBoards(1);
+            int userId = int.Parse(userIdTextBox.Text);
+
+            var list = await BoardService.GetAllBoards(userId);
             getBoardsTextBox.Text = "";
             foreach (var el in list)
             {
@@ -37,12 +40,12 @@ namespace planit_client_forms
 
         private async void getBoard_Click(object sender, EventArgs e)
         {
-            int userId = 1;
-            var board = (await BoardService.GetBoard(boardIdTextbox.Text, userId));
+            int userId = int.Parse(userIdTextBox.Text);
+            ReadBoardDTO board = (await BoardService.GetBoard(boardIdTextbox.Text, userId));
             if(board!=null)
             {
                 getBoardTextBox.Text = board.ToString();
-                MQService.SubscribeToExchange(board["ExchangeName"].ToString(), (message) => {
+                MQService.SubscribeToExchange(board.ExchangeName, (message) => {
                     // var noviString = boardChangesTextbox + message.ToString();
                     // SetControlPropertyThreadSafe(boardChangesTextbox, "Text", message.ToString());
                     AddChanges(boardChangesTextbox, message.ToString());
@@ -70,8 +73,16 @@ namespace planit_client_forms
         {
             string id = updateIdBoardTextbox.Text;
             string newName = updateNameBoardTextbox.Text;
-            int UserId = 1;
-            await BoardService.PutBoard(id, newName, UserId);
+            int UserId = int.Parse(userIdTextBox.Text);
+
+            UpdateBoardDTO updateData = new UpdateBoardDTO()
+            {
+                Name = newName,
+                BoardId = int.Parse(id)
+            };
+
+
+            await BoardService.PutBoard(updateData, UserId);
         }
 
         public static void SetControlPropertyThreadSafe(Control control, string propertyName, string value)
@@ -91,7 +102,6 @@ namespace planit_client_forms
                     new object[] { control.Text + value }
                     );
             }
-            
         }
 
         private void AddChanges(Control control, string message)
@@ -111,7 +121,9 @@ namespace planit_client_forms
 
         private async void getAllListsButton_Click(object sender, EventArgs e)
         {
-            var list = await CardListService.GetAllCardLists();
+            int userId = int.Parse(userIdTextBox.Text);
+
+            var list = await CardListService.GetAllCardLists(userId);
             allListsTextBox.Text = "";
             foreach (var el in list)
             {
@@ -121,21 +133,35 @@ namespace planit_client_forms
 
         private async void getListButton_Click(object sender, EventArgs e)
         {
-            var list = (await CardListService.GetCardList(getListTextBox.Text));
+            int userId = int.Parse(userIdTextBox.Text);
+
+            var list = await CardListService.GetCardList(getListTextBox.Text, userId);
             listTextBox.Text = list.ToString();
         }
 
         private async void createListButton_Click(object sender, EventArgs e)
         {
+            int userId = int.Parse(userIdTextBox.Text);
+
             string color = listColorTextBox.Text;
             string name = listNameTextBox.Text;
             string boardId = listParentTextBox.Text;
-            await CardListService.PostCardList(name, color, boardId);
+
+            CreateCardListDTO createData = new CreateCardListDTO()
+            {
+                Name = name,
+                Color = color,
+                BoardId = int.Parse(boardId)
+            };
+
+            await CardListService.PostCardList(createData, userId);
         }
 
         private async void getAllCardsButton_Click(object sender, EventArgs e)
         {
-            var list = await CardService.GetAllCards();
+            int userId = int.Parse(userIdTextBox.Text);
+
+            var list = await CardService.GetAllCards(userId);
             getAllCardsTextBox.Text = "";
             foreach (var el in list)
             {
@@ -145,7 +171,9 @@ namespace planit_client_forms
 
         private async void getCardButton_Click(object sender, EventArgs e)
         {
-            var list = (await CardService.GetCard(cardIdTextBox.Text));
+            int userId = int.Parse(userIdTextBox.Text);
+
+            var list = await CardService.GetCard(cardIdTextBox.Text, userId);
             cardTextBox.Text = list.ToString();
         }
 
@@ -155,8 +183,20 @@ namespace planit_client_forms
             string description = cardDescTextBox.Text;
             DateTime dueDate = cardDueDatePicker.Value;
             string listId = cardParentIdTextBox.Text;
-            string userId = cardUserIdTextBox.Text;
-            await CardService.PostCardList(name, description, listId, userId, dueDate);
+
+            int userId = int.Parse(userIdTextBox.Text);
+
+
+            CreateCardDTO createData = new CreateCardDTO()
+            {
+                Name = name,
+                Description = description,
+                ListId = int.Parse(listId),
+                UserId = userId,
+                DueDate = dueDate
+            };
+
+            await CardService.PostCard(createData, userId);
         }
     }
 }

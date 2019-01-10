@@ -67,8 +67,6 @@
             this.getAllCardsTextBox = new System.Windows.Forms.RichTextBox();
             this.getAllCardsButton = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.cardUserIdTextBox = new System.Windows.Forms.TextBox();
             this.cardDueDatePicker = new System.Windows.Forms.DateTimePicker();
             this.label8 = new System.Windows.Forms.Label();
             this.userIdTextBox = new System.Windows.Forms.TextBox();
@@ -122,15 +120,15 @@
             // 
             this.getBoardTextBox.Location = new System.Drawing.Point(274, 129);
             this.getBoardTextBox.Name = "getBoardTextBox";
-            this.getBoardTextBox.Size = new System.Drawing.Size(223, 129);
+            this.getBoardTextBox.Size = new System.Drawing.Size(223, 277);
             this.getBoardTextBox.TabIndex = 5;
             this.getBoardTextBox.Text = "";
             // 
             // boardChangesTextbox
             // 
-            this.boardChangesTextbox.Location = new System.Drawing.Point(272, 264);
+            this.boardChangesTextbox.Location = new System.Drawing.Point(775, 435);
             this.boardChangesTextbox.Name = "boardChangesTextbox";
-            this.boardChangesTextbox.Size = new System.Drawing.Size(225, 142);
+            this.boardChangesTextbox.Size = new System.Drawing.Size(376, 306);
             this.boardChangesTextbox.TabIndex = 6;
             this.boardChangesTextbox.Text = "";
             // 
@@ -399,31 +397,15 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(1265, 257);
+            this.label12.Location = new System.Drawing.Point(1266, 211);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(106, 17);
             this.label12.TabIndex = 40;
             this.label12.Text = "Card Due Date:";
             // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(1266, 206);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(91, 17);
-            this.label13.TabIndex = 42;
-            this.label13.Text = "Card User Id:";
-            // 
-            // cardUserIdTextBox
-            // 
-            this.cardUserIdTextBox.Location = new System.Drawing.Point(1267, 226);
-            this.cardUserIdTextBox.Name = "cardUserIdTextBox";
-            this.cardUserIdTextBox.Size = new System.Drawing.Size(226, 22);
-            this.cardUserIdTextBox.TabIndex = 41;
-            // 
             // cardDueDatePicker
             // 
-            this.cardDueDatePicker.Location = new System.Drawing.Point(1266, 278);
+            this.cardDueDatePicker.Location = new System.Drawing.Point(1267, 232);
             this.cardDueDatePicker.Name = "cardDueDatePicker";
             this.cardDueDatePicker.Size = new System.Drawing.Size(200, 22);
             this.cardDueDatePicker.TabIndex = 43;
@@ -452,8 +434,6 @@
             this.Controls.Add(this.label8);
             this.Controls.Add(this.userIdTextBox);
             this.Controls.Add(this.cardDueDatePicker);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.cardUserIdTextBox);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.labelWhatever);
             this.Controls.Add(this.cardParentIdTextBox);
@@ -542,8 +522,6 @@
         private System.Windows.Forms.RichTextBox getAllCardsTextBox;
         private System.Windows.Forms.Button getAllCardsButton;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox cardUserIdTextBox;
         private System.Windows.Forms.DateTimePicker cardDueDatePicker;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox userIdTextBox;

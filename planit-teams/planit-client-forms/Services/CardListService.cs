@@ -7,41 +7,40 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using planit_client_forms.DTOs;
 
 namespace planit_client_forms.Services
 {
     public class CardListService
     {
-        public static async Task<List<JObject>> GetAllCardLists()
+        public static async Task<List<ReadCardListDTO>> GetAllCardLists(int userId)
         {
             using (HttpClient client = new HttpClient())
             {
                 var response = await client.GetAsync("http://localhost:52816/api/CardList");
                 var jsonString = await response.Content.ReadAsStringAsync();
-                var cardListArray = JsonConvert.DeserializeObject<List<JObject>>(jsonString);
+                var cardListArray = JsonConvert.DeserializeObject<List<ReadCardListDTO>>(jsonString);
                 return cardListArray;
             }
         }
 
-        public static async Task<JObject> GetCardList(string id)
+        public static async Task<ReadCardListDTO> GetCardList(string id, int userId)
         {
             using (HttpClient client = new HttpClient())
             {
                 var response = await client.GetAsync("http://localhost:52816/api/CardList/" + id);
                 var jsonString = await response.Content.ReadAsStringAsync();
-                var cardList = JObject.Parse(jsonString);
+                var cardList = JsonConvert.DeserializeObject<ReadCardListDTO>(jsonString);
                 return cardList;
             }
         }
 
-        public static async Task PostCardList(string name, string color, string boardId)
+        public static async Task PostCardList(CreateCardListDTO createData, int userId)
         {
             using (HttpClient client = new HttpClient())
             {
-                string json = "{ \"Color\":\"" + color + "\"," +
-                    "\"Name\":\"" + name + "\"," +
-                    "\"BoardId\":\"" + boardId + "\"" +
-                    "}";
+                string json = JsonConvert.SerializeObject(createData);
+
                 var buffer = System.Text.Encoding.UTF8.GetBytes(json);
 
                 var byteContent = new ByteArrayContent(buffer);
