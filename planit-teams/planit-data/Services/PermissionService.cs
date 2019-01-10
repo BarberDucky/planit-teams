@@ -31,6 +31,29 @@ namespace planit_data.Services
             return ret;
         }
 
+        internal bool GetPermissionOnCard(int cardId, int userId)
+        {
+            bool ret = false;
+
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                Card list = unit.CardRepository.GetById(cardId);
+
+                if (list != null)
+                {
+                    List<Permission> p = unit.PermissionRepository
+                    .Get(x => (x.User.UserId == userId) && (x.Board.BoardId == list.List.Board.BoardId)).ToList();
+                    if (p.Count > 0)
+                    {
+                        ret = true;
+                    }
+                }
+
+            }
+
+            return ret;
+        }
+
         public bool AddUserBoardPermision(AddUserBoardPermisionDTO dto)
         {
             bool ret = false;

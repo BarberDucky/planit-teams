@@ -13,11 +13,11 @@ namespace planit_client_forms.Services
 {
     public class CardService
     {
-        public static async Task<List<ReadCardDTO>> GetAllCards(int userId)
+        public static async Task<List<ReadCardDTO>> GetAllCards(string boardId, int userId)
         {
             using (HttpClient client = new HttpClient())
             {
-                var response = await client.GetAsync("http://localhost:52816/api/Card");
+                var response = await client.GetAsync($"http://localhost:52816/api/Card/{boardId}/User/{userId}");
                 var jsonString = await response.Content.ReadAsStringAsync();
                 var cardArray = JsonConvert.DeserializeObject<List<ReadCardDTO>>(jsonString);
                 return cardArray;
@@ -28,10 +28,17 @@ namespace planit_client_forms.Services
         {
             using (HttpClient client = new HttpClient())
             {
-                var response = await client.GetAsync("http://localhost:52816/api/Card/" + id);
+                var response = await client.GetAsync($"http://localhost:52816/api/Card/CardByUser/{id}/User/{userId}");
                 var jsonString = await response.Content.ReadAsStringAsync();
-                var card = JsonConvert.DeserializeObject<ReadCardDTO>(jsonString);
-                return card;
+                if (jsonString != "null")
+                {
+                    var card = JsonConvert.DeserializeObject<ReadCardDTO>(jsonString);
+                    return card;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -47,7 +54,7 @@ namespace planit_client_forms.Services
 
                 byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                var response = await client.PostAsync("http://localhost:52816/api/Card", byteContent);
+                var response = await client.PostAsync($"http://localhost:52816/api/Card/{userId}", byteContent);
             }
         }
     }

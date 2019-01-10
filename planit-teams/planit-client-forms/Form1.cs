@@ -42,10 +42,11 @@ namespace planit_client_forms
         {
             int userId = int.Parse(userIdTextBox.Text);
             ReadBoardDTO board = (await BoardService.GetBoard(boardIdTextbox.Text, userId));
-            if(board!=null)
+            if (board != null)
             {
                 getBoardTextBox.Text = board.ToString();
-                MQService.SubscribeToExchange(board.ExchangeName, (message) => {
+                MQService.SubscribeToExchange(board.ExchangeName, (message) =>
+                {
                     // var noviString = boardChangesTextbox + message.ToString();
                     // SetControlPropertyThreadSafe(boardChangesTextbox, "Text", message.ToString());
                     AddChanges(boardChangesTextbox, message.ToString());
@@ -56,7 +57,7 @@ namespace planit_client_forms
             {
                 MessageBox.Show("No permission for this board!");
             }
-          
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -91,7 +92,7 @@ namespace planit_client_forms
             {
                 control.Invoke(new SetControlPropertyThreadSafeDel(SetControlPropertyThreadSafe),
                     new object[] { control, propertyName, control.Text + value });
-                
+
             }
             else
             {
@@ -106,7 +107,7 @@ namespace planit_client_forms
 
         private void AddChanges(Control control, string message)
         {
-            if(control.InvokeRequired)
+            if (control.InvokeRequired)
             {
                 control.BeginInvoke(new MethodInvoker(delegate ()
                 {
@@ -123,7 +124,7 @@ namespace planit_client_forms
         {
             int userId = int.Parse(userIdTextBox.Text);
 
-            var list = await CardListService.GetAllCardLists(userId);
+            var list = await CardListService.GetAllCardLists(boardIdTextbox.Text, userId);
             allListsTextBox.Text = "";
             foreach (var el in list)
             {
@@ -136,7 +137,11 @@ namespace planit_client_forms
             int userId = int.Parse(userIdTextBox.Text);
 
             var list = await CardListService.GetCardList(getListTextBox.Text, userId);
-            listTextBox.Text = list.ToString();
+            if (list != null)
+            {
+                listTextBox.Text = list.ToString();
+            }
+
         }
 
         private async void createListButton_Click(object sender, EventArgs e)
@@ -161,7 +166,7 @@ namespace planit_client_forms
         {
             int userId = int.Parse(userIdTextBox.Text);
 
-            var list = await CardService.GetAllCards(userId);
+            var list = await CardService.GetAllCards(boardIdTextbox.Text, userId);
             getAllCardsTextBox.Text = "";
             foreach (var el in list)
             {
@@ -174,7 +179,12 @@ namespace planit_client_forms
             int userId = int.Parse(userIdTextBox.Text);
 
             var list = await CardService.GetCard(cardIdTextBox.Text, userId);
-            cardTextBox.Text = list.ToString();
+
+            if (list != null)
+            {
+                cardTextBox.Text = list.ToString();
+            }
+
         }
 
         private async void createCardTextBox_Click(object sender, EventArgs e)

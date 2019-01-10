@@ -24,16 +24,39 @@ namespace planit_data.Services
             }
         }
 
+        public List<ReadCardDTO> GetAllCardsOnBoard(int boardId, int userId)
+        {
+            if (!PermissionHelper.HasPermissionOnBoard(boardId, userId))
+                return new List<ReadCardDTO>();
+
+            using (UnitOfWork uw = new UnitOfWork())
+            {
+                List<Card> cards = uw.CardRepository.Get(x => x.List.Board.BoardId == boardId).ToList();
+
+                return ReadCardDTO.FromEntityList(cards);
+            }
+        }
+
         public ReadCardDTO GetCardById(int id)
         {
             ReadCardDTO dto;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                Card card = uw.CardRepository.GetById(id);         
+                Card card = uw.CardRepository.GetById(id);
                 if (card == null) return null;
-                dto = new ReadCardDTO(card);              
+                dto = new ReadCardDTO(card);
             }
             return dto;
+        }
+
+        public ReadCardDTO GetCardByUser(int cardId, int idUser)
+        {
+            if (!PermissionHelper.HasPermissionOnCard(cardId, idUser))
+            {
+                return null;
+            }
+
+            return GetCardById(cardId);
         }
 
         /*
@@ -53,9 +76,9 @@ namespace planit_data.Services
             return listDTO;
         }*/
 
-        public int InsertCard(CreateCardDTO dto)
+        public int InsertCard(int userId, CreateCardDTO dto)
         {
-            if(!PermissionHelper.HasPermissionOnList(dto.ListId,dto.UserId))
+            if (!PermissionHelper.HasPermissionOnList(dto.ListId, userId))
             {
                 return 0;
             }
@@ -94,9 +117,9 @@ namespace planit_data.Services
                     card.Description = dto.Description;
                     card.DueDate = dto.DueDate;
                     uw.CardRepository.Update(card);
-                    succ = uw.Save();                   
+                    succ = uw.Save();
                 }
-               
+
             }
             return succ;
         }

@@ -28,10 +28,12 @@ namespace planit_api.Controllers
         }
 
         // POST: api/Card
-        public bool Post([FromBody]CreateCardDTO value)
+        [Route("api/Card/{userId:int}")]
+        [HttpPost]
+        public bool Post(int userId, [FromBody]CreateCardDTO value)
         {
             if (value != null)
-                return (cs.InsertCard(value) != 0);
+                return (cs.InsertCard(userId, value) != 0);
             return false;
         }
 
@@ -54,6 +56,20 @@ namespace planit_api.Controllers
         public bool Delete(int id)
         {
             return cs.DeleteCard(id);
+        }
+
+        [HttpGet]
+        [Route("api/Card/{idBoard:int}/User/{idUser:int}")]
+        public IEnumerable<ReadCardDTO> CardsUser(int idBoard, int idUser)
+        {
+            return cs.GetAllCardsOnBoard(idBoard, idUser);
+        }
+
+        [HttpGet]
+        [Route("api/Card/CardByUser/{cardId:int}/User/{idUser:int}")]
+        public ReadCardDTO CardByUser(int cardId, int idUser)
+        {
+            return cs.GetCardByUser(cardId, idUser);
         }
     }
 }

@@ -13,11 +13,11 @@ namespace planit_client_forms.Services
 {
     public class CardListService
     {
-        public static async Task<List<ReadCardListDTO>> GetAllCardLists(int userId)
+        public static async Task<List<ReadCardListDTO>> GetAllCardLists(string idBoard, int userId)
         {
             using (HttpClient client = new HttpClient())
             {
-                var response = await client.GetAsync("http://localhost:52816/api/CardList");
+                var response = await client.GetAsync($"http://localhost:52816/api/CardList/{idBoard}/User/{userId}");
                 var jsonString = await response.Content.ReadAsStringAsync();
                 var cardListArray = JsonConvert.DeserializeObject<List<ReadCardListDTO>>(jsonString);
                 return cardListArray;
@@ -28,10 +28,14 @@ namespace planit_client_forms.Services
         {
             using (HttpClient client = new HttpClient())
             {
-                var response = await client.GetAsync("http://localhost:52816/api/CardList/" + id);
+                var response = await client.GetAsync($"http://localhost:52816/api/CardList/CardListByUser/{id}/User/{userId}");
                 var jsonString = await response.Content.ReadAsStringAsync();
-                var cardList = JsonConvert.DeserializeObject<ReadCardListDTO>(jsonString);
-                return cardList;
+                if (jsonString != "null")
+                {
+                    var cardList = JsonConvert.DeserializeObject<ReadCardListDTO>(jsonString);
+                    return cardList;
+                }
+                return null;
             }
         }
 
@@ -47,7 +51,7 @@ namespace planit_client_forms.Services
 
                 byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                var response = await client.PostAsync("http://localhost:52816/api/CardList", byteContent);
+                var response = await client.PostAsync($"http://localhost:52816/api/CardList/{userId}", byteContent);
             }
         }
     }

@@ -41,9 +41,9 @@ namespace planit_data.Services
             return cardListDTO;
         }
 
-        public int InsertCardList(CreateCardListDTO cardListDto)
+        public int InsertCardList(int userId, CreateCardListDTO cardListDto)
         {
-            if (!PermissionHelper.HasPermissionOnBoard(cardListDto.BoardId, cardListDto.UserId))
+            if (!PermissionHelper.HasPermissionOnBoard(cardListDto.BoardId, userId))
             {
                 return 0;
             }
@@ -71,6 +71,29 @@ namespace planit_data.Services
             }
 
             return list.ListId;
+        }
+
+        public ReadCardListDTO GetCardListByUser(int cardId, int idUser)
+        {
+            if (!PermissionHelper.HasPermissionOnList(cardId,idUser))
+            {
+                return null;
+            }
+
+            return GetCardList(cardId);
+        }
+
+        public IEnumerable<ReadCardListDTO> GetAllCardListsOnBoard(int idBoard, int idUser)
+        {
+            if (!PermissionHelper.HasPermissionOnBoard(idBoard, idUser))
+                return new List<ReadCardListDTO>();
+
+            using (UnitOfWork uw = new UnitOfWork())
+            {
+                List<CardList> cards = uw.CardListRepository.Get(x => x.Board.BoardId == idBoard).ToList();
+
+                return ReadCardListDTO.FromEntityList(cards);
+            }
         }
 
         public bool UpdateCardList(UpdateCardListDTO cardListDTO)

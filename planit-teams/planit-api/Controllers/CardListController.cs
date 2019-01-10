@@ -26,9 +26,11 @@ namespace planit_api.Controllers
         }
 
         // POST: api/CardList
-        public bool Post([FromBody]CreateCardListDTO cardList)
+        [Route("api/CardList/{userId:int}")]
+        [HttpPost]
+        public bool Post(int userId, [FromBody]CreateCardListDTO cardList)
         {
-            if (cardList != null && service.InsertCardList(cardList) != 0)
+            if (cardList != null && service.InsertCardList(userId, cardList) != 0)
                 return true;
             return false;
         }
@@ -47,6 +49,20 @@ namespace planit_api.Controllers
         public bool Delete(int id)
         {
             return service.DeleteCardList(id);
+        }
+
+        [HttpGet]
+        [Route("api/CardList/{idBoard:int}/User/{idUser:int}")]
+        public IEnumerable<ReadCardListDTO> CardListUser(int idBoard, int idUser)
+        {
+            return service.GetAllCardListsOnBoard(idBoard, idUser);
+        }
+
+        [HttpGet]
+        [Route("api/CardList/CardListByUser/{cardListId:int}/User/{idUser:int}")]
+        public ReadCardListDTO CardListByUser(int cardListId, int idUser)
+        {
+            return service.GetCardListByUser(cardListId, idUser);
         }
     }
 }
