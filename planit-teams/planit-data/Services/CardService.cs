@@ -68,6 +68,7 @@ namespace planit_data.Services
             {
                 return 0;
             }
+
             Card card;
             using (UnitOfWork uw = new UnitOfWork())
             {
@@ -81,13 +82,13 @@ namespace planit_data.Services
                 if (uw.Save())
                 {
                     ReadCardDTO cardDto = new ReadCardDTO(card);
-                    RabbitMQService.PublishToExchange(list.Board.ExchangeName, new MessageContext(new CardMessageStrategy(cardDto)));
+                    RabbitMQService.PublishToExchange(list.Board.ExchangeName,
+                        new MessageContext(new CardMessageStrategy(cardDto, MessageType.Create)));
                 }
             }
             return card.CardId;
         }
 
-        //TODO publish na exchange
         public bool UpdateCard(UpdateCardDTO dto)
         {
             bool succ = false;
@@ -108,8 +109,15 @@ namespace planit_data.Services
                         UserId = dto.UpdatedByUser,
                         NotificationType = NotificationType.Change
                     });
-                   
+
                     succ = uw.Save();
+
+                    if (succ)
+                    {
+                        ReadCardDTO cardDto = new ReadCardDTO(card);
+                        RabbitMQService.PublishToExchange(card.List.Board.ExchangeName,
+                            new MessageContext(new CardMessageStrategy(cardDto, MessageType.Update)));
+                    }
                 }
 
             }
@@ -139,6 +147,10 @@ namespace planit_data.Services
                             UserId = userId,
                             NotificationType = NotificationType.Move
                         });
+
+                        ReadCardDTO cardDto = new ReadCardDTO(card);
+                        RabbitMQService.PublishToExchange(card.List.Board.ExchangeName,
+                            new MessageContext(new CardMessageStrategy(cardDto, MessageType.Move)));
                     }
                 }
 
@@ -146,14 +158,20 @@ namespace planit_data.Services
             return true;
         }
 
-        //TODO publish na board
         public bool DeleteCard(int id)
         {
             bool success = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
+                string exchangeName = uw.CardRepository.GetById(id).List.Board.ExchangeName;
                 success = uw.CardRepository.Delete(id);
                 uw.Save();
+
+                if (success)
+                {
+                    RabbitMQService.PublishToExchange(exchangeName,
+                        new MessageContext(new CardMessageStrategy(id)));
+                }
             }
             return success;
         }

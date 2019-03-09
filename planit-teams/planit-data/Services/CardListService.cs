@@ -62,7 +62,8 @@ namespace planit_data.Services
                     if (unit.Save())
                     {
                         ReadCardListDTO dto = new ReadCardListDTO(list);
-                        RabbitMQService.PublishToExchange(board.ExchangeName, new MessageContext(new CardListMessageStrategy(dto)));
+                        RabbitMQService.PublishToExchange(board.ExchangeName,
+                            new MessageContext(new CardListMessageStrategy(dto, MessageType.Create)));
                     }
                 }
             }
@@ -73,7 +74,7 @@ namespace planit_data.Services
         //TODO prepraviti da radi sa tokenima
         public ReadCardListDTO GetCardListByUser(int cardId, int idUser)
         {
-            if (!PermissionHelper.HasPermissionOnList(cardId,idUser))
+            if (!PermissionHelper.HasPermissionOnList(cardId, idUser))
             {
                 return null;
             }
@@ -89,13 +90,13 @@ namespace planit_data.Services
 
             using (UnitOfWork uw = new UnitOfWork())
             {
-                List<CardList> cards = uw.CardListRepository.Get(x => x.Board.BoardId == idBoard).ToList();
+                List<CardList> cards = uw.CardListRepository
+                    .Get(x => x.Board.BoardId == idBoard).ToList();
 
                 return ReadCardListDTO.FromEntityList(cards);
             }
         }
 
-        //TODO Publish na board
         public bool UpdateCardList(UpdateCardListDTO cardListDTO)
         {
             bool ret = false;
@@ -109,7 +110,15 @@ namespace planit_data.Services
                     cardList.Color = cardListDTO.Color;
 
                     unit.CardListRepository.Update(cardList);
+
                     ret = unit.Save();
+
+                    if (ret)
+                    {
+                        ReadCardListDTO dto = new ReadCardListDTO(cardList);
+                        RabbitMQService.PublishToExchange(cardList.Board.ExchangeName,
+                            new MessageContext(new CardListMessageStrategy(dto, MessageType.Update)));
+                    }
                 }
 
             }
@@ -117,14 +126,23 @@ namespace planit_data.Services
             return ret;
         }
 
-        //TODO publish na board
         public bool DeleteCardList(int id)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
+                string exchangeName = unit.CardListRepository
+                    .GetById(id).Board.ExchangeName;
+
                 unit.CardListRepository.Delete(id);
                 ret = unit.Save();
+
+                if (ret)
+                {
+                    RabbitMQService.PublishToExchange(exchangeName,
+                        new MessageContext(new CardListMessageStrategy(id)));
+                }
+
             }
 
             return ret;

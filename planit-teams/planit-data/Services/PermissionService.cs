@@ -76,7 +76,7 @@ namespace planit_data.Services
                     if (ret)
                     {
                         string message = $"User dodat na board {b.BoardId}";
-                        RabbitMQ.RabbitMQService.PublishToExchange(u.ExchangeName, message);
+                       // RabbitMQ.RabbitMQService.PublishToExchange(u.ExchangeName, message);
                     }
                 }
             }

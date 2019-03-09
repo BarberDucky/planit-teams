@@ -7,6 +7,20 @@ using System.Threading.Tasks;
 
 namespace planit_data.DTOs
 {
+    public class BasicBoardDTO
+    {
+        public int BoardId { get; set; }
+        public String Name { get; set; }
+        public String ExchangeName { get; set; }
+
+        public BasicBoardDTO(Board b)
+        {
+            this.BoardId = b.BoardId;
+            this.Name = b.Name;
+            this.ExchangeName = b.ExchangeName;
+        }
+    }
+
     public class CreateBoardDTO
     {
         public String Name { get; set; }
@@ -41,10 +55,6 @@ namespace planit_data.DTOs
             this.Name = b.Name;
             this.ExchangeName = b.ExchangeName;
             CardList = ReadCardListDTO.FromEntityList(b.CardLists.ToList());
-            //foreach(var c in b.CardLists)
-            //{
-            //    CardList.Add(new ReadCardListDTO(c));
-            //}
         }
 
         public static List<ReadBoardDTO> FromEntityList(List<Board> boards)

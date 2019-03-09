@@ -36,7 +36,6 @@ namespace planit_data.Services
             return listDTO;
         }
 
-        //TODO Publish na board
         public int InsertComment(CreateCommentDTO dto)
         {
             Comment comment = CreateCommentDTO.FromDTO(dto);
@@ -59,6 +58,10 @@ namespace planit_data.Services
                             UserId = dto.UserId,
                             NotificationType = NotificationType.Change
                         });
+
+                        ReadCommentDTO commentDTO = new ReadCommentDTO(comment);
+                        RabbitMQService.PublishToExchange(card.List.Board.ExchangeName,
+                            new MessageContext(new CommentMessageStrategy(commentDTO)));
                     }
 
                 }

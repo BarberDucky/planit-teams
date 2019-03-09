@@ -55,6 +55,8 @@ namespace planit_api.Controllers
         }
 
         // DELETE: api/Card/5
+        [HttpDelete]
+        [Route("api/Card/{id}")]
         public bool Delete(int id)
         {
             return cs.DeleteCard(id);

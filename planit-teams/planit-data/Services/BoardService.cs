@@ -129,7 +129,7 @@ namespace planit_data.Services
                     {
                         ReadBoardDTO dto = new ReadBoardDTO(board);
                         RabbitMQService.PublishToExchange(board.ExchangeName,
-                            new MessageContext(new BoardMessageStrategy(dto)));
+                            new MessageContext(new BoardMessageStrategy(dto, MessageType.Update)));
                     }
                 }
             }
@@ -138,6 +138,7 @@ namespace planit_data.Services
         }
 
         //TODO proveriti permission
+        //TODO videti ovde sta cemo
         public bool DeleteBoard(int id)
         {
             bool ret = false;

@@ -36,6 +36,8 @@ namespace planit_api.Controllers
         }
 
         // PUT: api/CardList/5
+        [HttpPut]
+        [Route("api/CardList/{id}")]
         public bool Put(int id, [FromBody]UpdateCardListDTO cardList)
         {
             if(cardList!=null)
@@ -46,6 +48,8 @@ namespace planit_api.Controllers
         }
 
         // DELETE: api/CardList/5
+        [HttpDelete]
+        [Route("api/CardList/{id}")]
         public bool Delete(int id)
         {
             return service.DeleteCardList(id);

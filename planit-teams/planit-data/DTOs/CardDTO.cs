@@ -7,6 +7,31 @@ using planit_data.Entities;
 
 namespace planit_data.DTOs
 {
+    public class BasicCardDTO
+    {
+        public int CardId { get; set; }
+        public String Name { get; set; }
+        public String Description { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public DateTime DueDate { get; set; }
+        public int ListId { get; set; }
+        public String ListName { get; set; }
+        public int BoardId { get; set; }
+        public String BoardName { get; set; }
+
+        public BasicCardDTO(Card card)
+        {
+            CardId = card.CardId;
+            Name = card.Name;
+            Description = card.Description;
+            TimeStamp = card.CreationDate;
+            DueDate = card.DueDate;
+            ListName = card.List.Name;
+            BoardName = card.List.Board.Name;
+            ListId = card.List.ListId;
+            BoardId = card.List.Board.BoardId;
+        }
+    }
     public class CreateCardDTO
     {
         public String Name { get; set; }
@@ -53,7 +78,7 @@ namespace planit_data.DTOs
         public static List<ReadCardDTO> FromEntityList(List<Card> list)
         {
             List<ReadCardDTO> dtoList = new List<ReadCardDTO>();
-            foreach(var c in list)
+            foreach (var c in list)
             {
                 if (c != null)
                 {

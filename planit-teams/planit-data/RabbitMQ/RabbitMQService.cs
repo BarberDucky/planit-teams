@@ -34,21 +34,6 @@ namespace planit_data.RabbitMQ
                     basicProperties: null,
                     body: body);
             }
-        }
-
-        public static void PublishToExchange(string exchName, string message)
-        {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
-            {
-                var body = Encoding.UTF8.GetBytes(message);
-
-                channel.BasicPublish(exchange: exchName,
-                    routingKey: "",
-                    basicProperties: null,
-                    body: body);
-            }
-        }
+        } 
     }
 }

@@ -7,6 +7,29 @@ using planit_data.Entities;
 
 namespace planit_data.DTOs
 {
+    public class BasicCommentDTO
+    {
+        public int CommentId { get; set; }
+        public int CardId { get; set; }
+        public int CardListId { get; set; }
+        public int BoardId { get; set; }
+        public int UserId { get; set; }
+        public String Text { get; set; }
+        public DateTime TimeStamp { get; set; }
+
+        public BasicCommentDTO(Comment comment)
+        {
+            CommentId = comment.CommentId;
+            Text = comment.Text;
+            TimeStamp = comment.TimeStamp;
+            CardId = comment.Card.CardId;
+            UserId = comment.User.UserId;
+            CardListId = comment.Card.List.ListId;
+            BoardId = comment.Card.List.Board.BoardId;
+        }
+
+    }
+
     public class CreateCommentDTO
     {
         public String Text { get; set; }
@@ -81,8 +104,5 @@ namespace planit_data.DTOs
         }
     }
 
-    public class DeleteCommentDTO
-    {
-        public int CommentId { get; set; }
-    }
+    
 }

@@ -7,6 +7,24 @@ using System.Threading.Tasks;
 
 namespace planit_data.DTOs
 {
+    public class BasicCardListDTO
+    {
+        public int ListId { get; set; }
+        public String Name { get; set; }
+        public String Color { get; set; }
+        public String BoardName { get; set; }
+        public int BoardId { get; set; }
+
+        public BasicCardListDTO(CardList list)
+        {
+            this.ListId = list.ListId;
+            this.Name = list.Name;
+            this.Color = list.Color;
+            this.BoardName = list.Board.Name;
+            this.BoardId = list.Board.BoardId;
+        }
+    }
+
     public class CreateCardListDTO
     {
         public String Name { get; set; }
