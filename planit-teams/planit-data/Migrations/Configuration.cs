@@ -9,7 +9,7 @@ namespace planit_data.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(planit_data.ApplicationContext context)

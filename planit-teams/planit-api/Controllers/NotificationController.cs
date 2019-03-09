@@ -29,7 +29,7 @@ namespace planit_api.Controllers
         // POST: api/Notification
         public void Post([FromBody]CreateNotificationDTO value)
         {
-            ns.CreateNotification(value);
+            ns.CreateMoveNotification(value);
         }
 
         // PUT: api/Notification/5

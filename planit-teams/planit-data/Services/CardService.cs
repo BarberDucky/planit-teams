@@ -24,6 +24,7 @@ namespace planit_data.Services
             }
         }
 
+        //TODO prepraviti da radi sa tokenima
         public List<ReadCardDTO> GetAllCardsOnBoard(int boardId, int userId)
         {
             if (!PermissionHelper.HasPermissionOnBoard(boardId, userId))
@@ -49,6 +50,7 @@ namespace planit_data.Services
             return dto;
         }
 
+        //TODO prepraviti da radi sa tokenima
         public ReadCardDTO GetCardByUser(int cardId, int idUser)
         {
             if (!PermissionHelper.HasPermissionOnCard(cardId, idUser))
@@ -59,23 +61,7 @@ namespace planit_data.Services
             return GetCardById(cardId);
         }
 
-        /*
-         * //Treba get all za sve kartice 1 boarda
-        public List<ReadCommentDTO> GetAllComments()
-        {
-            List<ReadCommentDTO> listDTO = new List<ReadCommentDTO>();
-            List<Comment> retList;
-            using (UnitOfWork uw = new UnitOfWork())
-            {
-                retList = uw.CommentRepository.GetAll();
-                foreach(Comment c in retList)
-                {
-                    listDTO.Add(new ReadCommentDTO(c));
-                }
-            }
-            return listDTO;
-        }*/
-
+        //TODO prepraviti da radi sa tokenima
         public int InsertCard(int userId, CreateCardDTO dto)
         {
             if (!PermissionHelper.HasPermissionOnList(dto.ListId, userId))
@@ -101,6 +87,7 @@ namespace planit_data.Services
             return card.CardId;
         }
 
+        //TODO publish na exchange
         public bool UpdateCard(UpdateCardDTO dto)
         {
             bool succ = false;
@@ -113,6 +100,15 @@ namespace planit_data.Services
                     card.Description = dto.Description;
                     card.DueDate = dto.DueDate;
                     uw.CardRepository.Update(card);
+
+                    NotificationService notif = new NotificationService();
+                    notif.CreateChangeNotification(new CreateNotificationDTO()
+                    {
+                        CardId = dto.CardId,
+                        UserId = dto.UpdatedByUser,
+                        NotificationType = NotificationType.Change
+                    });
+                   
                     succ = uw.Save();
                 }
 
@@ -120,20 +116,37 @@ namespace planit_data.Services
             return succ;
         }
 
-        public bool MoveCardToList(int cardId, int listId)
+        //TODO publish na board
+        //TODO Prepraviti da radi sa tokenima
+        public bool MoveCardToList(int cardId, int listId, int userId)
         {
+            bool succ = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
                 Card card = uw.CardRepository.GetById(cardId);
                 CardList list = uw.CardListRepository.GetById(listId);
-                if (card == null || list == null) return false;
-                list.Cards.Add(card);
-                uw.CardListRepository.Update(list);
-                uw.Save();
+                if (card != null && list != null)
+                {
+                    list.Cards.Add(card);
+                    uw.CardListRepository.Update(list);
+
+                    if (uw.Save())
+                    {
+                        NotificationService notif = new NotificationService();
+                        succ = notif.CreateMoveNotification(new CreateNotificationDTO()
+                        {
+                            CardId = cardId,
+                            UserId = userId,
+                            NotificationType = NotificationType.Move
+                        });
+                    }
+                }
+
             }
             return true;
         }
 
+        //TODO publish na board
         public bool DeleteCard(int id)
         {
             bool success = false;
@@ -143,6 +156,43 @@ namespace planit_data.Services
                 uw.Save();
             }
             return success;
+        }
+
+        //TODO Rad sa tokenima
+        public bool WatchCard(int cardId, int userId)
+        {
+            bool succ = false;
+            using (UnitOfWork u = new UnitOfWork())
+            {
+                User user = u.UserRepository.GetById(userId);
+                Card card = u.CardRepository.GetById(cardId);
+                if (user != null && card != null)
+                {
+                    card.ObserverUsers.Add(user);
+                    succ = u.Save();
+                }
+            }
+
+            return succ;
+        }
+
+        //TODO Rad sa tokenima
+        public bool UnwatchCard(int cardId, int userId)
+        {
+            bool succ = false;
+            using (UnitOfWork u = new UnitOfWork())
+            {
+                Card card = u.CardRepository.GetById(cardId);
+                User user = u.UserRepository.GetById(userId);
+
+                if (user != null && card != null)
+                {
+                    succ = card.ObserverUsers.Remove(user);
+                    u.Save();
+                }
+            }
+
+            return succ;
         }
     }
 }

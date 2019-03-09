@@ -31,7 +31,7 @@ namespace planit_data.Services
             return ret;
         }
 
-        internal bool GetPermissionOnCard(int cardId, int userId)
+        public bool GetPermissionOnCard(int cardId, int userId)
         {
             bool ret = false;
 
@@ -54,6 +54,7 @@ namespace planit_data.Services
             return ret;
         }
 
+        //TODO Publish na notif kanal
         public bool AddUserBoardPermision(AddUserBoardPermisionDTO dto)
         {
             bool ret = false;
@@ -62,7 +63,7 @@ namespace planit_data.Services
                 Board b = unit.BoardRepository.GetById(dto.BoardId);
                 User u = unit.UserRepository.GetById(dto.UserId);
 
-                if(u!=null && b!=null)
+                if (u != null && b != null)
                 {
                     Permission p = new Permission()
                     {
@@ -72,7 +73,7 @@ namespace planit_data.Services
 
                     unit.PermissionRepository.Insert(p);
                     ret = unit.Save();
-                    if(ret)
+                    if (ret)
                     {
                         string message = $"User dodat na board {b.BoardId}";
                         RabbitMQ.RabbitMQService.PublishToExchange(u.ExchangeName, message);
@@ -117,7 +118,7 @@ namespace planit_data.Services
                         ret = true;
                     }
                 }
-                
+
             }
 
             return ret;

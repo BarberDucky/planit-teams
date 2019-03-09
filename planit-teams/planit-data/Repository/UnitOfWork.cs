@@ -18,7 +18,7 @@ namespace planit_data.Repository
         private GenericRepository<CardList> cardListRepository;
         private GenericRepository<Comment> commentRepository;
         private GenericRepository<Notification> notificationRepository;
-        private GenericRepository<Permission> permissionRepository;
+        private PermissionRepository permissionRepository;
         private ApplicationUserRepository applicationUserRepository;
 
         #region Property 
@@ -76,12 +76,12 @@ namespace planit_data.Repository
                 return notificationRepository;
             }
         }
-        public GenericRepository<Permission> PermissionRepository
+        public PermissionRepository PermissionRepository
         {
             get
             {
                 if (permissionRepository == null)
-                    permissionRepository = new GenericRepository<Permission>(context);
+                    permissionRepository = new PermissionRepository(context);
                 return permissionRepository;
             }
         }

@@ -36,15 +36,25 @@ namespace planit_data
         {
             base.OnModelCreating(modelBuilder);
 
+            //modelBuilder.Entity<Notification>()
+            //    .HasMany<User>(u => u.Users)
+            //    .WithMany(c => c.Notifications)
+            //    .Map(cs =>
+            //    {
+            //        cs.MapLeftKey("NotificationRefId");
+            //        cs.MapRightKey("UserRefId");
+            //        cs.ToTable("NotificationUser");
+            //    });
+
             modelBuilder.Entity<Notification>()
-                .HasMany<User>(u => u.Users)
-                .WithMany(c => c.Notifications)
-                .Map(cs =>
-                {
-                    cs.MapLeftKey("NotificationRefId");
-                    cs.MapRightKey("UserRefId");
-                    cs.ToTable("NotificationUser");
-                });
+                .HasRequired<User>(n => n.BelongsToUser)
+                .WithMany(u => u.Notifications)
+                .HasForeignKey<int>(u => u.BelongsToUserId);
+
+            modelBuilder.Entity<Notification>()
+                .HasRequired<User>(n => n.CreatedByUser)
+                .WithMany()
+                .HasForeignKey<int>(u => u.CreatedByUserId);
 
             modelBuilder.Entity<Card>()
                 .HasMany<User>(u => u.ObserverUsers)

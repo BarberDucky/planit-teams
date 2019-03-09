@@ -13,6 +13,7 @@ namespace planit_data.Migrations
                     {
                         BoardId = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, unicode: false),
+                        ExchangeName = c.String(nullable: false, unicode: false),
                     })
                 .PrimaryKey(t => t.BoardId);
             
@@ -70,6 +71,7 @@ namespace planit_data.Migrations
                         UserId = c.Int(nullable: false, identity: true),
                         FirstName = c.String(nullable: false, unicode: false),
                         LastName = c.String(nullable: false, unicode: false),
+                        ExchangeName = c.String(nullable: false, unicode: false),
                         IdentificationUser_Id = c.String(maxLength: 128, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.UserId)
@@ -139,15 +141,19 @@ namespace planit_data.Migrations
                 c => new
                     {
                         NotificationId = c.Int(nullable: false, identity: true),
-                        CreationTime = c.DateTime(nullable: false, precision: 0),
+                        IsRead = c.Boolean(nullable: false),
+                        NotificationType = c.Int(nullable: false),
+                        CreatedByUserId = c.Int(nullable: false),
+                        BelongsToUserId = c.Int(nullable: false),
                         Card_CardId = c.Int(),
-                        User_UserId = c.Int(),
                     })
                 .PrimaryKey(t => t.NotificationId)
+                .ForeignKey("dbo.Users", t => t.BelongsToUserId, cascadeDelete: true)
                 .ForeignKey("dbo.Cards", t => t.Card_CardId)
-                .ForeignKey("dbo.Users", t => t.User_UserId)
-                .Index(t => t.Card_CardId)
-                .Index(t => t.User_UserId);
+                .ForeignKey("dbo.Users", t => t.CreatedByUserId, cascadeDelete: true)
+                .Index(t => t.CreatedByUserId)
+                .Index(t => t.BelongsToUserId)
+                .Index(t => t.Card_CardId);
             
             CreateTable(
                 "dbo.Permissions",
@@ -175,19 +181,6 @@ namespace planit_data.Migrations
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
             
             CreateTable(
-                "dbo.NotificationUser",
-                c => new
-                    {
-                        NotificationRefId = c.Int(nullable: false),
-                        UserRefId = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.NotificationRefId, t.UserRefId })
-                .ForeignKey("dbo.Notifications", t => t.NotificationRefId, cascadeDelete: true)
-                .ForeignKey("dbo.Users", t => t.UserRefId, cascadeDelete: true)
-                .Index(t => t.NotificationRefId)
-                .Index(t => t.UserRefId);
-            
-            CreateTable(
                 "dbo.CardObserverUser",
                 c => new
                     {
@@ -211,10 +204,9 @@ namespace planit_data.Migrations
             DropForeignKey("dbo.Comments", "User_UserId", "dbo.Users");
             DropForeignKey("dbo.Permissions", "User_UserId", "dbo.Users");
             DropForeignKey("dbo.Permissions", "Board_BoardId", "dbo.Boards");
-            DropForeignKey("dbo.NotificationUser", "UserRefId", "dbo.Users");
-            DropForeignKey("dbo.NotificationUser", "NotificationRefId", "dbo.Notifications");
-            DropForeignKey("dbo.Notifications", "User_UserId", "dbo.Users");
+            DropForeignKey("dbo.Notifications", "CreatedByUserId", "dbo.Users");
             DropForeignKey("dbo.Notifications", "Card_CardId", "dbo.Cards");
+            DropForeignKey("dbo.Notifications", "BelongsToUserId", "dbo.Users");
             DropForeignKey("dbo.Users", "IdentificationUser_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
@@ -224,13 +216,12 @@ namespace planit_data.Migrations
             DropForeignKey("dbo.CardLists", "Board_BoardId", "dbo.Boards");
             DropIndex("dbo.CardObserverUser", new[] { "UserRefId" });
             DropIndex("dbo.CardObserverUser", new[] { "CardRefId" });
-            DropIndex("dbo.NotificationUser", new[] { "UserRefId" });
-            DropIndex("dbo.NotificationUser", new[] { "NotificationRefId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.Permissions", new[] { "User_UserId" });
             DropIndex("dbo.Permissions", new[] { "Board_BoardId" });
-            DropIndex("dbo.Notifications", new[] { "User_UserId" });
             DropIndex("dbo.Notifications", new[] { "Card_CardId" });
+            DropIndex("dbo.Notifications", new[] { "BelongsToUserId" });
+            DropIndex("dbo.Notifications", new[] { "CreatedByUserId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
@@ -243,7 +234,6 @@ namespace planit_data.Migrations
             DropIndex("dbo.Cards", new[] { "User_UserId" });
             DropIndex("dbo.CardLists", new[] { "Board_BoardId" });
             DropTable("dbo.CardObserverUser");
-            DropTable("dbo.NotificationUser");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Permissions");
             DropTable("dbo.Notifications");

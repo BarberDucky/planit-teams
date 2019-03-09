@@ -11,27 +11,69 @@ namespace planit_data.Services
 {
     public class NotificationService
     {
-        public bool CreateNotification (CreateNotificationDTO notificationDTO)
+        //TODO publish na notif kanal - user kanal
+        public bool CreateMoveNotification(CreateNotificationDTO notificationDTO)
         {
             bool ret = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                Notification obj = new Notification();//notificationDTO.FromDTO();
+                Notification obj = new Notification();
                 User user = uw.UserRepository.GetById(notificationDTO.UserId);
                 Card card = uw.CardRepository.GetById(notificationDTO.CardId);
 
-                if(user!=null && card!=null)
+                if (user != null && card != null)
                 {
-                    obj.User = user;
+
+                    obj.CreatedByUser = user;
                     obj.Card = card;
-                    uw.NotificationRepository.Insert(obj);
+                    obj.NotificationType = notificationDTO.NotificationType;
+
+                    Board b = card.List.Board;
+
+                    List<User> users = uw.PermissionRepository
+                        .GetAllUsersWithPermissionOnBoard(b.BoardId);
+
+                    foreach (var u in users)
+                    {
+                        u.Notifications.Add(obj);
+                    }
+
                     ret = uw.Save();
                 }
             }
             return ret;
         }
 
-        public List<ReadNotificationDTO> GetAllNotifications ()
+        //TODO srediti ove dve metode
+        public bool CreateChangeNotification(CreateNotificationDTO notificationDTO)
+        {
+            bool ret = false;
+            using (UnitOfWork uw = new UnitOfWork())
+            {
+                Notification obj = new Notification();
+                User user = uw.UserRepository.GetById(notificationDTO.UserId);
+                Card card = uw.CardRepository.GetById(notificationDTO.CardId);
+
+                if (user != null && card != null)
+                {
+
+                    obj.CreatedByUser = user;
+                    obj.Card = card;
+                    obj.NotificationType = notificationDTO.NotificationType;
+
+                    foreach (var u in card.ObserverUsers)
+                    {
+                        u.Notifications.Add(obj);
+                    }
+                    ret = uw.Save();
+                }
+
+                return ret;
+            }
+        }
+
+        //TODO ova funckija nema smisla
+        public List<ReadNotificationDTO> GetAllNotifications()
         {
             using (UnitOfWork uw = new UnitOfWork())
             {
@@ -41,20 +83,7 @@ namespace planit_data.Services
             }
         }
 
-        public ReadNotificationDTO GetNotification (int notificationId)
-        {
-            using (UnitOfWork uw = new UnitOfWork())
-            { 
-                Notification notificationFromDB = uw.NotificationRepository.GetById(notificationId);
-
-                if (notificationFromDB == null)
-                    return null;
-
-                return new ReadNotificationDTO(notificationFromDB);
-            }
-        }
-
-        public ReadNotificationDTO ReadNotification (int notificationId)
+        public ReadNotificationDTO GetNotification(int notificationId)
         {
             using (UnitOfWork uw = new UnitOfWork())
             {
@@ -63,13 +92,27 @@ namespace planit_data.Services
                 if (notificationFromDB == null)
                     return null;
 
-                //notificationFromDB.IsRead = true;
+                return new ReadNotificationDTO(notificationFromDB);
+            }
+        }
+
+        public ReadNotificationDTO ReadNotification(int notificationId)
+        {
+            using (UnitOfWork uw = new UnitOfWork())
+            {
+                Notification notificationFromDB = uw.NotificationRepository.GetById(notificationId);
+
+                if (notificationFromDB == null)
+                    return null;
+
+                notificationFromDB.IsRead = true;
                 uw.NotificationRepository.Update(notificationFromDB);
                 uw.Save();
                 return new ReadNotificationDTO(notificationFromDB);
             }
         }
 
+        //TODO Zasto imamo brisanje notifikacija??
         public void DeleteNotification(int notificationId)
         {
             using (UnitOfWork uw = new UnitOfWork())
@@ -78,5 +121,6 @@ namespace planit_data.Services
                 uw.Save();
             }
         }
+
     }
 }

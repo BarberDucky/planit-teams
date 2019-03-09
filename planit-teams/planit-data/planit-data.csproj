@@ -109,6 +109,7 @@
     <Compile Include="DTOs\NotificationDTO.cs" />
     <Compile Include="DTOs\UserDTO.cs" />
     <Compile Include="Entities\Board.cs" />
+    <Compile Include="Entities\BoardNotification.cs" />
     <Compile Include="Entities\Card.cs" />
     <Compile Include="Entities\CardList.cs" />
     <Compile Include="Entities\Comment.cs" />
@@ -117,9 +118,13 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Helpers\PermissionHelper.cs" />
     <Compile Include="IdentityModels.cs" />
-    <Compile Include="Migrations\201901081545524_Initial.cs" />
-    <Compile Include="Migrations\201901081545524_Initial.Designer.cs">
-      <DependentUpon>201901081545524_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201903091647136_Initial.cs" />
+    <Compile Include="Migrations\201903091647136_Initial.Designer.cs">
+      <DependentUpon>201903091647136_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903091920175_Initial1.cs" />
+    <Compile Include="Migrations\201903091920175_Initial1.Designer.cs">
+      <DependentUpon>201903091920175_Initial1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -132,6 +137,7 @@
     <Compile Include="Repository\ApplicationUserRepository.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repository\PermissionRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
     <Compile Include="Services\CardService.cs" />
     <Compile Include="Services\BoardService.cs" />
@@ -147,10 +153,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201901081545524_Initial.resx">
-      <DependentUpon>201901081545524_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201903091647136_Initial.resx">
+      <DependentUpon>201903091647136_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903091920175_Initial1.resx">
+      <DependentUpon>201903091920175_Initial1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

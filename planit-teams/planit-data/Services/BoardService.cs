@@ -40,6 +40,7 @@ namespace planit_data.Services
             return boardDTO;
         }
 
+        //TODO Trebace da se prepravi da radi sa tokenom
         public ReadBoardDTO GetBoardUser(int boardId, int userId)
         {
             ReadBoardDTO boardDTO = null;
@@ -127,7 +128,8 @@ namespace planit_data.Services
                     if (ret)
                     {
                         ReadBoardDTO dto = new ReadBoardDTO(board);
-                        RabbitMQService.PublishToExchange(board.ExchangeName, new MessageContext(new BoardMessageStrategy(dto)));
+                        RabbitMQService.PublishToExchange(board.ExchangeName,
+                            new MessageContext(new BoardMessageStrategy(dto)));
                     }
                 }
             }
@@ -135,6 +137,7 @@ namespace planit_data.Services
             return ret;
         }
 
+        //TODO proveriti permission
         public bool DeleteBoard(int id)
         {
             bool ret = false;
@@ -146,7 +149,6 @@ namespace planit_data.Services
 
             return ret;
         }
-
 
     }
 }

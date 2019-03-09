@@ -26,5 +26,7 @@ namespace planit_data.Helpers
             PermissionService service = new PermissionService();
             return service.GetPermissionOnCard(cardId, userId);
         }
+
+        
     }
 }

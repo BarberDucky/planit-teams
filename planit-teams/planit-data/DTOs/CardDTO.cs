@@ -71,6 +71,7 @@ namespace planit_data.DTOs
         public String Name { get; set; }
         public String Description { get; set; }
         public DateTime DueDate { get; set; }
+        public int UpdatedByUser { get; set; }
 
         public static Card FromDTO(UpdateCardDTO dto)
         {

@@ -41,6 +41,7 @@ namespace planit_data.Services
             return cardListDTO;
         }
 
+        //TODO prepraviti da radi sa tokenima
         public int InsertCardList(int userId, CreateCardListDTO cardListDto)
         {
             if (!PermissionHelper.HasPermissionOnBoard(cardListDto.BoardId, userId))
@@ -69,6 +70,7 @@ namespace planit_data.Services
             return list.ListId;
         }
 
+        //TODO prepraviti da radi sa tokenima
         public ReadCardListDTO GetCardListByUser(int cardId, int idUser)
         {
             if (!PermissionHelper.HasPermissionOnList(cardId,idUser))
@@ -79,6 +81,7 @@ namespace planit_data.Services
             return GetCardList(cardId);
         }
 
+        //TODO prepraviti da radi sa tokenima
         public IEnumerable<ReadCardListDTO> GetAllCardListsOnBoard(int idBoard, int idUser)
         {
             if (!PermissionHelper.HasPermissionOnBoard(idBoard, idUser))
@@ -92,6 +95,7 @@ namespace planit_data.Services
             }
         }
 
+        //TODO Publish na board
         public bool UpdateCardList(UpdateCardListDTO cardListDTO)
         {
             bool ret = false;
@@ -113,6 +117,7 @@ namespace planit_data.Services
             return ret;
         }
 
+        //TODO publish na board
         public bool DeleteCardList(int id)
         {
             bool ret = false;

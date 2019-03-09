@@ -11,6 +11,7 @@ namespace planit_data.DTOs
     {
         public int CardId { get; set; }
         public int UserId { get; set; }
+        public NotificationType NotificationType { get; set; }
 
         //public Notification FromDTO()
         //{
@@ -35,7 +36,7 @@ namespace planit_data.DTOs
             TimeStamp = notification.CreationTime;
            // IsRead = notification.IsRead;
             CardId = notification.Card.CardId;
-            UserId = notification.User.UserId;
+            UserId = notification.CreatedByUser.UserId;
         }
 
         public static List<ReadNotificationDTO> FromList(List<Notification> notifList)

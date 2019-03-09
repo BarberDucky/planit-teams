@@ -109,7 +109,5 @@ namespace planit_data.Services
 
             return ret;
         }
-
-
     }
 }

@@ -24,7 +24,6 @@ namespace planit_data.Services
             return dto;
         }
 
-
         //Treba get all za 1 karticu
         public List<ReadCommentDTO> GetAllComments()
         {
@@ -37,23 +36,39 @@ namespace planit_data.Services
             return listDTO;
         }
 
+        //TODO Publish na board
         public int InsertComment(CreateCommentDTO dto)
         {
-            Comment comment;
+            Comment comment = CreateCommentDTO.FromDTO(dto);
             using (UnitOfWork uw = new UnitOfWork())
             {
                 Card card = uw.CardRepository.GetById(dto.CardId);
                 User user = uw.UserRepository.GetById(dto.UserId);
-                if (card == null || card == null) return 0;
-                comment = CreateCommentDTO.FromDTO(dto);
-                comment.Card = card;
-                comment.User = user;
-                uw.CommentRepository.Insert(comment);
-                uw.Save();
+                if (card != null && user != null)
+                {
+                    comment.Card = card;
+                    comment.User = user;
+                    uw.CommentRepository.Insert(comment);
+
+                    if (uw.Save())
+                    {
+                        NotificationService notif = new NotificationService();
+                        notif.CreateChangeNotification(new CreateNotificationDTO()
+                        {
+                            CardId = dto.CardId,
+                            UserId = dto.UserId,
+                            NotificationType = NotificationType.Change
+                        });
+                    }
+
+                }
+               
             }
             return comment.CommentId;
         }
 
+        #region Should Delete
+        //TODO Zasto smo stavili da moze da se edituje komentar?? 
         public bool UpdateComment(UpdateCommentDTO dto)
         {
             bool ret = false;
@@ -70,6 +85,7 @@ namespace planit_data.Services
             return ret;
         }
 
+        //TODO Zasto smo stavili da se brise komentar??
         public bool DeleteComment(int id)
         {
             bool success = false;
@@ -80,7 +96,6 @@ namespace planit_data.Services
             }
             return success;
         }
-
-
+        #endregion
     }
 }

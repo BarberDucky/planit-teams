@@ -38,6 +38,8 @@ namespace planit_api.Controllers
         }
 
         // PUT: api/Card/5
+        [HttpPut]
+        [Route("api/Card/{id}")]
         public bool Put(int id, [FromBody]UpdateCardDTO value)
         {
             if (value != null)
@@ -45,11 +47,11 @@ namespace planit_api.Controllers
             return false;
         }
 
-        [Route("api/Card/{cardId:int}/Move/{listId:int}")]
+        [Route("api/Card/{cardId:int}/Move/{listId:int}/User/{userId:int}")]
         [HttpPut]
-        public bool Move(int cardId, int listId)
+        public bool Move(int cardId, int listId, int userId)
         {
-            return cs.MoveCardToList(cardId, listId);
+            return cs.MoveCardToList(cardId, listId, userId);
         }
 
         // DELETE: api/Card/5
@@ -70,6 +72,20 @@ namespace planit_api.Controllers
         public ReadCardDTO CardByUser(int cardId, int idUser)
         {
             return cs.GetCardByUser(cardId, idUser);
+        }
+
+        [HttpGet]
+        [Route("api/Card/WatchCard/{cardId:int}/User/{idUser:int}")]
+        public bool WatchCard(int cardId, int idUser)
+        {
+            return cs.WatchCard(cardId, idUser);
+        }
+
+        [HttpGet]
+        [Route("api/Card/UnwatchCard/{cardId:int}/User/{idUser:int}")]
+        public bool UnwatchCard(int cardId, int idUser)
+        {
+            return cs.UnwatchCard(cardId, idUser);
         }
     }
 }

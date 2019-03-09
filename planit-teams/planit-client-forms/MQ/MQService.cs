@@ -35,11 +35,13 @@ namespace planit_client_forms.MQ
             channel = connection.CreateModel();
 
         }
+
         public void SubscribeToExchange(string exchangeName, Func<object, bool> Method)
         {
             //channel.ExchangeDeclare(exchange: exchangeName, type: "fanout");
 
             var queueName = channel.QueueDeclare().QueueName;
+
             channel.QueueBind(queue: queueName,
                               exchange: exchangeName,
                               routingKey: "");
