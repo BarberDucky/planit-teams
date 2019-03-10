@@ -17,11 +17,13 @@ namespace planit_data.Entities
         public String ExchangeName { get; set; }
         public virtual ICollection<Permission> Permissions { get; set; }
         public virtual ICollection<CardList> CardLists { get; set; }
+        public virtual ICollection<BoardNotification> BoardNotification { get; set; }
 
         public Board()
         {
             Permissions = new HashSet<Permission>();
             CardLists = new HashSet<CardList>();
+            BoardNotification = new HashSet<BoardNotification>();
         }
     }
 }

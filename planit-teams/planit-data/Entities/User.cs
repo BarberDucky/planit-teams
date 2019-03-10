@@ -22,6 +22,7 @@ namespace planit_data.Entities
         public virtual ICollection<Card> Cards { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Card> WatchedCards { get; set; }
+        public virtual ICollection<BoardNotification> BoardNotification { get; set; }
 
         public User()
         {
@@ -29,6 +30,7 @@ namespace planit_data.Entities
             Cards = new HashSet<Card>();
             Notifications = new HashSet<Notification>();
             WatchedCards = new HashSet<Card>();
+            BoardNotification = new HashSet<BoardNotification>();
         }
     }
 }

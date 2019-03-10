@@ -131,30 +131,32 @@ namespace planit_data.Services
             using (UnitOfWork uw = new UnitOfWork())
             {
                 Card card = uw.CardRepository.GetById(cardId);
-                CardList list = uw.CardListRepository.GetById(listId);
-                if (card != null && list != null)
+                if (card.List.ListId != listId)
                 {
-                    list.Cards.Add(card);
-                    uw.CardListRepository.Update(list);
-
-                    if (uw.Save())
+                    CardList list = uw.CardListRepository.GetById(listId);
+                    if (card != null && list != null)
                     {
-                        NotificationService notif = new NotificationService();
-                        succ = notif.CreateMoveNotification(new CreateNotificationDTO()
-                        {
-                            CardId = cardId,
-                            UserId = userId,
-                            NotificationType = NotificationType.Move
-                        });
+                        list.Cards.Add(card);
+                        uw.CardListRepository.Update(list);
 
-                        ReadCardDTO cardDto = new ReadCardDTO(card);
-                        RabbitMQService.PublishToExchange(card.List.Board.ExchangeName,
-                            new MessageContext(new CardMessageStrategy(cardDto, MessageType.Move)));
+                        if (uw.Save())
+                        {
+                            NotificationService notif = new NotificationService();
+                            succ = notif.CreateMoveNotification(new CreateNotificationDTO()
+                            {
+                                CardId = cardId,
+                                UserId = userId,
+                                NotificationType = NotificationType.Move
+                            });
+
+                            ReadCardDTO cardDto = new ReadCardDTO(card);
+                            RabbitMQService.PublishToExchange(card.List.Board.ExchangeName,
+                                new MessageContext(new CardMessageStrategy(cardDto, MessageType.Move)));
+                        }
                     }
                 }
-
             }
-            return true;
+            return succ;
         }
 
         public bool DeleteCard(int id)

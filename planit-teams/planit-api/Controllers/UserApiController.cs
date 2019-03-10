@@ -19,8 +19,10 @@ namespace planit_api.Controllers
         }
 
         // GET: api/UserApi/5
+        [Authorize]
         public ReadUserDTO Get(int id)
         {
+            String user = User.Identity.Name;
             return service.GetUser(id);
         }
 

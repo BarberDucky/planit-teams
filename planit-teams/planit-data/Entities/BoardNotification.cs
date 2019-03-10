@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace planit_data.Entities
 {
+    public enum BoardNotificationType
+    {
+
+    }
+
     public class BoardNotification
     {
         [Key]
@@ -16,6 +21,10 @@ namespace planit_data.Entities
         [DefaultValue(true)]
         public bool IsRead { get; set; }
 
-        // TODO Videcu kako veze da dodam ovde
+        public BoardNotificationType BoardNotificationType { get; set; }
+
+        public virtual Board Board { get; set; }
+
+        public virtual User User { get; set; }
     }
 }
