@@ -123,8 +123,7 @@ namespace planit_data.Services
             }
             return succ;
         }
-
-        //TODO publish na board
+        
         //TODO Prepraviti da radi sa tokenima
         public bool MoveCardToList(int cardId, int listId, int userId)
         {

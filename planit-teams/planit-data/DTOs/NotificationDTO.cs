@@ -26,7 +26,7 @@ namespace planit_data.DTOs
     {
         public int NotificationId { get; set; }
         public DateTime TimeStamp { get; set; }
-       // public bool IsRead { get; set; }
+        public bool IsRead { get; set; }
         public int CardId { get; set; }
         public int UserId { get; set; }
 
@@ -34,7 +34,7 @@ namespace planit_data.DTOs
         {
             NotificationId = notification.NotificationId;
             TimeStamp = notification.CreationTime;
-           // IsRead = notification.IsRead;
+            IsRead = notification.IsRead;
             CardId = notification.Card.CardId;
             UserId = notification.CreatedByUser.UserId;
         }

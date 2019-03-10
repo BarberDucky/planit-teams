@@ -147,4 +147,22 @@ namespace planit_data.RabbitMQ
             return JsonConvert.SerializeObject(commentMessage);
         }
     }
+
+    public class NotificationMessageStrategy : IMessageStrategy
+    {
+        private NotificationMessage notificationMessage;
+
+        public NotificationMessageStrategy(ReadNotificationDTO data)
+        {
+            notificationMessage = new NotificationMessage()
+            {
+                Data = data
+            };
+        }
+
+        public string Serialize()
+        {
+            return JsonConvert.SerializeObject(notificationMessage);
+        }
+    }
 }

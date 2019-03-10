@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using planit_data.DTOs;
 using planit_data.Entities;
+using planit_data.RabbitMQ;
 using planit_data.Repository;
 
 namespace planit_data.Services
 {
     public class NotificationService
     {
-        //TODO publish na notif kanal - user kanal
         public bool CreateMoveNotification(CreateNotificationDTO notificationDTO)
         {
             bool ret = false;
@@ -33,9 +33,13 @@ namespace planit_data.Services
                     List<User> users = uw.PermissionRepository
                         .GetAllUsersWithPermissionOnBoard(b.BoardId);
 
+                    ReadNotificationDTO dto = new ReadNotificationDTO(obj);
+
                     foreach (var u in users)
                     {
                         u.Notifications.Add(obj);
+                        RabbitMQService.PublishToExchange(u.ExchangeName,
+                            new MessageContext(new NotificationMessageStrategy(dto)));
                     }
 
                     ret = uw.Save();
@@ -61,9 +65,13 @@ namespace planit_data.Services
                     obj.Card = card;
                     obj.NotificationType = notificationDTO.NotificationType;
 
+                    ReadNotificationDTO dto = new ReadNotificationDTO(obj);
+
                     foreach (var u in card.ObserverUsers)
                     {
                         u.Notifications.Add(obj);
+                        RabbitMQService.PublishToExchange(u.ExchangeName,
+                            new MessageContext(new NotificationMessageStrategy(dto)));
                     }
                     ret = uw.Save();
                 }

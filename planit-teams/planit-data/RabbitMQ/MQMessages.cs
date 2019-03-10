@@ -72,6 +72,18 @@ namespace planit_data.RabbitMQ
         }
     }
 
+    public class NotificationMessage
+    {
+        public MessageEntity MessageEntity { get; set; }
+        public MessageType MessageType { get; set; }
+        public ReadNotificationDTO Data { get; set; }
+
+        public NotificationMessage()
+        {
+            MessageEntity = MessageEntity.Notification;
+        }
+    }
+
     public class DeleteMessage
     {
         public MessageEntity MessageEntity;
