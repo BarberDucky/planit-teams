@@ -7,6 +7,7 @@ using planit_data.Entities;
 
 namespace planit_data.DTOs
 {
+    //TODO Dodaditi ovaj dto
     public class BasicCommentDTO
     {
         public int CommentId { get; set; }

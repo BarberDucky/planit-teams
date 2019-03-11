@@ -60,6 +60,8 @@ namespace planit_data.Repository
         public bool Insert(T obj)
         {
             T retObj = set.Add(obj);
+            set.Attach(obj);
+            context.Entry(obj).State = EntityState.Added;
             if (retObj != null)
             {
                 return true;

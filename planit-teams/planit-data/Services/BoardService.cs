@@ -24,7 +24,7 @@ namespace planit_data.Services
             return dtos;
         }
 
-        public ReadBoardDTO GetBoard(int boardId)
+        public ReadBoardDTO GetBoard(int boardId, int userId)
         {
             ReadBoardDTO boardDTO = null;
             using (UnitOfWork unit = new UnitOfWork())
@@ -33,7 +33,13 @@ namespace planit_data.Services
 
                 if (b != null)
                 {
-                    boardDTO = new ReadBoardDTO(b);
+                    List<User> users = unit.PermissionRepository
+                        .GetAllUsersWithPermissionOnBoard(b.BoardId);
+
+                    bool isAdmin = unit.PermissionRepository
+                        .GetPermission(b.BoardId, userId).IsAdmin;
+
+                    boardDTO = new ReadBoardDTO(b, isAdmin, users);
                 }
             }
 
@@ -58,24 +64,32 @@ namespace planit_data.Services
             return boardDTO;
         }
 
-        public List<ReadBoardDTO> GetBoardsByUser(int userId)
+        public List<ShortBoardDTO> GetBoardsByUser(int userId)
         {
-            List<ReadBoardDTO> dtos = new List<ReadBoardDTO>();
+            List<ShortBoardDTO> dtos = new List<ShortBoardDTO>();
             using (UnitOfWork unit = new UnitOfWork())
             {
-                List<Board> boardList = new List<Board>();
                 User user = unit.UserRepository.GetById(userId);
 
                 if (user != null)
                 {
                     foreach (var p in user.Permissions)
                     {
-                        if (p != null)
+                        if (p != null && p.Board != null)
                         {
-                            boardList.Add(p.Board);
+                            BoardNotification notif = unit.BoardNotificationRepository
+                                .GetBoardNotification(p.Board.BoardId, userId);
+                            if (notif != null)
+                            {
+                                dtos.Add(new ShortBoardDTO(p.Board, notif.IsRead));
+                            }
+                            else
+                            {
+                                dtos.Add(new ShortBoardDTO(p.Board, true));
+                            }
+
                         }
                     }
-                    dtos = ReadBoardDTO.FromEntityList(boardList);
                 }
 
             }
@@ -137,7 +151,7 @@ namespace planit_data.Services
                     {
                         BoardNotificationService.ChangeBoardNotifications(board.BoardId);
 
-                        ReadBoardDTO dto = new ReadBoardDTO(board);
+                        BasicBoardDTO dto = new BasicBoardDTO(board);
                         RabbitMQService.PublishToExchange(board.ExchangeName,
                             new MessageContext(new BoardMessageStrategy(dto, MessageType.Update)));
                     }

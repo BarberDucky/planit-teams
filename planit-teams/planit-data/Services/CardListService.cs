@@ -61,7 +61,7 @@ namespace planit_data.Services
                     unit.CardListRepository.Insert(list);
                     if (unit.Save())
                     {
-                        ReadCardListDTO dto = new ReadCardListDTO(list);
+                        BasicCardListDTO dto = new BasicCardListDTO(list);
                         RabbitMQService.PublishToExchange(board.ExchangeName,
                             new MessageContext(new CardListMessageStrategy(dto, MessageType.Create)));
 
@@ -117,7 +117,7 @@ namespace planit_data.Services
 
                     if (ret)
                     {
-                        ReadCardListDTO dto = new ReadCardListDTO(cardList);
+                        BasicCardListDTO dto = new BasicCardListDTO(cardList);
                         RabbitMQService.PublishToExchange(cardList.Board.ExchangeName,
                             new MessageContext(new CardListMessageStrategy(dto, MessageType.Update)));
 

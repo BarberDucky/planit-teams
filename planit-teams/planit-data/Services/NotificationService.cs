@@ -12,6 +12,7 @@ namespace planit_data.Services
 {
     public class NotificationService
     {
+        //TODO ZASTO OVO NECE DA SE SNIMI LEPO
         public bool CreateMoveNotification(CreateNotificationDTO notificationDTO)
         {
             bool ret = false;
@@ -33,13 +34,15 @@ namespace planit_data.Services
                     List<User> users = uw.PermissionRepository
                         .GetAllUsersWithPermissionOnBoard(b.BoardId);
 
-                    ReadNotificationDTO dto = new ReadNotificationDTO(obj);
 
+                    ReadNotificationDTO dto = new ReadNotificationDTO(obj);
                     foreach (var u in users)
                     {
-                        u.Notifications.Add(obj);
+                        obj.BelongsToUserId = u.UserId;
+                        uw.NotificationRepository.Insert(obj);
+                        uw.Save();
                         RabbitMQService.PublishToExchange(u.ExchangeName,
-                            new MessageContext(new NotificationMessageStrategy(dto)));
+                            new MessageContext(new NotificationMessageStrategy(dto, MessageType.Move)));
                     }
 
                     ret = uw.Save();
@@ -69,9 +72,11 @@ namespace planit_data.Services
 
                     foreach (var u in card.ObserverUsers)
                     {
-                        u.Notifications.Add(obj);
+                        obj.BelongsToUserId = u.UserId;
+                        uw.NotificationRepository.Insert(obj);
+                        uw.Save();
                         RabbitMQService.PublishToExchange(u.ExchangeName,
-                            new MessageContext(new NotificationMessageStrategy(dto)));
+                            new MessageContext(new NotificationMessageStrategy(dto, MessageType.Change)));
                     }
                     ret = uw.Save();
                 }
@@ -117,6 +122,34 @@ namespace planit_data.Services
                 uw.NotificationRepository.Update(notificationFromDB);
                 uw.Save();
                 return new ReadNotificationDTO(notificationFromDB);
+            }
+        }
+
+        public bool ReadAllNotifications(int userId)
+        {
+            try
+            {
+                bool succ = false;
+                using(UnitOfWork unit = new UnitOfWork())
+                {
+                    User user = unit.UserRepository.GetById(userId);
+                    if (user != null)
+                    {
+                        foreach(var n in user.Notifications)
+                        {
+                            n.IsRead = true;
+                            unit.NotificationRepository.Update(n);
+                        }
+                    }
+
+                    succ = unit.Save();
+                }
+
+                return succ;
+            }
+            catch (Exception e)
+            {
+                return false;
             }
         }
 

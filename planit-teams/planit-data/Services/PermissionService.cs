@@ -87,7 +87,8 @@ namespace planit_data.Services
                     if (ret)
                     {
                         RabbitMQService.PublishToExchange(u.ExchangeName,
-                            new MessageContext(new BoardMessageStrategy(new ReadBoardDTO(b), MessageType.Create)));
+                            new MessageContext(new BoardMessageStrategy(new BasicBoardDTO(b),
+                            MessageType.Create)));
                     }
                 }
             }

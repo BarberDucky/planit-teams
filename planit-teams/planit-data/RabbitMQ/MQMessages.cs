@@ -22,14 +22,15 @@ namespace planit_data.RabbitMQ
         Update,
         Move,
         Delete,
-        BoardNotification
+        BoardNotification,
+        Change
     }
    
     public class BoardMesage
     {
         public MessageEntity MessageEntity { get; set; }
         public MessageType MessageType { get; set; }
-        public ReadBoardDTO Data { get; set; }
+        public BasicBoardDTO Data { get; set; }
 
         public BoardMesage()
         {
@@ -41,7 +42,7 @@ namespace planit_data.RabbitMQ
     {
         public MessageEntity MessageEntity { get; set; }
         public MessageType MessageType { get; set; }
-        public ReadCardListDTO Data { get; set; }
+        public BasicCardListDTO Data { get; set; }
 
         public CardListMessage()
         {
@@ -53,7 +54,7 @@ namespace planit_data.RabbitMQ
     {
         public MessageEntity MessageEntity { get; set; }
         public MessageType MessageType { get; set; }
-        public ReadCardDTO Data { get; set; }
+        public BasicCardDTO Data { get; set; }
 
         public CardMessage()
         {
@@ -65,7 +66,7 @@ namespace planit_data.RabbitMQ
     {
         public MessageEntity MessageEntity { get; set; }
         public MessageType MessageType { get; set; }
-        public ReadCommentDTO Data { get; set; }
+        public BasicCommentDTO Data { get; set; }
 
         public CommentMessage()
         {

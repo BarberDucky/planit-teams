@@ -15,7 +15,7 @@ namespace planit_data.RabbitMQ
         private BoardMesage boardMessage;
         private DeleteMessage deleteMessage;
 
-        public BoardMessageStrategy(ReadBoardDTO data, MessageType type)
+        public BoardMessageStrategy(BasicBoardDTO data, MessageType type)
         {
             boardMessage = new BoardMesage()
             {
@@ -54,7 +54,7 @@ namespace planit_data.RabbitMQ
         private CardMessage cardMessage;
         private DeleteMessage deleteMessage;
 
-        public CardMessageStrategy(ReadCardDTO data, MessageType type)
+        public CardMessageStrategy(BasicCardDTO data, MessageType type)
         {
             cardMessage = new CardMessage()
             {
@@ -94,7 +94,7 @@ namespace planit_data.RabbitMQ
         private CardListMessage cardListMessage;
         private DeleteMessage deleteMessage;
 
-        public CardListMessageStrategy(ReadCardListDTO data, MessageType type)
+        public CardListMessageStrategy(BasicCardListDTO data, MessageType type)
         {
             cardListMessage = new CardListMessage()
             {
@@ -133,7 +133,7 @@ namespace planit_data.RabbitMQ
     {
         private CommentMessage commentMessage;
 
-        public CommentMessageStrategy(ReadCommentDTO data)
+        public CommentMessageStrategy(BasicCommentDTO data)
         {
             commentMessage = new CommentMessage()
             {
@@ -151,11 +151,12 @@ namespace planit_data.RabbitMQ
     {
         private NotificationMessage notificationMessage;
 
-        public NotificationMessageStrategy(ReadNotificationDTO data)
+        public NotificationMessageStrategy(ReadNotificationDTO data, MessageType type)
         {
             notificationMessage = new NotificationMessage()
             {
-                Data = data
+                Data = data,
+                MessageType = type
             };
         }
 

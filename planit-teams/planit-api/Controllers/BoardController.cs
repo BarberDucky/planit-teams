@@ -24,7 +24,7 @@ namespace planit_api.Controllers
         // GET: api/Board/5
         public ReadBoardDTO Get(int id)
         {
-            return service.GetBoard(id);
+            return service.GetBoard(id, 3);
         }
 
         // POST: api/Board
@@ -61,7 +61,7 @@ namespace planit_api.Controllers
 
         [HttpGet]
         [Route("api/Board/BoardsByUser/{id:int}")]
-        public IEnumerable<ReadBoardDTO> BoardsByUser(int id)
+        public IEnumerable<ShortBoardDTO> BoardsByUser(int id)
         {
             return service.GetBoardsByUser(id);
         }
@@ -72,7 +72,7 @@ namespace planit_api.Controllers
         {
             if (PermissionHelper.HasPermissionOnBoard(idBoard, idUser))
             {
-                return service.GetBoard(idBoard);
+                return service.GetBoard(idBoard, idUser);
             }
             return null;
         }

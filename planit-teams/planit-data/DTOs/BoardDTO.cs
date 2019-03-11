@@ -7,6 +7,21 @@ using System.Threading.Tasks;
 
 namespace planit_data.DTOs
 {
+    public class ShortBoardDTO
+    {
+        public int BoardId { get; set; }
+        public String Name { get; set; }
+        public String ExchangeName { get; set; }
+        public bool IsRead { get; set; }
+
+        public ShortBoardDTO(Board b, bool isRead)
+        {
+            this.BoardId = b.BoardId;
+            this.Name = b.Name;
+            this.ExchangeName = b.ExchangeName;
+            this.IsRead = isRead;
+        }
+    }
     public class BasicBoardDTO
     {
         public int BoardId { get; set; }
@@ -46,15 +61,25 @@ namespace planit_data.DTOs
         public int BoardId { get; set; }
         public String Name { get; set; }
         public String ExchangeName { get; set; }
+        public bool IsAdmin { get; set; }
+        public List<ReadUserDTO> Users { get; set; }
         public List<ReadCardListDTO> CardList { get; set; }
 
         public ReadBoardDTO(Board b)
         {
             CardList = new List<ReadCardListDTO>();
+            Users = new List<ReadUserDTO>();
             this.BoardId = b.BoardId;
             this.Name = b.Name;
             this.ExchangeName = b.ExchangeName;
             CardList = ReadCardListDTO.FromEntityList(b.CardLists.ToList());
+        }
+
+        public ReadBoardDTO(Board b, bool isAdmin, List<User> users)
+            : this(b)
+        {
+            IsAdmin = isAdmin;
+            Users = ReadUserDTO.FromEntityList(users);
         }
 
         public static List<ReadBoardDTO> FromEntityList(List<Board> boards)
