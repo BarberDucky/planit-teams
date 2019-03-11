@@ -62,6 +62,8 @@ namespace planit_data.Services
                         ReadCommentDTO commentDTO = new ReadCommentDTO(comment);
                         RabbitMQService.PublishToExchange(card.List.Board.ExchangeName,
                             new MessageContext(new CommentMessageStrategy(commentDTO)));
+
+                        BoardNotificationService.ChangeBoardNotifications(card.List.Board.BoardId);
                     }
 
                 }

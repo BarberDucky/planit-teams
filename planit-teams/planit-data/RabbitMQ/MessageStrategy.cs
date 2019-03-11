@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace planit_data.RabbitMQ
 {
-    //TODO Mozda je bolje abs klasa umesto interface-a
     //TODO Videti sta sa brisanjem
     public class BoardMessageStrategy : IMessageStrategy
     {
@@ -163,6 +162,24 @@ namespace planit_data.RabbitMQ
         public string Serialize()
         {
             return JsonConvert.SerializeObject(notificationMessage);
+        }
+    }
+
+    public class BoardNotificationMessageStrategy : IMessageStrategy
+    {
+        private BoardNotificationMessage boardMessage;
+
+        public BoardNotificationMessageStrategy(int id)
+        {
+            boardMessage = new BoardNotificationMessage()
+            {
+                Data = id
+            };
+        }
+
+        public string Serialize()
+        {
+            return JsonConvert.SerializeObject(boardMessage);
         }
     }
 }

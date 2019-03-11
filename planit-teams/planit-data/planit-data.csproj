@@ -130,6 +130,10 @@
     <Compile Include="Migrations\201903101921160_BoardNotifications.Designer.cs">
       <DependentUpon>201903101921160_BoardNotifications.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903111958091_BoardNotifications1.cs" />
+    <Compile Include="Migrations\201903111958091_BoardNotifications1.Designer.cs">
+      <DependentUpon>201903111958091_BoardNotifications1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -139,10 +143,12 @@
     <Compile Include="RabbitMQ\MQMessages.cs" />
     <Compile Include="RabbitMQ\RabbitMQService.cs" />
     <Compile Include="Repository\ApplicationUserRepository.cs" />
+    <Compile Include="Repository\BoardNotificationRepository.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\PermissionRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
+    <Compile Include="Services\BoardNotificationService.cs" />
     <Compile Include="Services\CardService.cs" />
     <Compile Include="Services\BoardService.cs" />
     <Compile Include="Services\CardListService.cs" />
@@ -165,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903101921160_BoardNotifications.resx">
       <DependentUpon>201903101921160_BoardNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903111958091_BoardNotifications1.resx">
+      <DependentUpon>201903111958091_BoardNotifications1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

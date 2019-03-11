@@ -8,10 +8,6 @@ using System.Threading.Tasks;
 
 namespace planit_data.Entities
 {
-    public enum BoardNotificationType
-    {
-
-    }
 
     public class BoardNotification
     {
@@ -21,10 +17,13 @@ namespace planit_data.Entities
         [DefaultValue(true)]
         public bool IsRead { get; set; }
 
-        public BoardNotificationType BoardNotificationType { get; set; }
-
         public virtual Board Board { get; set; }
 
         public virtual User User { get; set; }
+
+        public BoardNotification()
+        {
+            IsRead = true;
+        }
     }
 }

@@ -24,5 +24,18 @@ namespace planit_data.Repository
 
             return users;
         }
+
+        public Permission GetPermission(int boardId, int userId)
+        {
+            List<Permission> perms = Get(x => x.Board.BoardId == boardId && x.User.UserId == userId)
+                .ToList();
+
+            if (perms != null && perms.Count > 0)
+            {
+                return perms[0];
+            }
+
+            return null;
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace planit_data.Repository
         private GenericRepository<CardList> cardListRepository;
         private GenericRepository<Comment> commentRepository;
         private GenericRepository<Notification> notificationRepository;
+        private BoardNotificationRepository boardNotificationRepository;
         private PermissionRepository permissionRepository;
         private ApplicationUserRepository applicationUserRepository;
 
@@ -85,7 +86,15 @@ namespace planit_data.Repository
                 return permissionRepository;
             }
         }
-
+        public BoardNotificationRepository BoardNotificationRepository
+        {
+            get
+            {
+                if (boardNotificationRepository == null)
+                    boardNotificationRepository = new BoardNotificationRepository(context);
+                return boardNotificationRepository;
+            }
+        }
         public ApplicationUserRepository ApplicationUserRepository
         {
             get

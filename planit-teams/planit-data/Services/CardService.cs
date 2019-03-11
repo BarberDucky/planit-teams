@@ -84,6 +84,8 @@ namespace planit_data.Services
                     ReadCardDTO cardDto = new ReadCardDTO(card);
                     RabbitMQService.PublishToExchange(list.Board.ExchangeName,
                         new MessageContext(new CardMessageStrategy(cardDto, MessageType.Create)));
+
+                    BoardNotificationService.ChangeBoardNotifications(list.Board.BoardId);
                 }
             }
             return card.CardId;
@@ -117,6 +119,8 @@ namespace planit_data.Services
                         ReadCardDTO cardDto = new ReadCardDTO(card);
                         RabbitMQService.PublishToExchange(card.List.Board.ExchangeName,
                             new MessageContext(new CardMessageStrategy(cardDto, MessageType.Update)));
+
+                        BoardNotificationService.ChangeBoardNotifications(card.List.Board.BoardId);
                     }
                 }
 
@@ -152,6 +156,8 @@ namespace planit_data.Services
                             ReadCardDTO cardDto = new ReadCardDTO(card);
                             RabbitMQService.PublishToExchange(card.List.Board.ExchangeName,
                                 new MessageContext(new CardMessageStrategy(cardDto, MessageType.Move)));
+
+                            BoardNotificationService.ChangeBoardNotifications(card.List.Board.BoardId);
                         }
                     }
                 }
@@ -164,14 +170,16 @@ namespace planit_data.Services
             bool success = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                string exchangeName = uw.CardRepository.GetById(id).List.Board.ExchangeName;
+                Board board = uw.CardRepository.GetById(id).List.Board;
                 success = uw.CardRepository.Delete(id);
                 uw.Save();
 
                 if (success)
                 {
-                    RabbitMQService.PublishToExchange(exchangeName,
+                    RabbitMQService.PublishToExchange(board.ExchangeName,
                         new MessageContext(new CardMessageStrategy(id)));
+
+                    BoardNotificationService.ChangeBoardNotifications(board.BoardId);
                 }
             }
             return success;

@@ -21,7 +21,8 @@ namespace planit_data.RabbitMQ
         Create,
         Update,
         Move,
-        Delete
+        Delete,
+        BoardNotification
     }
    
     public class BoardMesage
@@ -83,6 +84,20 @@ namespace planit_data.RabbitMQ
             MessageEntity = MessageEntity.Notification;
         }
     }
+
+    public class BoardNotificationMessage
+    {
+        public MessageEntity MessageEntity { get; set; }
+        public MessageType MessageType { get; set; }
+        public int Data { get; set; }
+
+        public BoardNotificationMessage()
+        {
+            MessageEntity = MessageEntity.Board;
+            MessageType = MessageType.BoardNotification;
+        }
+    }
+
 
     public class DeleteMessage
     {

@@ -64,6 +64,8 @@ namespace planit_data.Services
                         ReadCardListDTO dto = new ReadCardListDTO(list);
                         RabbitMQService.PublishToExchange(board.ExchangeName,
                             new MessageContext(new CardListMessageStrategy(dto, MessageType.Create)));
+
+                        BoardNotificationService.ChangeBoardNotifications(board.BoardId);
                     }
                 }
             }
@@ -118,6 +120,8 @@ namespace planit_data.Services
                         ReadCardListDTO dto = new ReadCardListDTO(cardList);
                         RabbitMQService.PublishToExchange(cardList.Board.ExchangeName,
                             new MessageContext(new CardListMessageStrategy(dto, MessageType.Update)));
+
+                        BoardNotificationService.ChangeBoardNotifications(cardList.Board.BoardId);
                     }
                 }
 
@@ -131,8 +135,10 @@ namespace planit_data.Services
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
-                string exchangeName = unit.CardListRepository
-                    .GetById(id).Board.ExchangeName;
+                Board board = unit.CardListRepository.GetById(id).Board;
+                string exchangeName = board.ExchangeName;
+                int boardId = board.BoardId;
+
 
                 unit.CardListRepository.Delete(id);
                 ret = unit.Save();
@@ -141,6 +147,8 @@ namespace planit_data.Services
                 {
                     RabbitMQService.PublishToExchange(exchangeName,
                         new MessageContext(new CardListMessageStrategy(id)));
+
+                    BoardNotificationService.ChangeBoardNotifications(boardId);
                 }
 
             }

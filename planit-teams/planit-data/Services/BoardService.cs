@@ -101,7 +101,15 @@ namespace planit_data.Services
                         User = creator
                     };
 
+                    BoardNotification boardNotif = new BoardNotification()
+                    {
+                        Board = board,
+                        User = creator
+                    };
+
                     unit.PermissionRepository.Insert(permision);
+                    unit.BoardNotificationRepository.Insert(boardNotif);
+
                     if (unit.Save())
                     {
                         RabbitMQService.DeclareExchange(board.ExchangeName);
@@ -127,6 +135,8 @@ namespace planit_data.Services
                     ret = unit.Save();
                     if (ret)
                     {
+                        BoardNotificationService.ChangeBoardNotifications(board.BoardId);
+
                         ReadBoardDTO dto = new ReadBoardDTO(board);
                         RabbitMQService.PublishToExchange(board.ExchangeName,
                             new MessageContext(new BoardMessageStrategy(dto, MessageType.Update)));
