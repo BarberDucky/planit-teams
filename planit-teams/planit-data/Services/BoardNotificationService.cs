@@ -31,15 +31,14 @@ namespace planit_data.Services
             }
         }
 
-        //TODO Popraviti da radi sa tokenima
-        public bool ReadBoard(int boardId, int userId)
+        public bool ReadBoard(int boardId, string username)
         {
             bool succ = false;
 
             using (UnitOfWork unit = new UnitOfWork())
             {
                 BoardNotification notif = unit.BoardNotificationRepository
-                    .GetBoardNotification(boardId, userId);
+                    .GetBoardNotification(boardId, username);
 
                 if (notif != null)
                 {

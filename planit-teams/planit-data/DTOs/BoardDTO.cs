@@ -22,6 +22,7 @@ namespace planit_data.DTOs
             this.IsRead = isRead;
         }
     }
+
     public class BasicBoardDTO
     {
         public int BoardId { get; set; }
@@ -39,7 +40,7 @@ namespace planit_data.DTOs
     public class CreateBoardDTO
     {
         public String Name { get; set; }
-        public int CreatedByUser { get; set; }
+       // public String CreatedByUser { get; set; }
 
         public Board FromDTO()
         {
@@ -53,7 +54,7 @@ namespace planit_data.DTOs
     public class UpdateBoardDTO
     {
         public String Name { get; set; }
-        public int BoardId { get; set; }
+      //  public int BoardId { get; set; }
     }
 
     public class ReadBoardDTO

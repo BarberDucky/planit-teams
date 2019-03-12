@@ -11,15 +11,16 @@ using System.Web.Http.Cors;
 namespace planit_api.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [Authorize]
     public class CommentController : ApiController
     {
         CommentService service = new CommentService();
 
         // GET: api/Comment
-        public IEnumerable<ReadCommentDTO> Get()
-        {
-            return service.GetAllComments();
-        }
+        //public IEnumerable<ReadCommentDTO> Get()
+        //{
+        //    return service.GetAllComments();
+        //}
 
         // GET: api/Comment/5
         public ReadCommentDTO Get(int id)
@@ -28,15 +29,12 @@ namespace planit_api.Controllers
         }
 
         // POST: api/Comment
-        public bool Post([FromBody]CreateCommentDTO comment)
+        public BasicCommentDTO Post([FromBody]CreateCommentDTO comment)
         {
-            if (comment != null)
-            {
-                return (service.InsertComment(comment) != 0);
-            }
-            return false;
+            return service.InsertComment(User.Identity.Name, comment);
         }
 
+        //Ne treba
         // PUT: api/Comment/5
         public bool Put(int id, [FromBody]UpdateCommentDTO comment)
         {

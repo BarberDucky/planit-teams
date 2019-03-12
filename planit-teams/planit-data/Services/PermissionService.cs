@@ -99,17 +99,17 @@ namespace planit_data.Services
             return ret;
         }
 
-        public bool AddUserBoardPermision(AddUserBoardPermisionDTO dto, int userId)
+        public bool AddUserBoardPermision(AddUserBoardPermisionDTO dto, string admin)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
-                bool isAdmin = unit.PermissionRepository.IsAdmin(dto.BoardId, userId);
+                bool isAdmin = unit.PermissionRepository.IsAdmin(dto.BoardId, admin);
 
                 if (isAdmin)
                 {
                     Board b = unit.BoardRepository.GetById(dto.BoardId);
-                    User u = unit.UserRepository.GetById(dto.UserId);
+                    User u = unit.UserRepository.GetUserByUsername(dto.Username);
 
                     if (u != null && b != null)
                     {
@@ -144,7 +144,7 @@ namespace planit_data.Services
         }
 
         //TODO Treba ovde obrisati tog usera i iz svih kartica koje watchuje
-        public bool DeletePermission(int boardId, int userId, int admin)
+        public bool DeletePermission(int boardId, string username, string admin)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
@@ -152,12 +152,12 @@ namespace planit_data.Services
                 bool isAdmin = unit.PermissionRepository
                     .IsAdmin(boardId, admin);
 
-                if (isAdmin && admin != userId)
+                if (isAdmin && admin != username)
                 {
-                    Permission perm = unit.PermissionRepository.GetPermission(boardId, userId);
-                    User user = unit.UserRepository.GetById(userId);
+                    Permission perm = unit.PermissionRepository.GetPermissionByUsername(boardId, username);
+                    User user = perm.User;
                     unit.PermissionRepository.Delete(perm.PermissionId);
-                    unit.BoardNotificationRepository.Delete(boardId, userId);
+                    unit.BoardNotificationRepository.Delete(boardId, user.UserId);
 
                     ret = unit.Save();
 

@@ -111,41 +111,45 @@ namespace planit_data.Services
 
         public ReadNotificationDTO GetNotification(int notificationId)
         {
+            ReadNotificationDTO dto = null;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                Notification notificationFromDB = uw.NotificationRepository.GetById(notificationId);
+                Notification notificationFromDB = uw.NotificationRepository
+                    .GetById(notificationId);
 
-                if (notificationFromDB == null)
-                    return null;
-
-                return new ReadNotificationDTO(notificationFromDB);
+                if (notificationFromDB != null)
+                    dto = new ReadNotificationDTO(notificationFromDB);
             }
+
+            return dto;
         }
 
-        public ReadNotificationDTO ReadNotification(int notificationId)
+        public bool ReadNotification(int notificationId)
         {
+            bool succ = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
                 Notification notificationFromDB = uw.NotificationRepository.GetById(notificationId);
 
-                if (notificationFromDB == null)
-                    return null;
-
-                notificationFromDB.IsRead = true;
-                uw.NotificationRepository.Update(notificationFromDB);
-                uw.Save();
-                return new ReadNotificationDTO(notificationFromDB);
+                if (notificationFromDB != null)
+                {
+                    notificationFromDB.IsRead = true;
+                    uw.NotificationRepository.Update(notificationFromDB);
+                    succ = uw.Save();
+                }
             }
+
+            return succ;
         }
 
-        public bool ReadAllNotifications(int userId)
+        public bool ReadAllNotifications(string username)
         {
             try
             {
                 bool succ = false;
                 using(UnitOfWork unit = new UnitOfWork())
                 {
-                    User user = unit.UserRepository.GetById(userId);
+                    User user = unit.UserRepository.GetUserByUsername(username);
                     if (user != null)
                     {
                         foreach(var n in user.Notifications)

@@ -11,24 +11,27 @@ using System.Web.Http.Cors;
 namespace planit_api.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [Authorize]
     public class UserApiController : ApiController
     {
         UserService service = new UserService();
-        // GET: api/UserApi
-        public IEnumerable<ReadUserDTO> Get()
-        {
-            return service.GetAllUsers();
-        }
 
-        // GET: api/UserApi/5
-        [Authorize]
-        public ReadUserDTO Get(int id)
+        // GET: api/UserApi
+        //public IEnumerable<ReadUserDTO> Get()
+        //{
+        //    return service.GetAllUsers();
+        //}
+
+        // GET: api/UserApi
+        [HttpGet]
+        [Route("api/UserApi")]
+        public ReadUserDTO GetUser()
         {
-            String user = User.Identity.Name;
-            return service.GetUser(id);
+            return service.GetUser(User.Identity.Name);
         }
 
         // POST: api/UserApi
+        [AllowAnonymous]
         public bool Post([FromBody]CreateUserDTO user)
         {
             if (user != null && service.InsertUser(user) != 0)
@@ -42,27 +45,40 @@ namespace planit_api.Controllers
         }
 
         // PUT: api/UserApi/5
-        public bool Put(int id, [FromBody]UpdateUserDTO user)
+        [HttpPut]
+        [Route("api/UserApi")]
+        public bool Put([FromBody]UpdateUserDTO user)
         {
-            if (user != null)
+            if (user != null && User.Identity.IsAuthenticated)
             {
-                return service.UpdateUser(user);
+                return service.UpdateUser(user, User.Identity.Name);
             }
             return false;
 
         }
 
         // DELETE: api/UserApi/5
-        public bool Delete(int id)
+        [HttpDelete]
+        [Route("api/UserApi")]
+        public bool Delete()
         {
-            return service.DeleteUser(id);
+            if (User.Identity.IsAuthenticated)
+            {
+                return service.DeleteUser(User.Identity.Name);
+            }
+            return false;
         }
 
         [HttpGet]
-        [Route("api/UserApi/UserNotifications/{id:int}")]
-        public IEnumerable<ReadNotificationDTO> UserNotifications(int id)
+        [Route("api/UserApi/UserNotifications")]
+        public IEnumerable<ReadNotificationDTO> UserNotifications()
         {
-            return service.GetUserNotifications(id);
+            if (User.Identity.IsAuthenticated)
+            {
+                return service.GetUserNotifications(User.Identity.Name);
+            }
+
+            return new List<ReadNotificationDTO>();
         }
 
     }

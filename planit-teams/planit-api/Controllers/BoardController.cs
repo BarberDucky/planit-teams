@@ -12,42 +12,38 @@ using System.Web.Http.Cors;
 namespace planit_api.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [Authorize]
     public class BoardController : ApiController
     {
         BoardService service = new BoardService();
-        // GET: api/Board
-        public IEnumerable<ReadBoardDTO> Get()
-        {
-            return service.GetAllBoards();
-        }
+        //// GET: api/Board
+        //public IEnumerable<ReadBoardDTO> Get()
+        //{
+        //    return service.GetAllBoards();
+        //}
 
         // GET: api/Board/5
+        [HttpGet]
+        [Route("api/Board/{id}")]
         public ReadBoardDTO Get(int id)
         {
-            return service.GetBoard(id, 3);
+            return service.GetBoard(id, User.Identity.Name);
         }
 
         // POST: api/Board
-        public int Post([FromBody]CreateBoardDTO board)
+        public ShortBoardDTO Post([FromBody]CreateBoardDTO board)
         {
-            if (board != null)
-            {
-                return service.InsertBoard(board);
-            }
-            else
-            {
-                return 0;
-            }
+            return service.InsertBoard(board, User.Identity.Name);
         }
 
         // PUT: api/Board/5
         [HttpPut]
-        [Route("api/Board/{userId:int}")]
-        public bool Put(int userId, [FromBody]UpdateBoardDTO board)
+        [Route("api/Board/{boardId:int}")]
+        public bool Put(int boardId, [FromBody]UpdateBoardDTO board)
         {
-            if (board != null && PermissionHelper.HasPermissionOnBoard(board.BoardId, userId))
+            if (board != null /*&& PermissionHelper.HasPermissionOnBoard(boardId, User.Identity.Name*/)
             {
-                return service.UpdateBoard(board);
+                return service.UpdateBoard(boardId, board);
             }
 
             return false;
@@ -55,28 +51,28 @@ namespace planit_api.Controllers
 
         // DELETE: api/Board/5
         [HttpDelete]
-        [Route("api/Board/{id}")]
+        [Route("api/Board/{id:int}")]
         public bool Delete(int id)
         {
-            return service.DeleteBoard(id, 1);
+            return service.DeleteBoard(id, User.Identity.Name);
         }
 
         [HttpGet]
-        [Route("api/Board/BoardsByUser/{id:int}")]
-        public IEnumerable<ShortBoardDTO> BoardsByUser(int id)
+        [Route("api/Board/BoardsByUser")]
+        public IEnumerable<ShortBoardDTO> BoardsByUser()
         {
-            return service.GetBoardsByUser(id);
+            return service.GetBoardsByUser(User.Identity.Name);
         }
 
-        [HttpGet]
-        [Route("api/Board/{idBoard:int}/User/{idUser:int}")]
-        public ReadBoardDTO BoardUser(int idBoard, int idUser)
-        {
-            if (PermissionHelper.HasPermissionOnBoard(idBoard, idUser))
-            {
-                return service.GetBoard(idBoard, idUser);
-            }
-            return null;
-        }
+        //[HttpGet]
+        //[Route("api/Board/{idBoard:int}/User/{idUser:int}")]
+        //public ReadBoardDTO BoardUser(int idBoard, int idUser)
+        //{
+        //    if (PermissionHelper.HasPermissionOnBoard(idBoard, idUser))
+        //    {
+        //        return service.GetBoard(idBoard, User.Identity.Name);
+        //    }
+        //    return null;
+        //}
     }
 }

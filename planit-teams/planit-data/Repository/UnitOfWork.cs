@@ -12,7 +12,7 @@ namespace planit_data.Repository
         private ApplicationContext context = new ApplicationContext();
         private bool disposed = false;
 
-        private GenericRepository<User> userRepository;
+        private UserRepository userRepository;
         private GenericRepository<Board> boardRepository;
         private GenericRepository<Card> cardRepository;
         private GenericRepository<CardList> cardListRepository;
@@ -23,12 +23,12 @@ namespace planit_data.Repository
         private ApplicationUserRepository applicationUserRepository;
 
         #region Property 
-        public GenericRepository<User> UserRepository
+        public UserRepository UserRepository
         {
             get
             {
                 if (userRepository == null)
-                    userRepository = new GenericRepository<User>(context);
+                    userRepository = new UserRepository(context);
                 return userRepository;
             }
         }

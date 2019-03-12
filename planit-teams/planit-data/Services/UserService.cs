@@ -23,12 +23,12 @@ namespace planit_data.Services
             return dtos;
         }
 
-        public bool DeleteUser(int id)
+        public bool DeleteUser(string username)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
-                unit.UserRepository.Delete(id);
+                unit.UserRepository.Delete(username);
                 ret = unit.Save();
             }
 
@@ -36,12 +36,12 @@ namespace planit_data.Services
         }
         #endregion
 
-        public ReadUserDTO GetUser(int id)
+        public ReadUserDTO GetUser(string username)
         {
             ReadUserDTO userDTO = null;
             using (UnitOfWork unit = new UnitOfWork())
             {
-                User u = unit.UserRepository.GetById(id);
+                User u = unit.UserRepository.GetUserByUsername(username);
 
                 if (u != null)
                 {
@@ -53,12 +53,12 @@ namespace planit_data.Services
             return userDTO;
         }
 
-        public List<ReadNotificationDTO> GetUserNotifications(int userId)
+        public List<ReadNotificationDTO> GetUserNotifications(string username)
         {
             List<ReadNotificationDTO> list = null;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                User u = uw.UserRepository.GetById(userId);
+                User u = uw.UserRepository.GetUserByUsername(username);
 
                 if (u != null)
                 {
@@ -92,17 +92,16 @@ namespace planit_data.Services
             return newUser.UserId;
         }
 
-        public bool UpdateUser(UpdateUserDTO userDTO)
+        public bool UpdateUser(UpdateUserDTO userDTO, string username)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
-                User user = unit.UserRepository.GetById(userDTO.UserID);
+                User user = unit.UserRepository.GetUserByUsername(username);
                 if (user != null)
                 {
                     user.FirstName = userDTO.FirstName;
                     user.LastName = userDTO.LastName;
-                    ApplicationUser a = user.IdentificationUser;
                     unit.UserRepository.Update(user);
                     ret = unit.Save();
                 }

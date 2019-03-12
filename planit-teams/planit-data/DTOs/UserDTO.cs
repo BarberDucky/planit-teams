@@ -28,7 +28,7 @@ namespace planit_data.DTOs
 
     public class ReadUserDTO
     {
-        public int UserID { get; set; }
+        //public int UserID { get; set; }
         public String Username { get; set; }
         public String Email { get; set; }
         public String FirstName { get; set; }
@@ -36,7 +36,7 @@ namespace planit_data.DTOs
 
         public ReadUserDTO(User user)
         {
-            UserID = user.UserId;
+           // UserID = user.UserId;
             FirstName = user.FirstName;
             LastName = user.LastName;
 
@@ -66,7 +66,7 @@ namespace planit_data.DTOs
 
     public class UpdateUserDTO
     {
-        public int UserID { get; set; }
+       // public int UserID { get; set; }
         public String FirstName { get; set; }
         public String LastName { get; set; }
     }

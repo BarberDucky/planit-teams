@@ -136,6 +136,7 @@
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\PermissionRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
+    <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="Services\BoardNotificationService.cs" />
     <Compile Include="Services\CardService.cs" />
     <Compile Include="Services\BoardService.cs" />

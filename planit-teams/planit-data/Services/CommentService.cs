@@ -64,13 +64,14 @@ namespace planit_data.Services
             return dto;
         }
 
-        public int InsertComment(CreateCommentDTO dto)
+        public BasicCommentDTO InsertComment(string username, CreateCommentDTO dto)
         {
             Comment comment = CreateCommentDTO.FromDTO(dto);
+            BasicCommentDTO commentDTO = null;
             using (UnitOfWork uw = new UnitOfWork())
             {
                 Card card = uw.CardRepository.GetById(dto.CardId);
-                User user = uw.UserRepository.GetById(dto.UserId);
+                User user = uw.UserRepository.GetUserByUsername(username);
                 if (card != null && user != null)
                 {
                     comment.Card = card;
@@ -83,11 +84,11 @@ namespace planit_data.Services
                         notif.CreateChangeNotification(new CreateNotificationDTO()
                         {
                             CardId = dto.CardId,
-                            UserId = dto.UserId,
+                            UserId = user.UserId,
                             NotificationType = NotificationType.Change
                         });
 
-                        BasicCommentDTO commentDTO = new BasicCommentDTO(comment);
+                        commentDTO = new BasicCommentDTO(comment);
                         RabbitMQService.PublishToExchange(card.List.Board.ExchangeName,
                             new MessageContext(new CommentMessageStrategy(commentDTO)));
 
@@ -97,7 +98,7 @@ namespace planit_data.Services
                 }
                
             }
-            return comment.CommentId;
+            return commentDTO;
         }
     }
 }

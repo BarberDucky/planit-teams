@@ -30,7 +30,7 @@ namespace planit_data.DTOs
         public String Name { get; set; }
         public String Color { get; set; }
         public int BoardId { get; set; }
-        public int UserId { get; set; }
+       // public string Username { get; set; }
 
         public CardList FromDTO()
         {
@@ -78,7 +78,7 @@ namespace planit_data.DTOs
 
     public class UpdateCardListDTO
     {
-        public int ListId { get; set; }
+        //public int ListId { get; set; }
         public String Name { get; set; }
         public String Color { get; set; }
 

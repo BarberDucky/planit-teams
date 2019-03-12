@@ -11,30 +11,31 @@ using System.Web.Http.Cors;
 namespace planit_api.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [Authorize]
     public class CardListController : ApiController
     {
         CardListService service = new CardListService();
 
-        // GET: api/CardList
-        public IEnumerable<ReadCardListDTO> Get()
-        {
-            return service.GetAllCardList();
-        }
+        //// GET: api/CardList
+        //public IEnumerable<ReadCardListDTO> Get()
+        //{
+        //    return service.GetAllCardList();
+        //}
 
         // GET: api/CardList/5
+        [HttpGet]
+        [Route("api/CardList/{id}")]
         public ReadCardListDTO Get(int id)
         {
             return service.GetCardList(id);
         }
 
         // POST: api/CardList
-        [Route("api/CardList/{userId:int}")]
         [HttpPost]
-        public bool Post(int userId, [FromBody]CreateCardListDTO cardList)
+        [Route("api/CardList")]
+        public BasicCardListDTO Post([FromBody]CreateCardListDTO cardList)
         {
-            if (cardList != null && service.InsertCardList(userId, cardList) != 0)
-                return true;
-            return false;
+            return service.InsertCardList(cardList);
         }
 
         // PUT: api/CardList/5
@@ -44,7 +45,7 @@ namespace planit_api.Controllers
         {
             if(cardList!=null)
             {
-                return service.UpdateCardList(cardList);
+                return service.UpdateCardList(id, cardList);
             }
             return false;
         }
@@ -58,17 +59,11 @@ namespace planit_api.Controllers
         }
 
         [HttpGet]
-        [Route("api/CardList/{idBoard:int}/User/{idUser:int}")]
-        public IEnumerable<ReadCardListDTO> CardListUser(int idBoard, int idUser)
+        [Route("api/CardList/Board/{idBoard:int}")]
+        public IEnumerable<ReadCardListDTO> CardListUser(int idBoard)
         {
-            return service.GetAllCardListsOnBoard(idBoard, idUser);
+            return service.GetAllCardListsOnBoard(idBoard);
         }
 
-        [HttpGet]
-        [Route("api/CardList/CardListByUser/{cardListId:int}/User/{idUser:int}")]
-        public ReadCardListDTO CardListByUser(int cardListId, int idUser)
-        {
-            return service.GetCardListByUser(cardListId, idUser);
-        }
     }
 }

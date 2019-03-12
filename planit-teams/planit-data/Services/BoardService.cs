@@ -45,8 +45,7 @@ namespace planit_data.Services
         }
         #endregion
 
-        //TODO Trebace da se prepravi da radi sa tokenom
-        public ReadBoardDTO GetBoard(int boardId, int userId)
+        public ReadBoardDTO GetBoard(int boardId, string username)
         {
             ReadBoardDTO boardDTO = null;
             using (UnitOfWork unit = new UnitOfWork())
@@ -59,7 +58,7 @@ namespace planit_data.Services
                         .GetAllUsersWithPermissionOnBoard(b.BoardId);
 
                     bool isAdmin = unit.PermissionRepository
-                        .IsAdmin(b.BoardId, userId);
+                        .IsAdmin(b.BoardId, username);
 
                     boardDTO = new ReadBoardDTO(b, isAdmin, users);
                 }
@@ -68,12 +67,12 @@ namespace planit_data.Services
             return boardDTO;
         }
 
-        public List<ShortBoardDTO> GetBoardsByUser(int userId)
+        public List<ShortBoardDTO> GetBoardsByUser(string username)
         {
             List<ShortBoardDTO> dtos = new List<ShortBoardDTO>();
             using (UnitOfWork unit = new UnitOfWork())
             {
-                User user = unit.UserRepository.GetById(userId);
+                User user = unit.UserRepository.GetUserByUsername(username);
 
                 if (user != null)
                 {
@@ -82,7 +81,7 @@ namespace planit_data.Services
                         if (p != null && p.Board != null)
                         {
                             BoardNotification notif = unit.BoardNotificationRepository
-                                .GetBoardNotification(p.Board.BoardId, userId);
+                                .GetBoardNotification(p.Board.BoardId, user.UserId);
                             if (notif != null)
                             {
                                 dtos.Add(new ShortBoardDTO(p.Board, notif.IsRead));
@@ -101,14 +100,15 @@ namespace planit_data.Services
             return dtos;
         }
 
-        //Ako ne uspe dodavanje board-a vratice se 0
-        public int InsertBoard(CreateBoardDTO boardDTO)
+        //Ako ne uspe dodavanje board-a vratice se null
+        public ShortBoardDTO InsertBoard(CreateBoardDTO boardDTO, string username)
         {
             Board board = boardDTO.FromDTO();
             board.ExchangeName = Guid.NewGuid().ToString();
+            ShortBoardDTO dto = null;
             using (UnitOfWork unit = new UnitOfWork())
             {
-                User creator = unit.UserRepository.GetById(boardDTO.CreatedByUser);
+                User creator = unit.UserRepository.GetUserByUsername(username);
 
                 if (board != null && creator != null)
                 {
@@ -130,20 +130,21 @@ namespace planit_data.Services
 
                     if (unit.Save())
                     {
+                        dto = new ShortBoardDTO(board, true);
                         RabbitMQService.DeclareExchange(board.ExchangeName);
                     }
                 }
             }
 
-            return board.BoardId;
+            return dto;
         }
 
-        public bool UpdateBoard(UpdateBoardDTO boardDTO)
+        public bool UpdateBoard(int boardId, UpdateBoardDTO boardDTO)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
-                Board board = unit.BoardRepository.GetById(boardDTO.BoardId);
+                Board board = unit.BoardRepository.GetById(boardId);
 
                 if (board != null)
                 {
@@ -166,13 +167,13 @@ namespace planit_data.Services
             return ret;
         }
 
-        public bool DeleteBoard(int id, int userId)
+        public bool DeleteBoard(int id, string username)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
                 bool isAdmin = unit.PermissionRepository
-                    .IsAdmin(id, userId);
+                    .IsAdmin(id, username);
 
                 if (isAdmin)
                 {

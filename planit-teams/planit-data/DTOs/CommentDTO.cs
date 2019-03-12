@@ -7,14 +7,13 @@ using planit_data.Entities;
 
 namespace planit_data.DTOs
 {
-    //TODO Dodaditi ovaj dto
     public class BasicCommentDTO
     {
         public int CommentId { get; set; }
         public int CardId { get; set; }
         public int CardListId { get; set; }
         public int BoardId { get; set; }
-        public int UserId { get; set; }
+        public string Username { get; set; }
         public String Text { get; set; }
         public DateTime TimeStamp { get; set; }
 
@@ -24,7 +23,7 @@ namespace planit_data.DTOs
             Text = comment.Text;
             TimeStamp = comment.TimeStamp;
             CardId = comment.Card.CardId;
-            UserId = comment.User.UserId;
+            Username = comment.User.IdentificationUser.UserName;
             CardListId = comment.Card.List.ListId;
             BoardId = comment.Card.List.Board.BoardId;
         }
@@ -35,7 +34,7 @@ namespace planit_data.DTOs
     {
         public String Text { get; set; }
         public int CardId { get; set; }
-        public int UserId { get; set; }
+       // public string UserId { get; set; }
 
         public static Comment FromDTO(CreateCommentDTO dto)
         {
@@ -54,20 +53,22 @@ namespace planit_data.DTOs
         public String Text { get; set; }
         public DateTime TimeStamp { get; set; }
         public int CardId { get; set; }
-        public int UserId { get; set; }
+        public int ListId { get; set; }
+        public String Username { get; set; }
 
         public ReadCommentDTO(Comment comment)
         {
             CommentId = comment.CommentId;
             Text = comment.Text;
             TimeStamp = comment.TimeStamp;
+            ListId = comment.Card.List.ListId;
             if (comment.Card != null)
             {
                 CardId = comment.Card.CardId;
             }
             if (comment.User != null)
             {
-                UserId = comment.User.UserId;
+                Username = comment.User.IdentificationUser.UserName;
             }
 
         }
@@ -89,6 +90,7 @@ namespace planit_data.DTOs
         }
     }
 
+    //Nema update komentara
     public class UpdateCommentDTO
     {
         public int CommentId { get; set; }
@@ -104,6 +106,4 @@ namespace planit_data.DTOs
             return com;
         }
     }
-
-    
 }

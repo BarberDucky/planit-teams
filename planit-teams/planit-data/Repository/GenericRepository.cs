@@ -81,7 +81,7 @@ namespace planit_data.Repository
         public bool Delete(int id)
         {
             T obj = set.Find(id);
-            if(obj!=null)
+            if (obj != null)
             {
                 set.Remove(obj);
                 return true;
@@ -90,7 +90,7 @@ namespace planit_data.Repository
             {
                 return false;
             }
-            
+
         }
 
     }

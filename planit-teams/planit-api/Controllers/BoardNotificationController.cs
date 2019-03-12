@@ -10,38 +10,17 @@ using System.Web.Http.Cors;
 namespace planit_api.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [Authorize]
     public class BoardNotificationController : ApiController
     {
         BoardNotificationService service = new BoardNotificationService();
-        
-        // GET: api/BoardNotification
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/BoardNotification/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/BoardNotification
-        public void Post([FromBody]string value)
-        {
-        }
 
         // PUT: api/BoardNotification/5
         [HttpPut]
-        [Route("api/BoardNotification/User/{id}/Board/{boardId}")]
-        public bool Put(int id, int boardId)
+        [Route("api/BoardNotification/Board/{boardId}")]
+        public bool Put(int boardId)
         {
-            return service.ReadBoard(boardId, id);
-        }
-
-        // DELETE: api/BoardNotification/5
-        public void Delete(int id)
-        {
+            return service.ReadBoard(boardId, User.Identity.Name);
         }
     }
 }

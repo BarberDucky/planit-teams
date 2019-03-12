@@ -12,32 +12,32 @@ using planit_data.Services;
 namespace planit_api.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [Authorize]
     public class PermissionController : ApiController
     {
         PermissionService ps = new PermissionService();
 
         // PUT: api/Permission/5
-        public void Put(int id, [FromBody]UpdatePermissionDTO value)
-        {
-            ps.UpdatePermission(value);
-        }
+        //public void Put(int id, [FromBody]UpdatePermissionDTO value)
+        //{
+        //    ps.UpdatePermission(value);
+        //}
 
         //POST: api/Permission
         public bool Post([FromBody]AddUserBoardPermisionDTO value)
         {
             if (value != null)
             {
-                //TODO HARD CODE
-                return ps.AddUserBoardPermision(value, 1);
+                return ps.AddUserBoardPermision(value, User.Identity.Name);
             }
             return false;
         }
 
         [HttpDelete]
-        [Route("api/Permission/Board/{boardId}/User/{userId}/Admin/{adminId}")]
-        public bool Delete(int boardId, int userId, int adminId)
+        [Route("api/Permission/Board/{boardId}/User/{username}")]
+        public bool Delete(int boardId, string username)
         {
-            return ps.DeletePermission(boardId, userId, adminId);
+            return ps.DeletePermission(boardId, username, User.Identity.Name);
         }
 
     }

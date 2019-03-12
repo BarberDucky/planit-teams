@@ -38,7 +38,7 @@ namespace planit_data.DTOs
         public String Description { get; set; }
         public DateTime DueDate { get; set; }
         public int ListId { get; set; }
-        public int UserId { get; set; }
+        //public int UserId { get; set; }
 
         public static Card FromDTO(CreateCardDTO dto)
         {
@@ -92,17 +92,16 @@ namespace planit_data.DTOs
 
     public class UpdateCardDTO
     {
-        public int CardId { get; set; }
+        //public int CardId { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
         public DateTime DueDate { get; set; }
-        public int UpdatedByUser { get; set; }
+        //public int UpdatedByUser { get; set; }
 
         public static Card FromDTO(UpdateCardDTO dto)
         {
             Card c = new Card()
             {
-                CardId = dto.CardId,
                 Name = dto.Name,
                 Description = dto.Description,
                 DueDate = dto.DueDate

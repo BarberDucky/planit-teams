@@ -27,7 +27,6 @@ namespace planit_data.Services
         }
         #endregion
 
-
         public ReadCardListDTO GetCardList(int id)
         {
             ReadCardListDTO cardListDTO = null;
@@ -44,15 +43,14 @@ namespace planit_data.Services
             return cardListDTO;
         }
 
-        //TODO OVE DVE METODE SU ISTE
-        //TODO prepraviti da radi sa tokenima
-        public int InsertCardList(int userId, CreateCardListDTO cardListDto)
+        public BasicCardListDTO InsertCardList(CreateCardListDTO cardListDto)
         {
-            if (!PermissionHelper.HasPermissionOnBoard(cardListDto.BoardId, userId))
-            {
-                return 0;
-            }
+            //if (!PermissionHelper.HasPermissionOnBoard(cardListDto.BoardId, userId))
+            //{
+            //    return 0;
+            //}
 
+            BasicCardListDTO dto = null;
             CardList list = cardListDto.FromDTO();
             using (UnitOfWork unit = new UnitOfWork())
             {
@@ -65,7 +63,7 @@ namespace planit_data.Services
                     unit.CardListRepository.Insert(list);
                     if (unit.Save())
                     {
-                        BasicCardListDTO dto = new BasicCardListDTO(list);
+                        dto = new BasicCardListDTO(list);
                         RabbitMQService.PublishToExchange(board.ExchangeName,
                             new MessageContext(new CardListMessageStrategy(dto, MessageType.Create)));
 
@@ -74,25 +72,13 @@ namespace planit_data.Services
                 }
             }
 
-            return list.ListId;
+            return dto;
         }
 
-        //TODO prepraviti da radi sa tokenima
-        public ReadCardListDTO GetCardListByUser(int cardId, int idUser)
+        public IEnumerable<ReadCardListDTO> GetAllCardListsOnBoard(int idBoard)
         {
-            if (!PermissionHelper.HasPermissionOnList(cardId, idUser))
-            {
-                return null;
-            }
-
-            return GetCardList(cardId);
-        }
-
-        //TODO prepraviti da radi sa tokenima
-        public IEnumerable<ReadCardListDTO> GetAllCardListsOnBoard(int idBoard, int idUser)
-        {
-            if (!PermissionHelper.HasPermissionOnBoard(idBoard, idUser))
-                return new List<ReadCardListDTO>();
+            //if (!PermissionHelper.HasPermissionOnBoard(idBoard, idUser))
+            //    return new List<ReadCardListDTO>();
 
             using (UnitOfWork uw = new UnitOfWork())
             {
@@ -103,12 +89,12 @@ namespace planit_data.Services
             }
         }
 
-        public bool UpdateCardList(UpdateCardListDTO cardListDTO)
+        public bool UpdateCardList(int cardlistId, UpdateCardListDTO cardListDTO)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
-                CardList cardList = unit.CardListRepository.GetById(cardListDTO.ListId);
+                CardList cardList = unit.CardListRepository.GetById(cardlistId);
 
                 if (cardList != null)
                 {

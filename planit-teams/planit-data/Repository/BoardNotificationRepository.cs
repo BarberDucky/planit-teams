@@ -15,15 +15,15 @@ namespace planit_data.Repository
 
         }
 
-        public List<User> GetAllUsersWithBoard(int boardId)
-        {
-            List<User> users = new List<User>();
+        //public List<User> GetAllUsersWithBoard(int boardId)
+        //{
+        //    List<User> users = new List<User>();
 
-            users = Get(x => x.Board.BoardId == boardId)
-                .Select(x => x.User).ToList();
+        //    users = Get(x => x.Board.BoardId == boardId)
+        //        .Select(x => x.User).ToList();
 
-            return users;
-        }
+        //    return users;
+        //}
 
         public List<BoardNotification> GetBoardNotificationsByBoard(int boardId)
         {
@@ -37,6 +37,21 @@ namespace planit_data.Repository
         {
             List<BoardNotification> notifs =
                 Get(x => x.User.UserId == userId && x.Board.BoardId == boardId)
+                .ToList();
+
+            if (notifs != null && notifs.Count > 0)
+            {
+                return notifs[0];
+            }
+
+            return null;
+        }
+
+        public BoardNotification GetBoardNotification(int boardId, string username)
+        {
+            List<BoardNotification> notifs =
+                Get(x => x.User.IdentificationUser.UserName == username
+                && x.Board.BoardId == boardId)
                 .ToList();
 
             if (notifs != null && notifs.Count > 0)
