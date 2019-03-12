@@ -61,3 +61,32 @@ sve ostale poruke su tipa 1.
 	MessageType - Change
 	Data - ReadNotificationDTO
 
+-------------------------------------------
+          POST POVRATNI TIPOVI
+-------------------------------------------
+
+Pri kreiranju Card List, Card i Comment povratni tip je odgovarajuci BasicDTO
+Pri kreiranju Board-a povratni tip je ShortBoardDTO - to je ono sto vam ide sa strane
+Ukoliko kreiranje ne uspe vraca se null
+
+-------------------------------------------
+          KORISNE INFO
+-------------------------------------------
+
+- Ako se baci exception, dobija se 500 response
+- Ne zaboraviti da promenite password u web.config file-ovima,
+  promena se vrsi na 2 mesta: api i data
+- Najbolje dropovati celu bazu i pokrenuti migraciju sa:
+  update-database
+  (pre toga postaviti projekat u konzoli na planit-data)
+- Postoji sansa da nece da radi neka ruta (kaze nesto tipa GET metoda ne postoji), 
+  ako ste sigurni da ruta postoji i da ste je lepo pozvali probajte da dodate
+  [Route(nesto)] u api ako nije definisano
+- Sve rute sem registracije su autorizovane, 
+  saljete token pri svakom pozivu,
+  nikada nece dobiti userId, 
+  ako treba da dodate nekog usera na board napr koristite username njegov
+- Ako nesto ne radi, baci ex ili se ponasa kako ne treba
+  ili pokusajte da popravite (ali preporucujem da ne gubite vreme sa time)
+  ili zapisite negde pa cu da popravim kad se vratim
+  

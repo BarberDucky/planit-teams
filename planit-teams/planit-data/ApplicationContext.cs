@@ -37,15 +37,40 @@ namespace planit_data
         {
             base.OnModelCreating(modelBuilder);
 
-            //modelBuilder.Entity<Notification>()
-            //    .HasMany<User>(u => u.Users)
-            //    .WithMany(c => c.Notifications)
-            //    .Map(cs =>
-            //    {
-            //        cs.MapLeftKey("NotificationRefId");
-            //        cs.MapRightKey("UserRefId");
-            //        cs.ToTable("NotificationUser");
-            //    });
+            modelBuilder.Entity<CardList>()
+                .HasOptional<Board>(b => b.Board)
+                .WithMany(b => b.CardLists)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Card>()
+                .HasMany<User>(u => u.ObserverUsers)
+                .WithMany(c => c.WatchedCards)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("CardRefId");
+                    cs.MapRightKey("UserRefId");
+                    cs.ToTable("CardObserverUser");
+                });
+
+            modelBuilder.Entity<Card>()
+               .HasOptional<CardList>(b => b.List)
+               .WithMany(b => b.Cards)
+               .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Card>()
+               .HasOptional<User>(b => b.User)
+               .WithMany(b => b.Cards)
+               .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Comment>()
+              .HasOptional<Card>(b => b.Card)
+              .WithMany(b => b.Comments)
+              .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Comment>()
+               .HasOptional<User>(b => b.User)
+               .WithMany()
+               .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Notification>()
                 .HasRequired<User>(n => n.BelongsToUser)
@@ -57,6 +82,11 @@ namespace planit_data
                 .HasRequired<User>(n => n.CreatedByUser)
                 .WithMany()
                 .HasForeignKey<int>(u => u.CreatedByUserId);
+
+            modelBuilder.Entity<Notification>()
+               .HasOptional<Card>(n => n.Card)
+               .WithMany()
+               .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<BoardNotification>()
                 .HasOptional<User>(u => u.User)
@@ -78,15 +108,7 @@ namespace planit_data
                .WithMany(u => u.Permissions)
                .WillCascadeOnDelete(true);
 
-            modelBuilder.Entity<Card>()
-                .HasMany<User>(u => u.ObserverUsers)
-                .WithMany(c => c.WatchedCards)
-                .Map(cs =>
-                {
-                    cs.MapLeftKey("CardRefId");
-                    cs.MapRightKey("UserRefId");
-                    cs.ToTable("CardObserverUser");
-                });
+            
         }
     }
 }

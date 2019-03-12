@@ -118,9 +118,9 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Helpers\PermissionHelper.cs" />
     <Compile Include="IdentityModels.cs" />
-    <Compile Include="Migrations\201903112245092_Initial.cs" />
-    <Compile Include="Migrations\201903112245092_Initial.Designer.cs">
-      <DependentUpon>201903112245092_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201903122209595_Initial.cs" />
+    <Compile Include="Migrations\201903122209595_Initial.Designer.cs">
+      <DependentUpon>201903122209595_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -152,8 +152,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201903112245092_Initial.resx">
-      <DependentUpon>201903112245092_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201903122209595_Initial.resx">
+      <DependentUpon>201903122209595_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

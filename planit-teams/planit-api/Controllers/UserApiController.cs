@@ -32,6 +32,8 @@ namespace planit_api.Controllers
 
         // POST: api/UserApi
         [AllowAnonymous]
+        [HttpPost]
+        [Route("api/UserApi")]
         public bool Post([FromBody]CreateUserDTO user)
         {
             if (user != null && service.InsertUser(user) != 0)

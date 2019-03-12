@@ -31,6 +31,8 @@ namespace planit_api.Controllers
         }
 
         // POST: api/Board
+        [HttpPost]
+        [Route("api/Board")]
         public ShortBoardDTO Post([FromBody]CreateBoardDTO board)
         {
             return service.InsertBoard(board, User.Identity.Name);

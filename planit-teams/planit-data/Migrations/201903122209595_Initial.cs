@@ -59,8 +59,8 @@ namespace planit_data.Migrations
                         User_UserId = c.Int(),
                     })
                 .PrimaryKey(t => t.CardId)
-                .ForeignKey("dbo.CardLists", t => t.List_ListId)
-                .ForeignKey("dbo.Users", t => t.User_UserId)
+                .ForeignKey("dbo.CardLists", t => t.List_ListId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.User_UserId, cascadeDelete: true)
                 .Index(t => t.List_ListId)
                 .Index(t => t.User_UserId);
             
@@ -75,8 +75,8 @@ namespace planit_data.Migrations
                         User_UserId = c.Int(),
                     })
                 .PrimaryKey(t => t.CommentId)
-                .ForeignKey("dbo.Cards", t => t.Card_CardId)
-                .ForeignKey("dbo.Users", t => t.User_UserId)
+                .ForeignKey("dbo.Cards", t => t.Card_CardId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.User_UserId, cascadeDelete: true)
                 .Index(t => t.Card_CardId)
                 .Index(t => t.User_UserId);
             
@@ -90,7 +90,7 @@ namespace planit_data.Migrations
                         Board_BoardId = c.Int(),
                     })
                 .PrimaryKey(t => t.ListId)
-                .ForeignKey("dbo.Boards", t => t.Board_BoardId)
+                .ForeignKey("dbo.Boards", t => t.Board_BoardId, cascadeDelete: true)
                 .Index(t => t.Board_BoardId);
             
             CreateTable(
@@ -165,7 +165,7 @@ namespace planit_data.Migrations
                     })
                 .PrimaryKey(t => t.NotificationId)
                 .ForeignKey("dbo.Users", t => t.BelongsToUserId, cascadeDelete: true)
-                .ForeignKey("dbo.Cards", t => t.Card_CardId)
+                .ForeignKey("dbo.Cards", t => t.Card_CardId, cascadeDelete: true)
                 .ForeignKey("dbo.Users", t => t.CreatedByUserId, cascadeDelete: true)
                 .Index(t => t.CreatedByUserId)
                 .Index(t => t.BelongsToUserId)
