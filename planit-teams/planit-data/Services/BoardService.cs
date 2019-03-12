@@ -12,6 +12,7 @@ namespace planit_data.Services
 {
     public class BoardService
     {
+        #region Should Delete
         public List<ReadBoardDTO> GetAllBoards()
         {
             List<ReadBoardDTO> dtos;
@@ -24,6 +25,27 @@ namespace planit_data.Services
             return dtos;
         }
 
+        public ReadBoardDTO GetBoardUser(int boardId, int userId)
+        {
+            ReadBoardDTO boardDTO = null;
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                List<Permission> p = unit.PermissionRepository
+                    .Get(x => (x.User.UserId == userId && x.Board.BoardId == boardId))
+                    .ToList();
+
+                if (p != null && p.Count > 0)
+                {
+                    Board b = p[0].Board;
+                    boardDTO = new ReadBoardDTO(b);
+                }
+            }
+
+            return boardDTO;
+        }
+        #endregion
+
+        //TODO Trebace da se prepravi da radi sa tokenom
         public ReadBoardDTO GetBoard(int boardId, int userId)
         {
             ReadBoardDTO boardDTO = null;
@@ -37,27 +59,9 @@ namespace planit_data.Services
                         .GetAllUsersWithPermissionOnBoard(b.BoardId);
 
                     bool isAdmin = unit.PermissionRepository
-                        .GetPermission(b.BoardId, userId).IsAdmin;
+                        .IsAdmin(b.BoardId, userId);
 
                     boardDTO = new ReadBoardDTO(b, isAdmin, users);
-                }
-            }
-
-            return boardDTO;
-        }
-
-        //TODO Trebace da se prepravi da radi sa tokenom
-        public ReadBoardDTO GetBoardUser(int boardId, int userId)
-        {
-            ReadBoardDTO boardDTO = null;
-            using (UnitOfWork unit = new UnitOfWork())
-            {
-                List<Permission> p = unit.PermissionRepository.Get(x => (x.User.UserId == userId && x.Board.BoardId == boardId)).ToList();
-
-                if (p != null && p.Count > 0)
-                {
-                    Board b = p[0].Board;
-                    boardDTO = new ReadBoardDTO(b);
                 }
             }
 
@@ -152,6 +156,7 @@ namespace planit_data.Services
                         BoardNotificationService.ChangeBoardNotifications(board.BoardId);
 
                         BasicBoardDTO dto = new BasicBoardDTO(board);
+
                         RabbitMQService.PublishToExchange(board.ExchangeName,
                             new MessageContext(new BoardMessageStrategy(dto, MessageType.Update)));
                     }
@@ -161,15 +166,30 @@ namespace planit_data.Services
             return ret;
         }
 
-        //TODO proveriti permission
-        //TODO videti ovde sta cemo
-        public bool DeleteBoard(int id)
+        public bool DeleteBoard(int id, int userId)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
-                unit.BoardRepository.Delete(id);
-                ret = unit.Save();
+                bool isAdmin = unit.PermissionRepository
+                    .IsAdmin(id, userId);
+
+                if (isAdmin)
+                {
+                    List<User> users = unit.PermissionRepository
+                        .GetAllUsersWithPermissionOnBoard(id);
+
+                    unit.BoardRepository.Delete(id);
+                    ret = unit.Save();
+
+                    if (ret)
+                        foreach (var u in users)
+                        {
+                            RabbitMQService.PublishToExchange(u.ExchangeName,
+                                new MessageContext(new BoardMessageStrategy(id)));
+                        }
+
+                }
             }
 
             return ret;

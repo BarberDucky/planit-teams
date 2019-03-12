@@ -13,13 +13,6 @@ namespace planit_data.DTOs
         public int UserId { get; set; }
         public NotificationType NotificationType { get; set; }
 
-        //public Notification FromDTO()
-        //{
-        //    return new Notification()
-        //    {
-        //        IsRead = false
-        //    };
-        //}
     }
 
     public class ReadNotificationDTO

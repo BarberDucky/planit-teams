@@ -13,6 +13,7 @@ namespace planit_data.Services
 {
     public class CardListService
     {
+        #region Should Delete
         public List<ReadCardListDTO> GetAllCardList()
         {
             List<ReadCardListDTO> dtos;
@@ -24,6 +25,8 @@ namespace planit_data.Services
 
             return dtos;
         }
+        #endregion
+
 
         public ReadCardListDTO GetCardList(int id)
         {
@@ -41,6 +44,7 @@ namespace planit_data.Services
             return cardListDTO;
         }
 
+        //TODO OVE DVE METODE SU ISTE
         //TODO prepraviti da radi sa tokenima
         public int InsertCardList(int userId, CreateCardListDTO cardListDto)
         {

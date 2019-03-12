@@ -27,7 +27,8 @@ namespace planit_data.Repository
 
         public Permission GetPermission(int boardId, int userId)
         {
-            List<Permission> perms = Get(x => x.Board.BoardId == boardId && x.User.UserId == userId)
+            List<Permission> perms = Get(x => x.Board.BoardId == boardId
+            && x.User.UserId == userId)
                 .ToList();
 
             if (perms != null && perms.Count > 0)
@@ -36,6 +37,16 @@ namespace planit_data.Repository
             }
 
             return null;
+        }
+
+        public bool IsAdmin(int boardId, int userId)
+        {
+            Permission perm = GetPermission(boardId, userId);
+
+            if (perm != null)
+                return perm.IsAdmin;
+
+            return false;
         }
     }
 }

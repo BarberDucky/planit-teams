@@ -31,6 +31,7 @@ namespace planit_data
         public System.Data.Entity.DbSet<CardList> CardLists { get; set; }
         public System.Data.Entity.DbSet<Comment> Comments { get; set; }
         public System.Data.Entity.DbSet<Notification> Notifications { get; set; }
+       // public System.Data.Entity.DbSet<BoardNotification> BoardNotifications { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -50,11 +51,32 @@ namespace planit_data
                 .HasRequired<User>(n => n.BelongsToUser)
                 .WithMany(u => u.Notifications)
                 .HasForeignKey<int>(u => u.BelongsToUserId);
+                
 
             modelBuilder.Entity<Notification>()
                 .HasRequired<User>(n => n.CreatedByUser)
                 .WithMany()
                 .HasForeignKey<int>(u => u.CreatedByUserId);
+
+            modelBuilder.Entity<BoardNotification>()
+                .HasOptional<User>(u => u.User)
+                .WithMany(u => u.BoardNotification)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<BoardNotification>()
+               .HasOptional<Board>(u => u.Board)
+               .WithMany(u => u.BoardNotification)
+               .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Permission>()
+              .HasOptional<User>(u => u.User)
+              .WithMany(u => u.Permissions)
+              .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Permission>()
+               .HasOptional<Board>(u => u.Board)
+               .WithMany(u => u.Permissions)
+               .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Card>()
                 .HasMany<User>(u => u.ObserverUsers)

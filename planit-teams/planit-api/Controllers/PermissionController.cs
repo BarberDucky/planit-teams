@@ -4,12 +4,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using planit_data.DTOs;
 using planit_data.Entities;
 using planit_data.Services;
 
 namespace planit_api.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PermissionController : ApiController
     {
         PermissionService ps = new PermissionService();
@@ -25,9 +27,17 @@ namespace planit_api.Controllers
         {
             if (value != null)
             {
-                return ps.AddUserBoardPermision(value);
+                //TODO HARD CODE
+                return ps.AddUserBoardPermision(value, 1);
             }
             return false;
+        }
+
+        [HttpDelete]
+        [Route("api/Permission/Board/{boardId}/User/{userId}/Admin/{adminId}")]
+        public bool Delete(int boardId, int userId, int adminId)
+        {
+            return ps.DeletePermission(boardId, userId, adminId);
         }
 
     }

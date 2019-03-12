@@ -99,7 +99,6 @@ namespace planit_data.RabbitMQ
         }
     }
 
-
     public class DeleteMessage
     {
         public MessageEntity MessageEntity;

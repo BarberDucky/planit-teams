@@ -54,9 +54,11 @@ namespace planit_api.Controllers
         }
 
         // DELETE: api/Board/5
+        [HttpDelete]
+        [Route("api/Board/{id}")]
         public bool Delete(int id)
         {
-            return service.DeleteBoard(id);
+            return service.DeleteBoard(id, 1);
         }
 
         [HttpGet]

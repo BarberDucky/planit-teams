@@ -13,7 +13,7 @@ namespace planit_data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201903091647136_Initial"; }
+            get { return "201903112245092_Initial"; }
         }
         
         string IMigrationMetadata.Source

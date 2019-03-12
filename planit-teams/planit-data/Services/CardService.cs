@@ -13,7 +13,7 @@ namespace planit_data.Services
 {
     public class CardService
     {
-
+        #region Should Delete
         public List<ReadCardDTO> GetAllCards()
         {
             using (UnitOfWork uw = new UnitOfWork())
@@ -23,6 +23,8 @@ namespace planit_data.Services
                 return ReadCardDTO.FromEntityList(cards);
             }
         }
+
+        #endregion
 
         //TODO prepraviti da radi sa tokenima
         public List<ReadCardDTO> GetAllCardsOnBoard(int boardId, int userId)
@@ -38,6 +40,7 @@ namespace planit_data.Services
             }
         }
 
+        //TODO OVE DVE METODE SU ISTE
         public ReadCardDTO GetCardById(int id)
         {
             ReadCardDTO dto;
@@ -74,19 +77,24 @@ namespace planit_data.Services
             {
                 CardList list = uw.CardListRepository.GetById(dto.ListId);
                 User user = uw.UserRepository.GetById(dto.UserId);
-                card = CreateCardDTO.FromDTO(dto);
-                if (user == null || card == null || list == null) return 0;
-                card.User = user;
-                card.List = list;
-                uw.CardRepository.Insert(card);
-                if (uw.Save())
-                {
-                    BasicCardDTO cardDto = new BasicCardDTO(card);
-                    RabbitMQService.PublishToExchange(list.Board.ExchangeName,
-                        new MessageContext(new CardMessageStrategy(cardDto, MessageType.Create)));
 
-                    BoardNotificationService.ChangeBoardNotifications(list.Board.BoardId);
+                card = CreateCardDTO.FromDTO(dto);
+
+                if (user != null && list != null)
+                {
+                    card.User = user;
+                    card.List = list;
+                    uw.CardRepository.Insert(card);
+                    if (uw.Save())
+                    {
+                        BasicCardDTO cardDto = new BasicCardDTO(card);
+                        RabbitMQService.PublishToExchange(list.Board.ExchangeName,
+                            new MessageContext(new CardMessageStrategy(cardDto, MessageType.Create)));
+
+                        BoardNotificationService.ChangeBoardNotifications(list.Board.BoardId);
+                    }
                 }
+              
             }
             return card.CardId;
         }
@@ -171,8 +179,8 @@ namespace planit_data.Services
             using (UnitOfWork uw = new UnitOfWork())
             {
                 Board board = uw.CardRepository.GetById(id).List.Board;
-                success = uw.CardRepository.Delete(id);
-                uw.Save();
+                uw.CardRepository.Delete(id);
+                success = uw.Save();
 
                 if (success)
                 {

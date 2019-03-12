@@ -12,35 +12,57 @@ namespace planit_data.Services
 {
     public class NotificationService
     {
-        //TODO ZASTO OVO NECE DA SE SNIMI LEPO
+        #region Should Delete
+        public List<ReadNotificationDTO> GetAllNotifications()
+        {
+            using (UnitOfWork uw = new UnitOfWork())
+            {
+                List<Notification> notificationsFromDB = uw.NotificationRepository.GetAll();
+
+                return ReadNotificationDTO.FromList(notificationsFromDB);
+            }
+        }
+
+        public void DeleteNotification(int notificationId)
+        {
+            using (UnitOfWork uw = new UnitOfWork())
+            {
+                uw.NotificationRepository.Delete(notificationId);
+                uw.Save();
+            }
+        }
+
+        #endregion
+
         public bool CreateMoveNotification(CreateNotificationDTO notificationDTO)
         {
             bool ret = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                Notification obj = new Notification();
+                
                 User user = uw.UserRepository.GetById(notificationDTO.UserId);
                 Card card = uw.CardRepository.GetById(notificationDTO.CardId);
 
                 if (user != null && card != null)
                 {
-
-                    obj.CreatedByUser = user;
-                    obj.Card = card;
-                    obj.NotificationType = notificationDTO.NotificationType;
-
                     Board b = card.List.Board;
 
                     List<User> users = uw.PermissionRepository
                         .GetAllUsersWithPermissionOnBoard(b.BoardId);
-
-
-                    ReadNotificationDTO dto = new ReadNotificationDTO(obj);
+                    
                     foreach (var u in users)
                     {
-                        obj.BelongsToUserId = u.UserId;
+                        Notification obj = new Notification
+                        {
+                            CreatedByUser = user,
+                            Card = card,
+                            NotificationType = notificationDTO.NotificationType,
+                            BelongsToUserId = u.UserId
+                        };
+
+                        ReadNotificationDTO dto = new ReadNotificationDTO(obj);
                         uw.NotificationRepository.Insert(obj);
-                        uw.Save();
+
                         RabbitMQService.PublishToExchange(u.ExchangeName,
                             new MessageContext(new NotificationMessageStrategy(dto, MessageType.Move)));
                     }
@@ -57,24 +79,26 @@ namespace planit_data.Services
             bool ret = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                Notification obj = new Notification();
                 User user = uw.UserRepository.GetById(notificationDTO.UserId);
                 Card card = uw.CardRepository.GetById(notificationDTO.CardId);
 
                 if (user != null && card != null)
                 {
 
-                    obj.CreatedByUser = user;
-                    obj.Card = card;
-                    obj.NotificationType = notificationDTO.NotificationType;
-
-                    ReadNotificationDTO dto = new ReadNotificationDTO(obj);
-
                     foreach (var u in card.ObserverUsers)
                     {
-                        obj.BelongsToUserId = u.UserId;
+
+                        Notification obj = new Notification
+                        {
+                            CreatedByUser = user,
+                            Card = card,
+                            NotificationType = notificationDTO.NotificationType,
+                            BelongsToUserId = u.UserId
+                        };
+
+                        ReadNotificationDTO dto = new ReadNotificationDTO(obj);
                         uw.NotificationRepository.Insert(obj);
-                        uw.Save();
+
                         RabbitMQService.PublishToExchange(u.ExchangeName,
                             new MessageContext(new NotificationMessageStrategy(dto, MessageType.Change)));
                     }
@@ -82,17 +106,6 @@ namespace planit_data.Services
                 }
 
                 return ret;
-            }
-        }
-
-        //TODO ova funckija nema smisla
-        public List<ReadNotificationDTO> GetAllNotifications()
-        {
-            using (UnitOfWork uw = new UnitOfWork())
-            {
-                List<Notification> notificationsFromDB = uw.NotificationRepository.GetAll();
-
-                return ReadNotificationDTO.FromList(notificationsFromDB);
             }
         }
 
@@ -152,16 +165,5 @@ namespace planit_data.Services
                 return false;
             }
         }
-
-        //TODO Zasto imamo brisanje notifikacija??
-        public void DeleteNotification(int notificationId)
-        {
-            using (UnitOfWork uw = new UnitOfWork())
-            {
-                uw.NotificationRepository.Delete(notificationId);
-                uw.Save();
-            }
-        }
-
     }
 }

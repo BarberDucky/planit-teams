@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace planit_data.RabbitMQ
 {
-    //TODO Videti sta sa brisanjem
     public class BoardMessageStrategy : IMessageStrategy
     {
         private bool isDeleteMessage = false;

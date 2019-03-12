@@ -118,21 +118,9 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Helpers\PermissionHelper.cs" />
     <Compile Include="IdentityModels.cs" />
-    <Compile Include="Migrations\201903091647136_Initial.cs" />
-    <Compile Include="Migrations\201903091647136_Initial.Designer.cs">
-      <DependentUpon>201903091647136_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903091920175_Initial1.cs" />
-    <Compile Include="Migrations\201903091920175_Initial1.Designer.cs">
-      <DependentUpon>201903091920175_Initial1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903101921160_BoardNotifications.cs" />
-    <Compile Include="Migrations\201903101921160_BoardNotifications.Designer.cs">
-      <DependentUpon>201903101921160_BoardNotifications.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903111958091_BoardNotifications1.cs" />
-    <Compile Include="Migrations\201903111958091_BoardNotifications1.Designer.cs">
-      <DependentUpon>201903111958091_BoardNotifications1.cs</DependentUpon>
+    <Compile Include="Migrations\201903112245092_Initial.cs" />
+    <Compile Include="Migrations\201903112245092_Initial.Designer.cs">
+      <DependentUpon>201903112245092_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -163,17 +151,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201903091647136_Initial.resx">
-      <DependentUpon>201903091647136_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903091920175_Initial1.resx">
-      <DependentUpon>201903091920175_Initial1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903101921160_BoardNotifications.resx">
-      <DependentUpon>201903101921160_BoardNotifications.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903111958091_BoardNotifications1.resx">
-      <DependentUpon>201903111958091_BoardNotifications1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201903112245092_Initial.resx">
+      <DependentUpon>201903112245092_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

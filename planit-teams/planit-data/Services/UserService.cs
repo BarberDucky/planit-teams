@@ -11,6 +11,31 @@ namespace planit_data.Services
 {
     public class UserService
     {
+        #region Should Delete
+        public List<ReadUserDTO> GetAllUsers()
+        {
+            List<ReadUserDTO> dtos;
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                List<User> users = unit.UserRepository.GetAll();
+                dtos = ReadUserDTO.FromEntityList(users);
+            }
+            return dtos;
+        }
+
+        public bool DeleteUser(int id)
+        {
+            bool ret = false;
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                unit.UserRepository.Delete(id);
+                ret = unit.Save();
+            }
+
+            return ret;
+        }
+        #endregion
+
         public ReadUserDTO GetUser(int id)
         {
             ReadUserDTO userDTO = null;
@@ -41,17 +66,6 @@ namespace planit_data.Services
                 }
             }
             return list;
-        }
-
-        public List<ReadUserDTO> GetAllUsers()
-        {
-            List<ReadUserDTO> dtos;
-            using (UnitOfWork unit = new UnitOfWork())
-            {
-                List<User> users = unit.UserRepository.GetAll();
-                dtos = ReadUserDTO.FromEntityList(users);
-            }
-            return dtos;
         }
 
         //Ako se nije kreirao user Id ce biti 0
@@ -97,17 +111,6 @@ namespace planit_data.Services
 
             return ret;
         }
-
-        public bool DeleteUser(int id)
-        {
-            bool ret = false;
-            using (UnitOfWork unit = new UnitOfWork())
-            {
-                unit.UserRepository.Delete(id);
-                ret = unit.Save();
-            }
-
-            return ret;
-        }
+       
     }
 }

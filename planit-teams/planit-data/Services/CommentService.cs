@@ -12,6 +12,46 @@ namespace planit_data.Services
 {
     public class CommentService
     {
+        #region Should Delete
+        public List<ReadCommentDTO> GetAllComments()
+        {
+            List<ReadCommentDTO> listDTO;
+            using (UnitOfWork uw = new UnitOfWork())
+            {
+                List<Comment> retList = uw.CommentRepository.GetAll();
+                listDTO = ReadCommentDTO.FromEntityList(retList);
+            }
+            return listDTO;
+        }
+
+        public bool UpdateComment(UpdateCommentDTO dto)
+        {
+            bool ret = false;
+            using (UnitOfWork uw = new UnitOfWork())
+            {
+                Comment c = uw.CommentRepository.GetById(dto.CommentId);
+                if (c != null)
+                {
+                    c.Text = dto.Text;
+                    uw.CommentRepository.Update(c);
+                    ret = uw.Save();
+                }
+            }
+            return ret;
+        }
+
+        public bool DeleteComment(int id)
+        {
+            bool success = false;
+            using (UnitOfWork uw = new UnitOfWork())
+            {
+                uw.CommentRepository.Delete(id);
+                success = uw.Save();
+            }
+            return success;
+        }
+        #endregion
+
         public ReadCommentDTO GetCommentById(int id)
         {
             ReadCommentDTO dto;
@@ -22,18 +62,6 @@ namespace planit_data.Services
                 dto = new ReadCommentDTO(comment);
             }
             return dto;
-        }
-
-        //Treba get all za 1 karticu
-        public List<ReadCommentDTO> GetAllComments()
-        {
-            List<ReadCommentDTO> listDTO;
-            using (UnitOfWork uw = new UnitOfWork())
-            {
-                List<Comment> retList = uw.CommentRepository.GetAll();
-                listDTO = ReadCommentDTO.FromEntityList(retList);
-            }
-            return listDTO;
         }
 
         public int InsertComment(CreateCommentDTO dto)
@@ -71,36 +99,5 @@ namespace planit_data.Services
             }
             return comment.CommentId;
         }
-
-        #region Should Delete
-        //TODO Zasto smo stavili da moze da se edituje komentar?? 
-        public bool UpdateComment(UpdateCommentDTO dto)
-        {
-            bool ret = false;
-            using (UnitOfWork uw = new UnitOfWork())
-            {
-                Comment c = uw.CommentRepository.GetById(dto.CommentId);
-                if (c != null)
-                {
-                    c.Text = dto.Text;
-                    uw.CommentRepository.Update(c);
-                    ret = uw.Save();
-                }
-            }
-            return ret;
-        }
-
-        //TODO Zasto smo stavili da se brise komentar??
-        public bool DeleteComment(int id)
-        {
-            bool success = false;
-            using (UnitOfWork uw = new UnitOfWork())
-            {
-                uw.CommentRepository.Delete(id);
-                success = uw.Save();
-            }
-            return success;
-        }
-        #endregion
     }
 }

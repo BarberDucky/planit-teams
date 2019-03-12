@@ -36,7 +36,8 @@ namespace planit_data.Repository
         public BoardNotification GetBoardNotification(int boardId, int userId)
         {
             List<BoardNotification> notifs =
-                Get(x => x.User.UserId == userId && x.Board.BoardId == boardId).ToList();
+                Get(x => x.User.UserId == userId && x.Board.BoardId == boardId)
+                .ToList();
 
             if (notifs != null && notifs.Count > 0)
             {
@@ -44,6 +45,16 @@ namespace planit_data.Repository
             }
 
             return null;
+        }
+
+        public void Delete(int boardId, int userId)
+        {
+            BoardNotification notif = GetBoardNotification(boardId, userId);
+
+            if (notif != null)
+            {
+                Delete(notif.BoardNotificationId);
+            }
         }
     }
 }
