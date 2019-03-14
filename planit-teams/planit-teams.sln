@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "planit-data", "planit-data\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "planit-client-forms", "planit-client-forms\planit-client-forms.csproj", "{6F6C06B9-16CA-4005-BFD9-35FF523DB42E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "planit-client-wpf", "planit-client-wpf\planit-client-wpf.csproj", "{3EF120CE-988D-4EFF-B2D5-62C5EE9C9E08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6F6C06B9-16CA-4005-BFD9-35FF523DB42E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F6C06B9-16CA-4005-BFD9-35FF523DB42E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F6C06B9-16CA-4005-BFD9-35FF523DB42E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EF120CE-988D-4EFF-B2D5-62C5EE9C9E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF120CE-988D-4EFF-B2D5-62C5EE9C9E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF120CE-988D-4EFF-B2D5-62C5EE9C9E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF120CE-988D-4EFF-B2D5-62C5EE9C9E08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
