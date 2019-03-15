@@ -41,7 +41,7 @@ namespace planit_client_wpf.View
             }
             catch (Exception)
             {
-                MessageBox.Show("Doslo je do greske.");
+                MessageBox.Show("Error on message box request");
             }
         }
     }

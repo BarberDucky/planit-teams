@@ -1,4 +1,6 @@
 ﻿using planit_client_wpf.Base;
+using planit_client_wpf.DTOs;
+using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,11 +80,22 @@ namespace planit_client_wpf.ViewModel
             BackCommand = new CommandBase(OnBackButtonClick);
         }
 
-        public void OnRegisterButtonClick()
+        public async void OnRegisterButtonClick()
         {
-            //Api call, pokupim rezultat
-            ShowMessageBox(null, "Registracija uspesno zavrsena");
-            MessengerBus.MessengerBusInstance.OpenLoginWindowDelegate?.Invoke();
+            CreateUserDTO createUserDTO = new CreateUserDTO() { Username = Username, Password = Password, Email = Email, FirstName = FirstName, LastName = LastName };
+
+            bool isRegisterSuccessful = await UserService.RegisterUser(createUserDTO);
+
+            if (isRegisterSuccessful)
+            {
+                ShowMessageBox(null, "Registration successful");
+                MessengerBus.MessengerBusInstance.OpenLoginWindowDelegate?.Invoke();
+            }
+            else
+            {
+                ShowMessageBox(null, "Registration unsuccessful");
+            }
+
         }
 
         public bool CanRegister()
