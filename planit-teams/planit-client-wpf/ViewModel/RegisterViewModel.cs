@@ -17,9 +17,6 @@ namespace planit_client_wpf.ViewModel
         private string firstName;
         private string lastName;
 
-        public CommandBase RegisterCommand { get; private set; }
-        public CommandBase BackCommand { get; private set; }
-
         #region Properties 
 
         public string Username
@@ -74,10 +71,24 @@ namespace planit_client_wpf.ViewModel
 
         #endregion
 
-        public RegisterViewModel()
+        #region Commands 
+
+        public CommandBase RegisterCommand { get; private set; }
+        public CommandBase BackCommand { get; private set; }
+
+        #endregion
+
+        #region Actions and Func
+
+        public Action GoToLogin;
+
+        #endregion
+
+        public RegisterViewModel(Action returnToLogin)
         {
             RegisterCommand = new CommandBase(OnRegisterButtonClick, CanRegister);
             BackCommand = new CommandBase(OnBackButtonClick);
+            GoToLogin = returnToLogin;
         }
 
         public async void OnRegisterButtonClick()
@@ -89,7 +100,7 @@ namespace planit_client_wpf.ViewModel
             if (isRegisterSuccessful)
             {
                 ShowMessageBox(null, "Registration successful");
-                MessengerBus.MessengerBusInstance.OpenLoginWindowDelegate?.Invoke();
+                GoToLogin?.Invoke();
             }
             else
             {
@@ -107,7 +118,7 @@ namespace planit_client_wpf.ViewModel
 
         public void OnBackButtonClick()
         {
-            MessengerBus.MessengerBusInstance.OpenLoginWindowDelegate?.Invoke();
+            GoToLogin?.Invoke();
         }
 
     }

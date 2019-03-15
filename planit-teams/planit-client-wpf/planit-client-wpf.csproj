@@ -61,7 +61,6 @@
     <Compile Include="Base\ViewModelBase.cs" />
     <Compile Include="Base\CommandBase.cs" />
     <Compile Include="ActiveUser.cs" />
-    <Compile Include="MessengerBus.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />

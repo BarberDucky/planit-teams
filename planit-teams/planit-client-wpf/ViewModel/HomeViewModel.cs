@@ -9,17 +9,28 @@ namespace planit_client_wpf.ViewModel
 {
     public class HomeViewModel : ViewModelBase
     {
+        #region Commands
+
         public CommandBase LogoutCommand { get; protected set; }
 
-        public HomeViewModel()
+        #endregion
+
+        #region Actions and Func
+
+        public Action GoToLogin;
+
+        #endregion
+
+        public HomeViewModel(Action goToLogin)
         {
             LogoutCommand = new CommandBase(OnLogoutButtonClick, CanLogout);
+            GoToLogin = goToLogin;
         }
 
         public void OnLogoutButtonClick()
         {
             ActiveUser.Instance.LoggedUser = null;
-            MessengerBus.MessengerBusInstance.OpenLoginWindowDelegate?.Invoke();
+            GoToLogin?.Invoke();
         }
 
         public bool CanLogout()
