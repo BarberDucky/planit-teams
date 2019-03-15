@@ -1,5 +1,7 @@
 ﻿using planit_client_wpf.Base;
+using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,17 +45,28 @@ namespace planit_client_wpf.ViewModel
             RegisterCommand = new CommandBase(OnRegisterButtonClick);
         }
 
-        #region Logion
+        #region Login
 
-        public void OnLoginButtonClick()
+        public async void OnLoginButtonClick()
         {
-            //Api call, pokupim token
-            ActiveUser.Instance.LoggedUser = new User
+            CredentialsUserDTO credentials = new CredentialsUserDTO() { username = Username, password = Password, grant_type = "password" };
+
+            TokenUserDTO token = await UserService.LoginUser(credentials);
+            if (token.success)
             {
-                Username = Username,
-                Token = "Poslala mi baza neka slovca"
-            };
-            MessengerBus.MessengerBusInstance.OpenHomeWindowDelegate?.Invoke();
+                ActiveUser.Instance.LoggedUser = new User
+                {
+                    Username = token.userName,
+                    Token = "Bearer " + token.access_token
+                };
+                ShowMessageBox(null, "Login successful");
+                MessengerBus.MessengerBusInstance.OpenHomeWindowDelegate?.Invoke();
+            } 
+            else
+            {
+                ShowMessageBox(null, "Login failed");
+            }
+
         }
 
         public bool CanLogin()
