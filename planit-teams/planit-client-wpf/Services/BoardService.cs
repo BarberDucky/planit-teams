@@ -76,7 +76,6 @@ namespace planit_client_wpf.Services
                 {
                     return null;
                 }
-
             }
         }
     }

@@ -33,12 +33,14 @@ namespace planit_data.DTOs
         public String Email { get; set; }
         public String FirstName { get; set; }
         public String LastName { get; set; }
+        public String ExchangeName { get; set; }
 
         public ReadUserDTO(User user)
         {
            // UserID = user.UserId;
             FirstName = user.FirstName;
             LastName = user.LastName;
+            ExchangeName = user.ExchangeName;
 
             if (user.IdentificationUser != null)
             {

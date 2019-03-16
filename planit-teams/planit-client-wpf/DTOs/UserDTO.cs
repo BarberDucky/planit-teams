@@ -22,6 +22,7 @@ namespace planit_client_wpf.DTOs
         public String Email { get; set; }
         public String FirstName { get; set; }
         public String LastName { get; set; }
+        public String ExchangeName { get; set; }
     }
 
     public class UpdateUserDTO

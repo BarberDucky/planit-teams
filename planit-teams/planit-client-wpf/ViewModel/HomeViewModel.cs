@@ -1,5 +1,8 @@
 ﻿using planit_client_wpf.Base;
 using planit_client_wpf.Model;
+using planit_client_wpf.DTOs;
+using planit_client_wpf.MQ;
+using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,5 +71,17 @@ namespace planit_client_wpf.ViewModel
             //CenterViewModel = new BoardViewModel(boardId);
             CenterViewModel = new BoardViewModel();
         }
+
+        public async void InitializeMQ()
+        {
+            ReadUserDTO readUserDTO = await UserService.GetUser(ActiveUser.Instance.LoggedUser.Token);
+
+            if (readUserDTO != null)
+            {
+                MQService.SubscribeToExchange(readUserDTO.ExchangeName, () => { ShowMessageBox(null, "Stigla poruka"); return true; });
+            }
+        }
+
+
     }
 }

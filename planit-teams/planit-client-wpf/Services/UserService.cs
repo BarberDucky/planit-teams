@@ -59,5 +59,26 @@ namespace planit_client_wpf.Services
                 }
             }
         }
+
+        public static async Task<ReadUserDTO> GetUser(string accessToken)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+
+                client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                var response = await client.GetAsync("http://localhost:52816/api/UserApi");
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var user = JsonConvert.DeserializeObject<ReadUserDTO>(jsonString);
+                    return user;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+        }
     }
 }
