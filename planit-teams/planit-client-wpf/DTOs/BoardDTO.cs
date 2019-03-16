@@ -25,6 +25,11 @@ namespace planit_client_wpf.DTOs
     {
         public String Name { get; set; }
         // public String CreatedByUser { get; set; }
+
+        public CreateBoardDTO(string name)
+        {
+            Name = name;
+        }
     }
 
     public class UpdateBoardDTO
@@ -42,4 +47,5 @@ namespace planit_client_wpf.DTOs
         public List<ReadUserDTO> Users { get; set; }
         public List<ReadCardListDTO> CardList { get; set; }
     }
+
 }

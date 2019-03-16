@@ -18,11 +18,11 @@ using System.Windows.Shapes;
 namespace planit_client_wpf.View
 {
     /// <summary>
-    /// Interaction logic for HomeView.xaml
+    /// Interaction logic for BoardListView.xaml
     /// </summary>
-    public partial class HomeView : UserControl
+    public partial class BoardListView : UserControl
     {
-        public HomeView()
+        public BoardListView()
         {
             InitializeComponent();
         }
@@ -36,7 +36,7 @@ namespace planit_client_wpf.View
         {
             try
             {
-                var vm = (HomeViewModel)DataContext;
+                var vm = (BoardListViewModel)DataContext;
                 vm.MessageBoxRequest += LoginView_MessageBoxRequest;
             }
             catch (Exception)

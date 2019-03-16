@@ -18,11 +18,11 @@ using System.Windows.Shapes;
 namespace planit_client_wpf.View
 {
     /// <summary>
-    /// Interaction logic for HomeView.xaml
+    /// Interaction logic for BoardView.xaml
     /// </summary>
-    public partial class HomeView : UserControl
+    public partial class BoardView : UserControl
     {
-        public HomeView()
+        public BoardView()
         {
             InitializeComponent();
         }
@@ -36,7 +36,7 @@ namespace planit_client_wpf.View
         {
             try
             {
-                var vm = (HomeViewModel)DataContext;
+                var vm = (BoardViewModel)DataContext;
                 vm.MessageBoxRequest += LoginView_MessageBoxRequest;
             }
             catch (Exception)
@@ -44,5 +44,6 @@ namespace planit_client_wpf.View
                 MessageBox.Show("Error on message box request");
             }
         }
+
     }
 }

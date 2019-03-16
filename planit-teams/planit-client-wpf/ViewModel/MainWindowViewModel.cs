@@ -18,25 +18,22 @@ namespace planit_client_wpf.ViewModel
 
         public MainWindowViewModel()
         {
-            CurrentViewModel = new LoginViewModel();
-            MessengerBus.MessengerBusInstance.OpenHomeWindowDelegate += InstantiateHome;
-            MessengerBus.MessengerBusInstance.OpenLoginWindowDelegate += InstantiateLogin;
-            MessengerBus.MessengerBusInstance.OpenRegisterWindowDelegate += InstantiateRegister;
+            CurrentViewModel = new LoginViewModel(InstantiateHome, InstantiateRegister);
         }
 
         public void InstantiateHome()
         {
-            CurrentViewModel = new HomeViewModel();
+            CurrentViewModel = new HomeViewModel(InstantiateLogin);
         }
 
         public void InstantiateLogin()
         {
-            CurrentViewModel = new LoginViewModel();
+            CurrentViewModel = new LoginViewModel(InstantiateHome, InstantiateRegister);
         }
 
         public void InstantiateRegister()
         {
-            CurrentViewModel = new RegisterViewModel();
+            CurrentViewModel = new RegisterViewModel(InstantiateLogin);
         }
     }
 }

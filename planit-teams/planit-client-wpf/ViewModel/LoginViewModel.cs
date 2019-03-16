@@ -5,6 +5,7 @@ using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,8 @@ namespace planit_client_wpf.ViewModel
     {
         private string username;
         private string password;
+
+        #region Properties
 
         public string Username
         {
@@ -34,20 +37,32 @@ namespace planit_client_wpf.ViewModel
                 LoginCommand.RaiseCanExecuteChanged();
             }
         }
+        #endregion
 
+        #region Commands
 
         public CommandBase LoginCommand { get; private set; }
         public CommandBase RegisterCommand { get; private set; }
 
-        public LoginViewModel()
+        #endregion
+
+        #region Action and Func
+
+        public Action LoginButtonAction;
+        public Action RegisterAction;
+
+        #endregion
+
+        public LoginViewModel(Action goToHome, Action goToRegister)
         {
             LoginCommand = new CommandBase(OnLoginButtonClick, CanLogin);
             RegisterCommand = new CommandBase(OnRegisterButtonClick);
+            LoginButtonAction = goToHome;
+            RegisterAction = goToRegister;
         }
 
-        #region Login
 
-        public async void OnLoginButtonClick()
+        private async void OnLoginButtonClick()
         {
             CredentialsUserDTO credentials = new CredentialsUserDTO() { username = Username, password = Password, grant_type = "password" };
 
@@ -60,7 +75,7 @@ namespace planit_client_wpf.ViewModel
                     Token = "Bearer " + token.access_token
                 };
                 ShowMessageBox(null, "Login successful");
-                MessengerBus.MessengerBusInstance.OpenHomeWindowDelegate?.Invoke();
+                LoginButtonAction?.Invoke();
             } 
             else
             {
@@ -69,20 +84,15 @@ namespace planit_client_wpf.ViewModel
 
         }
 
-        public bool CanLogin()
+        private bool CanLogin()
         {
             return !String.IsNullOrWhiteSpace(username) && !String.IsNullOrWhiteSpace(password);
         }
 
-        #endregion
-
-        #region Register
-
-        public void OnRegisterButtonClick()
+        private void OnRegisterButtonClick()
         {
-            MessengerBus.MessengerBusInstance.OpenRegisterWindowDelegate?.Invoke();
+            RegisterAction?.Invoke();
         }
 
-        #endregion
     }
 }

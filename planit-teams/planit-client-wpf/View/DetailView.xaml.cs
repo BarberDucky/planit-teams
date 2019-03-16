@@ -18,15 +18,14 @@ using System.Windows.Shapes;
 namespace planit_client_wpf.View
 {
     /// <summary>
-    /// Interaction logic for HomeView.xaml
+    /// Interaction logic for DetailView.xaml
     /// </summary>
-    public partial class HomeView : UserControl
+    public partial class DetailView : UserControl
     {
-        public HomeView()
+        public DetailView()
         {
             InitializeComponent();
         }
-
         void LoginView_MessageBoxRequest(object sender, MessageBoxEventArgs e)
         {
             e.Show();
@@ -36,7 +35,7 @@ namespace planit_client_wpf.View
         {
             try
             {
-                var vm = (HomeViewModel)DataContext;
+                var vm = (DetailViewModel)DataContext;
                 vm.MessageBoxRequest += LoginView_MessageBoxRequest;
             }
             catch (Exception)

@@ -33,13 +33,13 @@ namespace planit_client_wpf.Services
             }
         }
 
-        public static async Task<ReadBoardDTO> GetBoard(string accessToken, string boardId)
+        public static async Task<ReadBoardDTO> GetBoard(string accessToken, int boardId)
         {
             using (HttpClient client = new HttpClient())
             {
-
+                string id = boardId.ToString();
                 client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.GetAsync("http://localhost:52816/api/Board/" + boardId);
+                var response = await client.GetAsync("http://localhost:52816/api/Board/" + id);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
