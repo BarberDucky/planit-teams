@@ -9,20 +9,30 @@ namespace planit_client_wpf
 {
     public class ActiveUser
     {
+        private static readonly object lockInstance = new object();
 
         public User LoggedUser { get; set; }
+
         private static ActiveUser instance;
+
         public static ActiveUser Instance
         {
             get
             {
-                if (instance == null)
-                    instance = new ActiveUser();
-                return instance;
+                lock(lockInstance)
+                {
+                    if (instance == null)
+                        instance = new ActiveUser();
+                    return instance;
+                }
+
             }
         }
 
-        private ActiveUser() { }
+        public static bool IsActive
+        {
+            get { return Instance.LoggedUser != null && Instance.LoggedUser.Token != null; }
+        }
 
     }
 }

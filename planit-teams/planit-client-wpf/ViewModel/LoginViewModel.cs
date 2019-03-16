@@ -15,7 +15,6 @@ namespace planit_client_wpf.ViewModel
     {
         private string username;
         private string password;
-        private bool canLoginFlag;
 
         #region Properties
 
@@ -49,8 +48,8 @@ namespace planit_client_wpf.ViewModel
 
         #region Action and Func
 
-        public Action GoToHome;
-        public Action GoToRegister;
+        public Action LoginButtonAction;
+        public Action RegisterAction;
 
         #endregion
 
@@ -58,12 +57,12 @@ namespace planit_client_wpf.ViewModel
         {
             LoginCommand = new CommandBase(OnLoginButtonClick, CanLogin);
             RegisterCommand = new CommandBase(OnRegisterButtonClick);
-            GoToHome = goToHome;
-            GoToRegister = goToRegister;
+            LoginButtonAction = goToHome;
+            RegisterAction = goToRegister;
         }
 
 
-        public async void OnLoginButtonClick()
+        private async void OnLoginButtonClick()
         {
             CredentialsUserDTO credentials = new CredentialsUserDTO() { username = Username, password = Password, grant_type = "password" };
 
@@ -76,7 +75,7 @@ namespace planit_client_wpf.ViewModel
                     Token = "Bearer " + token.access_token
                 };
                 ShowMessageBox(null, "Login successful");
-                GoToHome?.Invoke();
+                LoginButtonAction?.Invoke();
             } 
             else
             {
@@ -85,14 +84,14 @@ namespace planit_client_wpf.ViewModel
 
         }
 
-        public bool CanLogin()
+        private bool CanLogin()
         {
             return !String.IsNullOrWhiteSpace(username) && !String.IsNullOrWhiteSpace(password);
         }
 
-        public void OnRegisterButtonClick()
+        private void OnRegisterButtonClick()
         {
-            GoToRegister?.Invoke();
+            RegisterAction?.Invoke();
         }
 
     }

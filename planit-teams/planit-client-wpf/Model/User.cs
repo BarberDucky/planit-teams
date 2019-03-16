@@ -8,22 +8,25 @@ using System.Threading.Tasks;
 
 namespace planit_client_wpf.Model
 {
-    public class User 
+    public class User : BindableBase
     {
         private string username;
         private string token;
 
+        #region Properties
+
         public string Username
         {
             get { return username; }
-            set { username = value; }
+            set { SetProperty(ref username, value); }
         }
 
         public string Token
         {
             get { return token; }
-            set { token = value; }
+            set { SetProperty(ref token, value); }
         }
 
+        #endregion
     }
 }

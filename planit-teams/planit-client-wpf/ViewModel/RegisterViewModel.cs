@@ -80,7 +80,7 @@ namespace planit_client_wpf.ViewModel
 
         #region Actions and Func
 
-        public Action GoToLogin;
+        public Action RegisterButtonAction;
 
         #endregion
 
@@ -88,7 +88,7 @@ namespace planit_client_wpf.ViewModel
         {
             RegisterCommand = new CommandBase(OnRegisterButtonClick, CanRegister);
             BackCommand = new CommandBase(OnBackButtonClick);
-            GoToLogin = returnToLogin;
+            RegisterButtonAction = returnToLogin;
         }
 
         public async void OnRegisterButtonClick()
@@ -100,7 +100,7 @@ namespace planit_client_wpf.ViewModel
             if (isRegisterSuccessful)
             {
                 ShowMessageBox(null, "Registration successful");
-                GoToLogin?.Invoke();
+                RegisterButtonAction?.Invoke();
             }
             else
             {
@@ -118,7 +118,7 @@ namespace planit_client_wpf.ViewModel
 
         public void OnBackButtonClick()
         {
-            GoToLogin?.Invoke();
+            RegisterButtonAction?.Invoke();
         }
 
     }
