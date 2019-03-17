@@ -26,6 +26,7 @@ namespace planit_client_wpf.ViewModel
             set
             {
                 SetProperty(ref selectedBoard, value);
+                selectedBoard.IsRead = true;
                 BoardSectedAction?.Invoke(SelectedBoard.BoardId);
             }
         }
@@ -90,7 +91,8 @@ namespace planit_client_wpf.ViewModel
                 }
                 else
                 {
-                    ShowMessageBox(null, "Dodavanje radi, samo se to ne vidi za sad, izadji i udji opet. Cekamo rabbita.");
+                    Boards.Add(new ShortBoard(dto));
+                    //ShowMessageBox(null, "Dodavanje radi, samo se to ne vidi za sad, izadji i udji opet. Cekamo rabbita.");
                 }
             }
         }

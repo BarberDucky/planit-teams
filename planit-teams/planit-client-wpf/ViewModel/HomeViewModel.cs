@@ -15,6 +15,9 @@ namespace planit_client_wpf.ViewModel
     {
         private ViewModelBase leftViewModel;
         private ViewModelBase centerViewModel;
+        private ViewModelBase notificationViewModel;
+
+        private MQService MQService;
 
         #region Properies
 
@@ -30,11 +33,18 @@ namespace planit_client_wpf.ViewModel
             set { SetProperty(ref centerViewModel, value); }
         }
 
+        public ViewModelBase NotificationViewModel
+        {
+            get { return notificationViewModel; }
+            set { SetProperty(ref notificationViewModel, value); }
+        }
+
         #endregion
 
         #region Commands
 
         public CommandBase LogoutCommand { get; protected set; }
+        public CommandBase ToggleNotificationsCommand { get; protected set; }
 
         #endregion
 
@@ -46,13 +56,22 @@ namespace planit_client_wpf.ViewModel
 
         public HomeViewModel(Action goToLogin)
         {
+            //Init MQ
+            MQService = new MQService();
+
             //Init komande
             LogoutCommand = new CommandBase(OnLogoutButtonClick, CanLogout);
+            ToggleNotificationsCommand= new CommandBase(OnToggleNotification);
+
             GoToLogin = goToLogin;
 
             //Init polja
             LeftViewModel = new BoardListViewModel(OnBoardSelected);
             CenterViewModel = new EmptyViewModel();
+
+            NotificationViewModel = new NotificationsViewModel();
+            ((NotificationsViewModel)NotificationViewModel).IsOpen = false;
+
         }
 
         public void OnLogoutButtonClick()
@@ -82,6 +101,12 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
-
+        public void OnToggleNotification()
+        {
+            if (!((NotificationsViewModel)NotificationViewModel).IsOpen)
+            {
+                ((NotificationsViewModel)NotificationViewModel).IsOpen = true;
+            }
+        }
     }
 }

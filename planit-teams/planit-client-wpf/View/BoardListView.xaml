@@ -13,6 +13,19 @@
         <DataTemplate DataType="{x:Type model:ShortBoard}">
             <StackPanel Orientation="Horizontal">
                 <Label Content="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <Ellipse Fill="Red" Width="10" Height="10">
+                    <Ellipse.Style>
+                        <Style TargetType="Ellipse">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsRead}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Ellipse.Style>
+                </Ellipse>
                 <!--<Button Content="Delete" Command="{Binding DeleteBoardCommand}"/>-->
             </StackPanel>
         </DataTemplate>
