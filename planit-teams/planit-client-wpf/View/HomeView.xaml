@@ -19,6 +19,9 @@
         <DataTemplate DataType="{x:Type viewModel:EmptyViewModel}">
             <view:EmptyView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:NotificationsViewModel}">
+            <view:NotificationsView/>
+        </DataTemplate>
     </UserControl.Resources>
     
     <Grid>
@@ -28,7 +31,12 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Notifications"  Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+            <Button Command="{Binding ToggleNotificationsCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100">
+                <StackPanel>
+                    <TextBlock Text="Notifications"></TextBlock>
+                    <ContentControl Content = "{Binding NotificationViewModel}"></ContentControl>
+                </StackPanel>
+            </Button>
             <Button Content="Logout" Command="{Binding LogoutCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
         </StackPanel>
 
