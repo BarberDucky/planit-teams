@@ -16,16 +16,22 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.GetAsync("http://localhost:52816/api/Board/BoardsByUser/");
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var boardArray = JsonConvert.DeserializeObject<List<ShortBoardDTO>>(jsonString);
-                    return boardArray;
-                }
-                else
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.GetAsync("http://localhost:52816/api/Board/BoardsByUser/");
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var boardArray = JsonConvert.DeserializeObject<List<ShortBoardDTO>>(jsonString);
+                        return boardArray;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                } 
+                catch (Exception e)
                 {
                     return null;
                 }
@@ -37,20 +43,26 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-                string id = boardId.ToString();
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.GetAsync("http://localhost:52816/api/Board/" + id);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var board = JsonConvert.DeserializeObject<ReadBoardDTO>(jsonString);
-                    return board;
+                    string id = boardId.ToString();
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.GetAsync("http://localhost:52816/api/Board/" + id);
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var board = JsonConvert.DeserializeObject<ReadBoardDTO>(jsonString);
+                        return board;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     return null;
                 }
-
             }
         }
 
@@ -58,21 +70,27 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-
-                string json = JsonConvert.SerializeObject(createBoardDTO);
-                var buffer = System.Text.Encoding.UTF8.GetBytes(json);
-                var byteContent = new ByteArrayContent(buffer);
-                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.PostAsync("http://localhost:52816/api/Board/", byteContent);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var boardArray = JsonConvert.DeserializeObject<ShortBoardDTO>(jsonString);
-                    return boardArray;
+                    string json = JsonConvert.SerializeObject(createBoardDTO);
+                    var buffer = System.Text.Encoding.UTF8.GetBytes(json);
+                    var byteContent = new ByteArrayContent(buffer);
+                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.PostAsync("http://localhost:52816/api/Board/", byteContent);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var boardArray = JsonConvert.DeserializeObject<ShortBoardDTO>(jsonString);
+                        return boardArray;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     return null;
                 }
@@ -83,21 +101,27 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-
-                string json = JsonConvert.SerializeObject(updateBoardDTO);
-                var buffer = System.Text.Encoding.UTF8.GetBytes(json);
-                var byteContent = new ByteArrayContent(buffer);
-                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.PostAsync("http://localhost:52816/api/Board/" + boardId, byteContent);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<bool>(jsonString);
-                    return result;
+                    string json = JsonConvert.SerializeObject(updateBoardDTO);
+                    var buffer = System.Text.Encoding.UTF8.GetBytes(json);
+                    var byteContent = new ByteArrayContent(buffer);
+                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.PostAsync("http://localhost:52816/api/Board/" + boardId, byteContent);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<bool>(jsonString);
+                        return result;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     return false;
                 }
@@ -108,20 +132,26 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-                string id = boardId.ToString();
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.DeleteAsync("http://localhost:52816/api/Board/" + id);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<bool>(jsonString);
-                    return result;
+                    string id = boardId.ToString();
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.DeleteAsync("http://localhost:52816/api/Board/" + id);
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<bool>(jsonString);
+                        return result;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     return false;
                 }
-
             }
         }
     }

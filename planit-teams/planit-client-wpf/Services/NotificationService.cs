@@ -15,16 +15,23 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.PostAsync("http://localhost:52816/api/Notification/Read/" + notificationId, null);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<bool>(jsonString);
-                    return result;
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.PostAsync("http://localhost:52816/api/Notification/Read/" + notificationId, null);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<bool>(jsonString);
+                        return result;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     return false;
                 }
@@ -35,16 +42,23 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.PostAsync("http://localhost:52816/api/Notification/ReadAll", null);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<bool>(jsonString);
-                    return result;
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.PostAsync("http://localhost:52816/api/Notification/ReadAll", null);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<bool>(jsonString);
+                        return result;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     return false;
                 }

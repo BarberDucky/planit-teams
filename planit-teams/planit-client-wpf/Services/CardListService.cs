@@ -16,16 +16,22 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.GetAsync("http://localhost:52816/api/CardList/" + cardListId);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var cardList = JsonConvert.DeserializeObject<ReadCardListDTO>(jsonString);
-                    return cardList;
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.GetAsync("http://localhost:52816/api/CardList/" + cardListId);
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var cardList = JsonConvert.DeserializeObject<ReadCardListDTO>(jsonString);
+                        return cardList;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     return null;
                 }
@@ -37,21 +43,27 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-
-                string json = JsonConvert.SerializeObject(createListDTO);
-                var buffer = System.Text.Encoding.UTF8.GetBytes(json);
-                var byteContent = new ByteArrayContent(buffer);
-                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.PostAsync("http://localhost:52816/api/CardList/", byteContent);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var cardList = JsonConvert.DeserializeObject<BasicCardListDTO>(jsonString);
-                    return cardList;
+                    string json = JsonConvert.SerializeObject(createListDTO);
+                    var buffer = System.Text.Encoding.UTF8.GetBytes(json);
+                    var byteContent = new ByteArrayContent(buffer);
+                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.PostAsync("http://localhost:52816/api/CardList/", byteContent);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var cardList = JsonConvert.DeserializeObject<BasicCardListDTO>(jsonString);
+                        return cardList;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     return null;
                 }
@@ -62,21 +74,27 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-
-                string json = JsonConvert.SerializeObject(updateListDTO);
-                var buffer = System.Text.Encoding.UTF8.GetBytes(json);
-                var byteContent = new ByteArrayContent(buffer);
-                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.PostAsync("http://localhost:52816/api/CardList/" + cardListId, byteContent);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<bool>(jsonString);
-                    return result;
+                    string json = JsonConvert.SerializeObject(updateListDTO);
+                    var buffer = System.Text.Encoding.UTF8.GetBytes(json);
+                    var byteContent = new ByteArrayContent(buffer);
+                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.PostAsync("http://localhost:52816/api/CardList/" + cardListId, byteContent);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<bool>(jsonString);
+                        return result;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     return false;
                 }
@@ -87,20 +105,25 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.DeleteAsync("http://localhost:52816/api/CardList/" + cardListId);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<bool>(jsonString);
-                    return result;
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.DeleteAsync("http://localhost:52816/api/CardList/" + cardListId);
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<bool>(jsonString);
+                        return result;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     return false;
                 }
-
             }
         }
     }
