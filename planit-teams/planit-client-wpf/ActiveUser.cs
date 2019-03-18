@@ -11,7 +11,7 @@ namespace planit_client_wpf
     {
         private static readonly object lockInstance = new object();
 
-        public User LoggedUser { get; set; }
+        public TokenUser LoggedUser { get; set; }
 
         private static ActiveUser instance;
 

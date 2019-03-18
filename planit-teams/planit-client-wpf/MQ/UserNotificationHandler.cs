@@ -22,6 +22,7 @@ namespace planit_client_wpf.MQ
         {
             ShortBoard deleteBoard = boardList.SingleOrDefault(el => el.BoardId == ((DeleteMessage)message).Data);
             boardList.Remove(deleteBoard);
+
         }
     }
 

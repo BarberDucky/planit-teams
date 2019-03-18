@@ -27,17 +27,19 @@ namespace planit_client_wpf.View
             InitializeComponent();            
         }
 
-        void RegisterView_MessageBoxRequest(object sender, MessageBoxEventArgs e)
+        void MessageBoxRequest(object sender, MessageBoxEventArgs e)
         {
             e.Show();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            Window wind = Window.GetWindow(this);
+            wind.WindowState = WindowState.Normal;
             try
             {
                 var vm = (RegisterViewModel)DataContext;
-                vm.MessageBoxRequest += RegisterView_MessageBoxRequest;
+                vm.MessageBoxRequest += MessageBoxRequest;
             }
             catch (Exception)
             {

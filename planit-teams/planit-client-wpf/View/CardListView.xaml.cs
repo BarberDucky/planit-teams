@@ -18,11 +18,11 @@ using System.Windows.Shapes;
 namespace planit_client_wpf.View
 {
     /// <summary>
-    /// Interaction logic for LoginView.xaml
+    /// Interaction logic for CardListView.xaml
     /// </summary>
-    public partial class LoginView : UserControl
+    public partial class CardListView : UserControl
     {
-        public LoginView()
+        public CardListView()
         {
             InitializeComponent();
         }
@@ -34,11 +34,9 @@ namespace planit_client_wpf.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            Window wind = Window.GetWindow(this);
-            wind.WindowState = WindowState.Normal;
             try
             {
-                var vm = (LoginViewModel)DataContext;
+                var vm = (CardListViewModel)DataContext;
                 vm.MessageBoxRequest += MessageBoxRequest;
             }
             catch (Exception)

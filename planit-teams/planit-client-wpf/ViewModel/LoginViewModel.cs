@@ -15,6 +15,7 @@ namespace planit_client_wpf.ViewModel
     {
         private string username;
         private string password;
+        private bool canLogin;
 
         #region Properties
 
@@ -37,7 +38,18 @@ namespace planit_client_wpf.ViewModel
                 LoginCommand.RaiseCanExecuteChanged();
             }
         }
-        #endregion
+
+        public bool CanLoginFlag
+        {
+            get { return canLogin; }
+            set
+            {
+                SetProperty<bool>(ref canLogin, value);
+                LoginCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+    #endregion
 
         #region Commands
 
@@ -59,34 +71,39 @@ namespace planit_client_wpf.ViewModel
             RegisterCommand = new CommandBase(OnRegisterButtonClick);
             LoginButtonAction = goToHome;
             RegisterAction = goToRegister;
+            CanLoginFlag = true;
         }
 
 
         private async void OnLoginButtonClick()
         {
+            CanLoginFlag = false;
             CredentialsUserDTO credentials = new CredentialsUserDTO() { username = Username, password = Password, grant_type = "password" };
 
             TokenUserDTO token = await UserService.LoginUser(credentials);
             if (token.success)
             {
-                ActiveUser.Instance.LoggedUser = new User
+                ActiveUser.Instance.LoggedUser = new TokenUser
                 {
                     Username = token.userName,
                     Token = "Bearer " + token.access_token
                 };
                 ShowMessageBox(null, "Login successful");
                 LoginButtonAction?.Invoke();
+                int a = 3;
             } 
             else
             {
                 ShowMessageBox(null, "Login failed");
             }
-
+            CanLoginFlag = true;
         }
 
         private bool CanLogin()
         {
-            return !String.IsNullOrWhiteSpace(username) && !String.IsNullOrWhiteSpace(password);
+            return !String.IsNullOrWhiteSpace(username) 
+                && !String.IsNullOrWhiteSpace(password) && password.Length > 5
+                && CanLoginFlag == true;
         }
 
         private void OnRegisterButtonClick()

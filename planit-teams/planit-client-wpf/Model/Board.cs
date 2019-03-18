@@ -2,6 +2,7 @@
 using planit_client_wpf.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace planit_client_wpf.Model
         {
             get { return boardId; }
             set { boardId = value; }
-        }
+}
 
         public string Name
         {
@@ -51,11 +52,13 @@ namespace planit_client_wpf.Model
         }
     }
 
-    public class LongBoard : BindableBase
+    public class ReadBoard : BindableBase
     {
         private int boardId;
         private string name;
         private bool isRead;
+        private ObservableCollection<ReadCardList> cardLists;
+        private ObservableCollection<ReadUser> users;
 
         #region Properties
 
@@ -77,13 +80,42 @@ namespace planit_client_wpf.Model
             set { SetProperty(ref isRead, value); }
         }
 
-        //TODO Users, CardList
+        public ObservableCollection<ReadUser> Users
+        {
+            get { return users; }
+            set { SetProperty(ref users, value); }
+        }
+
+        public ObservableCollection<ReadCardList> CardLists
+        {
+            get { return cardLists; }
+            set { SetProperty(ref cardLists, value); }
+        }
 
         #endregion
 
-        public LongBoard()
+        public ReadBoard()
         {
-            
+
         }
+
+        public ReadBoard(ReadBoardDTO dto)
+        {
+            BoardId = dto.BoardId;
+            Name = dto.Name;
+            IsAdmin = dto.IsAdmin;
+
+            CardLists = new ObservableCollection<ReadCardList>();
+            Users = new ObservableCollection<ReadUser>();
+            foreach(ReadCardListDTO list in dto.CardList)
+            {
+                CardLists.Add(new ReadCardList(list));
+            }
+            foreach(ReadUserDTO users in dto.Users)
+            {
+                Users.Add(new ReadUser(users));
+            }
+        }
+
     }
 }

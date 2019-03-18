@@ -70,7 +70,7 @@ namespace planit_client_wpf.ViewModel
             GoToLogin = goToLogin;
 
             //Init polja
-            LeftViewModel = new BoardListViewModel(OnBoardSelected);
+            LeftViewModel = new BoardListViewModel(OnBoardSelected, OnBoardDeselectd);
             CenterViewModel = new EmptyViewModel();
 
             NotificationViewModel = new NotificationsViewModel();
@@ -89,10 +89,26 @@ namespace planit_client_wpf.ViewModel
             return ActiveUser.Instance.LoggedUser != null;
         }
 
-        public void OnBoardSelected(int boardId)
+        public void OnBoardSelected(ShortBoard board)
         {
-            //CenterViewModel = new BoardViewModel(boardId);
-            CenterViewModel = new BoardViewModel();
+            if(board != null)
+            {
+                CenterViewModel = new BoardViewModel(board, OnBoardDeleted);
+            }
+        }
+
+        public void OnBoardDeselectd()
+        {
+            CenterViewModel = new EmptyViewModel();
+        }
+
+        public void OnBoardDeleted(int boardId)
+        {
+            if(LeftViewModel is BoardListViewModel)
+            {
+                var list = LeftViewModel as BoardListViewModel;
+                list.RemoveSelectedBoard(boardId);
+            }
         }
 
         public async void InitializeMQ()
