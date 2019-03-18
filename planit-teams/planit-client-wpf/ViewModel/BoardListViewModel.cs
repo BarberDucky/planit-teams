@@ -29,16 +29,11 @@ namespace planit_client_wpf.ViewModel
                 if (selectedBoard == null)
                     BoardDeselectedAction?.Invoke();
                 else
-<<<<<<< HEAD
                 {
-                    BoardSectedAction?.Invoke(SelectedBoard.BoardId);
+                    BoardSectedAction?.Invoke(selectedBoard);
                     selectedBoard.IsRead = true;
                     BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, SelectedBoard.BoardId);
-                }
-                    
-=======
-                    BoardSectedAction?.Invoke(SelectedBoard);
->>>>>>> added: card list, board rename
+                }                  
             }
         }
 
