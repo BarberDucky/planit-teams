@@ -73,12 +73,14 @@ namespace planit_client_wpf.Model
 
         public ReadUser(ReadUserDTO dto)
         {
-            Username = dto.Username;
-            Email = dto.Email;
-            FirstName = dto.FirstName;
-            LastName = dto.LastName;
+            if(dto != null)
+            {
+                Username = dto.Username;
+                Email = dto.Email;
+                FirstName = dto.FirstName;
+                LastName = dto.LastName;
+            }
         }
-
 
         public override string ToString()
         {

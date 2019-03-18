@@ -28,7 +28,8 @@ namespace planit_client_wpf.DTOs
         public int ListId { get; set; }
         public String Name { get; set; }
         public String Color { get; set; }
-        public String BoardName { get; set; }
+        //public String BoardName { get; set; }
+        public int BoardId { get; set; }
         public List<ReadCardDTO> Cards { get; set; }
     }
 

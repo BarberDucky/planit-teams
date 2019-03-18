@@ -13,8 +13,8 @@ namespace planit_client_wpf.Model
         private int commentId;
         private string text;
         private  DateTime timeStamp;
-        private int cardId;
-        private int listId;
+        //private int cardId;
+        //private int listId;
         private string username;
 
         public int CommentId
@@ -35,17 +35,17 @@ namespace planit_client_wpf.Model
             set { SetProperty(ref timeStamp, value); }
         }
 
-        public int CardId
-        {
-            get { return cardId; }
-            set { SetProperty(ref cardId, value); }
-        }
+        //public int CardId
+        //{
+        //    get { return cardId; }
+        //    set { SetProperty(ref cardId, value); }
+        //}
 
-        public int ListId
-        {
-            get { return listId; }
-            set { SetProperty(ref listId, value); }
-        }
+        //public int ListId
+        //{
+        //    get { return listId; }
+        //    set { SetProperty(ref listId, value); }
+        //}
 
         public string Username
         {
@@ -53,18 +53,17 @@ namespace planit_client_wpf.Model
             set { SetProperty(ref username, value); }
         }
 
-        public ReadComment()
-        {
-        }
-
         public ReadComment(ReadCommentDTO dto)
         {
-            CommentId = dto.CommentId;
-            Text = dto.Text;
-            TimeStamp = dto.TimeStamp;
-            CardId = dto.CardId;
-            ListId = dto.ListId;
-            Username = dto.Username;
+            if(dto != null)
+            {
+                CommentId = dto.CommentId;
+                Text = dto.Text;
+                TimeStamp = dto.TimeStamp;
+                //CardId = dto.CardId;
+                //ListId = dto.ListId;
+                Username = dto.Username;
+            }
         }
 
     }

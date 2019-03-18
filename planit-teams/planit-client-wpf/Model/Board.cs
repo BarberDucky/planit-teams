@@ -65,7 +65,7 @@ namespace planit_client_wpf.Model
         public int BoardId
         {
             get { return boardId; }
-            set { boardId = value; }
+            set { SetProperty(ref boardId, value); }
         }
 
         public string Name
@@ -101,19 +101,29 @@ namespace planit_client_wpf.Model
 
         public ReadBoard(ReadBoardDTO dto)
         {
-            BoardId = dto.BoardId;
-            Name = dto.Name;
-            IsAdmin = dto.IsAdmin;
+           if(dto != null)
+            {
+                BoardId = dto.BoardId;
+                Name = dto.Name;
+                IsAdmin = dto.IsAdmin;
 
-            CardLists = new ObservableCollection<ReadCardList>();
-            Users = new ObservableCollection<ReadUser>();
-            foreach(ReadCardListDTO list in dto.CardList)
-            {
-                CardLists.Add(new ReadCardList(list));
-            }
-            foreach(ReadUserDTO users in dto.Users)
-            {
-                Users.Add(new ReadUser(users));
+                CardLists = new ObservableCollection<ReadCardList>();
+                if (dto.CardList != null)
+                {
+                    foreach (ReadCardListDTO list in dto.CardList)
+                    {
+                        CardLists.Add(new ReadCardList(list));
+                    }
+                }
+
+                Users = new ObservableCollection<ReadUser>();
+                if(dto.Users != null)
+                {
+                    foreach (ReadUserDTO users in dto.Users)
+                    {
+                        Users.Add(new ReadUser(users));
+                    }
+                }
             }
         }
 

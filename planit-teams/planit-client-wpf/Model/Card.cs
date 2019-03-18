@@ -16,9 +16,11 @@ namespace planit_client_wpf.Model
         private string description;
         private DateTime timestamp;
         private DateTime dueDate;
-        private string boardName;
-
-        public ObservableCollection<ReadComment> Comments { get; set; }
+        private ObservableCollection<ReadComment> comments;
+        private int listId;
+        //private string listName;
+        private int boardId;
+        //private string boardName;
 
         public int CardId
         {
@@ -50,25 +52,66 @@ namespace planit_client_wpf.Model
             set { SetProperty(ref dueDate, value); }
         }
 
-        public string BoardName
+        public ObservableCollection<ReadComment> Comments
         {
-            get { return boardName; }
-            set { SetProperty(ref boardName, value); }
+            get { return comments; }
+            set { SetProperty(ref comments, value); }
+        }
+
+        public int BoardId
+        {
+            get { return boardId; }
+            set { SetProperty(ref boardId, value); }
+        }
+
+        public int ListId
+        {
+            get { return listId; }
+            set { SetProperty(ref listId, value); }
+        }
+
+        //public string BoardName
+        //{
+        //    get { return boardName; }
+        //    set { SetProperty(ref boardName, value); }
+        //}
+
+        public ReadCard(BasicCardDTO dto)
+        {
+            if (dto != null)
+            {
+                CardId = dto.CardId;
+                Name = dto.Name;
+                Description = dto.Description;
+                Timestamp = dto.TimeStamp;
+                DueDate = dto.DueDate;
+                BoardId = dto.BoardId;
+                ListId = dto.ListId;
+            }
+
         }
 
         public ReadCard(ReadCardDTO dto)
         {
-            CardId = dto.CardId;
-            Name = dto.Name;
-            Description = dto.Description;
-            Timestamp = dto.TimeStamp;
-            DueDate = dto.DueDate;
-            BoardName = dto.BoardName;
-            Comments = new ObservableCollection<ReadComment>();
-            foreach(ReadCommentDTO com in dto.Comments)
+            if(dto != null)
             {
-                Comments.Add(new ReadComment(com));
+                CardId = dto.CardId;
+                Name = dto.Name;
+                Description = dto.Description;
+                Timestamp = dto.TimeStamp;
+                DueDate = dto.DueDate;
+                BoardId = dto.BoardId;
+                ListId = dto.ListId;
+                Comments = new ObservableCollection<ReadComment>();
+                if(dto.Comments != null)
+                {
+                    foreach (ReadCommentDTO comDTO in dto.Comments)
+                    {
+                        Comments.Add(new ReadComment(comDTO));
+                    }
+                }
             }
+
         }
 
     }

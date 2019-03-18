@@ -36,7 +36,8 @@ namespace planit_client_wpf.DTOs
         public DateTime TimeStamp { get; set; }
         public DateTime DueDate { get; set; }
         public String ListName { get; set; }
-        public String BoardName { get; set; }
+        public int BoardId { get; set; }
+        public int  ListId { get; set; }
         public List<ReadCommentDTO> Comments { get; set; }
     }
 

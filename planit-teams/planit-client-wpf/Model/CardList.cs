@@ -13,8 +13,9 @@ namespace planit_client_wpf.Model
     {
         private int listId;
         private string name;
-        private string color;
-        private string boardName;
+        private int boardId;
+        //private string color;
+        //private string boardName;
         private ObservableCollection<ReadCard> cards;
 
         #region Properties 
@@ -31,16 +32,16 @@ namespace planit_client_wpf.Model
             set { SetProperty(ref name, value); }
         }
 
-        public string Color
-        {
-            get { return color; }
-            set { SetProperty(ref color, value); }
-        }
+        //public string Color
+        //{
+        //    get { return color; }
+        //    set { SetProperty(ref color, value); }
+        //}
 
-        public string BoardName
+        public int BoardId
         {
-            get { return boardName; }
-            set { SetProperty(ref boardName, value); }
+            get { return boardId; }
+            set { SetProperty(ref boardId, value); }
         }
 
         public ObservableCollection<ReadCard> Cards
@@ -51,22 +52,27 @@ namespace planit_client_wpf.Model
 
         #endregion
 
-        public ReadCardList()
-        {
-
-        }
-
         public ReadCardList(ReadCardListDTO dto)
         {
-            ListId = dto.ListId;
-            Name = dto.Name;
-            Color = dto.Color;
-            BoardName = dto.BoardName;
-
-            Cards = new ObservableCollection<ReadCard>();
-            foreach(ReadCardDTO card in dto.Cards)
+            if(dto != null)
             {
-                Cards.Add(new ReadCard(card));
+                ListId = dto.ListId;
+                Name = dto.Name;
+                BoardId = dto.BoardId;
+                //Color = dto.Color;
+                //BoardName = dto.BoardName;
+
+                Cards = new ObservableCollection<ReadCard>();
+                if(dto.Cards != null)
+                {
+                    if (dto.Cards != null)
+                    {
+                        foreach (ReadCardDTO card in dto.Cards)
+                        {
+                            Cards.Add(new ReadCard(card));
+                        }
+                    }
+                }
             }
         }
     }

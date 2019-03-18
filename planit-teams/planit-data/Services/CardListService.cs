@@ -37,7 +37,6 @@ namespace planit_data.Services
                 {
                     cardListDTO = new ReadCardListDTO(c);
                 }
-
             }
 
             return cardListDTO;

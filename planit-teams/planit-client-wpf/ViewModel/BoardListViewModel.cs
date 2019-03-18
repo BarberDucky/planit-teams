@@ -99,7 +99,6 @@ namespace planit_client_wpf.ViewModel
                 else
                 {
                     Boards.Add(new ShortBoard(dto));
-                    //ShowMessageBox(null, "Dodavanje radi, samo se to ne vidi za sad, izadji i udji opet. Cekamo rabbita.");
                 }
             }
         }      
