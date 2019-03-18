@@ -10,21 +10,21 @@ namespace planit_client_wpf.ViewModel
 {
     public class CardListViewModel : ViewModelBase
     {
-        public ReadCardList readCardList;
+        public ReadCardList cardList;
 
         #region Properties
 
-        public ReadCardList ReadCardList
+        public ReadCardList CardList
         {
-            get { return readCardList; }
-            set { SetProperty(ref readCardList, value); }
+            get { return cardList; }
+            set { SetProperty(ref cardList, value); }
         }
 
         #endregion
 
         public CardListViewModel(ReadCardList list)
         {
-            this.ReadCardList = list;
+            this.CardList = list;
         }
 
     }

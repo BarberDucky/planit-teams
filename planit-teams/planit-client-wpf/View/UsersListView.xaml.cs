@@ -27,7 +27,7 @@ namespace planit_client_wpf.View
             InitializeComponent();
         }
 
-        void LoginView_MessageBoxRequest(object sender, MessageBoxEventArgs e)
+        void MessageBoxRequest(object sender, MessageBoxEventArgs e)
         {
             e.Show();
         }
@@ -37,7 +37,7 @@ namespace planit_client_wpf.View
             try
             {
                 var vm = (UsersListViewModel)DataContext;
-                vm.MessageBoxRequest += LoginView_MessageBoxRequest;
+                vm.MessageBoxRequest += MessageBoxRequest;
             }
             catch (Exception)
             {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using planit_client_wpf.Base;
+using planit_client_wpf.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,24 @@ namespace planit_client_wpf.View
         public EmptyView()
         {
             InitializeComponent();
+        }
+
+        void MessageBoxRequest(object sender, MessageBoxEventArgs e)
+        {
+            e.Show();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var vm = (EmptyViewModel)DataContext;
+                vm.MessageBoxRequest += MessageBoxRequest;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error on message box request");
+            }
         }
     }
 }

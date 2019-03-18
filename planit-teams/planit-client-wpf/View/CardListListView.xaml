@@ -29,14 +29,25 @@
             <RowDefinition Height = "Auto" />
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" ItemsSource="{Binding CardListViewModels}">
+        <!--<ListBox Grid.Row="0" ItemsSource="{Binding CardListViewModels}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
-        </ListBox>
+        </ListBox>-->
 
+        <ListBox Grid.Row="0" 
+                 ItemsSource="{Binding CardListViewModels}"
+                 IsSynchronizedWithCurrentItem="True">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>            
+        </ListBox>
+        <!--<ContentControl Content="{Binding CardListViewModels/}"/>-->
+        
         <Button Grid.Row="1" Content="Add List" Command="{Binding NewListCommand}"
                 Margin="10, 10, 10, 10" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100"></Button>
     </Grid>

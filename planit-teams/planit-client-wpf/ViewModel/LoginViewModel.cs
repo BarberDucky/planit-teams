@@ -71,6 +71,7 @@ namespace planit_client_wpf.ViewModel
             RegisterCommand = new CommandBase(OnRegisterButtonClick);
             LoginButtonAction = goToHome;
             RegisterAction = goToRegister;
+            CanLoginFlag = true;
         }
 
 
@@ -89,18 +90,20 @@ namespace planit_client_wpf.ViewModel
                 };
                 ShowMessageBox(null, "Login successful");
                 LoginButtonAction?.Invoke();
+                int a = 3;
             } 
             else
             {
                 ShowMessageBox(null, "Login failed");
             }
             CanLoginFlag = true;
-
         }
 
         private bool CanLogin()
         {
-            return !String.IsNullOrWhiteSpace(username) && !String.IsNullOrWhiteSpace(password) && CanLoginFlag == false;
+            return !String.IsNullOrWhiteSpace(username) 
+                && !String.IsNullOrWhiteSpace(password) && password.Length > 5
+                && CanLoginFlag == true;
         }
 
         private void OnRegisterButtonClick()

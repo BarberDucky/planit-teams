@@ -16,6 +16,7 @@ namespace planit_client_wpf.ViewModel
         private string email;
         private string firstName;
         private string lastName;
+        private bool canRegister;
 
         #region Properties 
 
@@ -69,6 +70,16 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
+        public bool CanRegisterFlag
+        {
+            get { return canRegister; }
+            set
+            {
+                SetProperty<bool>(ref canRegister, value);
+                RegisterCommand.RaiseCanExecuteChanged();
+            }
+        }
+
         #endregion
 
         #region Commands 
@@ -87,12 +98,14 @@ namespace planit_client_wpf.ViewModel
         public RegisterViewModel(Action returnToLogin)
         {
             RegisterCommand = new CommandBase(OnRegisterButtonClick, CanRegister);
+            CanRegisterFlag = true;
             BackCommand = new CommandBase(OnBackButtonClick);
             RegisterButtonAction = returnToLogin;
         }
 
         public async void OnRegisterButtonClick()
         {
+            CanRegisterFlag = false;
             CreateUserDTO createUserDTO = new CreateUserDTO() { Username = Username, Password = Password, Email = Email, FirstName = FirstName, LastName = LastName };
 
             bool isRegisterSuccessful = await UserService.RegisterUser(createUserDTO);
@@ -106,14 +119,14 @@ namespace planit_client_wpf.ViewModel
             {
                 ShowMessageBox(null, "Registration unsuccessful");
             }
-
+            CanRegisterFlag = true;
         }
 
         public bool CanRegister()
         {
             return !String.IsNullOrWhiteSpace(username) && !String.IsNullOrWhiteSpace(password)
                 && !String.IsNullOrWhiteSpace(email) && !String.IsNullOrWhiteSpace(firstName)
-                && !String.IsNullOrWhiteSpace(lastName);
+                && !String.IsNullOrWhiteSpace(lastName) && CanRegisterFlag == true;
         }
 
         public void OnBackButtonClick()
