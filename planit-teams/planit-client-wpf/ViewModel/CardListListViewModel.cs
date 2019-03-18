@@ -62,7 +62,7 @@ namespace planit_client_wpf.ViewModel
                 if (createdCardList != null)
                 {
                     ShowMessageBox(null, "Kreirala se lista");
-                    var list = new ReadCardList() { Name = "Untitled" };
+                    var list = new ReadCardList(createdCardList);
                     CardLists.Add(list);
                     CardListViewModels.Add(new CardListViewModel(list));
                 }

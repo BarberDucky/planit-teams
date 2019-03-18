@@ -75,5 +75,19 @@ namespace planit_client_wpf.Model
                 }
             }
         }
+
+        public ReadCardList(BasicCardListDTO dto)
+        {
+            if (dto != null)
+            {
+                ListId = dto.ListId;
+                Name = dto.Name;
+                BoardId = dto.BoardId;
+                //Color = dto.Color;
+                //BoardName = dto.BoardName;
+
+                Cards = new ObservableCollection<ReadCard>();
+            }
+        }
     }
 }

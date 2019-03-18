@@ -124,12 +124,12 @@ namespace planit_client_wpf.ViewModel
         {
             if (ActiveUser.IsActive == true && ShortBoard != null)
             {
-                Action<MessageBoxResult> yesno = async (MessageBoxResult res) =>
+                Action<MessageBoxResult> yesno = (MessageBoxResult res) =>
                 {
                     if (res == MessageBoxResult.Yes)
                     {
-                        bool result = await BoardService.DeleteBoard(ActiveUser.Instance.LoggedUser.Token, ShortBoard.BoardId);
-                        
+                        //bool result = await BoardService.DeleteBoard(ActiveUser.Instance.LoggedUser.Token, ShortBoard.BoardId);
+                        bool result = true;
                         if (result)
                         {
                             BoardDeleted?.Invoke(ShortBoard.BoardId);

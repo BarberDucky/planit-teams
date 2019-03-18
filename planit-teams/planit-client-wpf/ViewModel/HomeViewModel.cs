@@ -93,6 +93,7 @@ namespace planit_client_wpf.ViewModel
         {
             if(board != null)
             {
+                CenterViewModel = new EmptyViewModel();
                 CenterViewModel = new BoardViewModel(board, OnBoardDeleted);
             }
         }
@@ -108,6 +109,7 @@ namespace planit_client_wpf.ViewModel
             {
                 var list = LeftViewModel as BoardListViewModel;
                 list.RemoveSelectedBoard(boardId);
+                CenterViewModel = new EmptyViewModel();
             }
         }
 
