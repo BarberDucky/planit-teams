@@ -1,4 +1,6 @@
-﻿using RabbitMQ.Client;
+﻿using planit_client_wpf.Model;
+using planit_client_wpf.Helpers;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Generic;
@@ -30,7 +32,7 @@ namespace planit_client_wpf.MQ
 
         }
 
-        public void SubscribeToExchange(string exchangeName, Func<bool> Method)
+        public void SubscribeToExchange(string exchangeName, Func<IMQMessage, bool> Method)
         {
             //channel.ExchangeDeclare(exchange: exchangeName, type: "fanout");
 
@@ -45,8 +47,8 @@ namespace planit_client_wpf.MQ
             {
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body);
-                //var msgObj = JsonHelper.GetMessage(message);
-                Method();
+                IMQMessage msgObj = JsonHelper.GetMessage(message);
+                Method(msgObj);
             };
             channel.BasicConsume(queue: queueName,
                                  autoAck: true,

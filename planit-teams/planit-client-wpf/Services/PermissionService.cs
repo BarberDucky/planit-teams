@@ -16,21 +16,27 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-
-                string json = JsonConvert.SerializeObject(addUserBoardPermisionDTO);
-                var buffer = System.Text.Encoding.UTF8.GetBytes(json);
-                var byteContent = new ByteArrayContent(buffer);
-                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.PostAsync("http://localhost:52816/api/Permission/", byteContent);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<bool>(jsonString);
-                    return result;
+                    string json = JsonConvert.SerializeObject(addUserBoardPermisionDTO);
+                    var buffer = System.Text.Encoding.UTF8.GetBytes(json);
+                    var byteContent = new ByteArrayContent(buffer);
+                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.PostAsync("http://localhost:52816/api/Permission/", byteContent);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<bool>(jsonString);
+                        return result;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     return false;
                 }
@@ -41,15 +47,22 @@ namespace planit_client_wpf.Services
         {
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.DeleteAsync("http://localhost:52816/api/Permission/Board/" + boardId + "/User/" + username);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<bool>(jsonString);
-                    return result;
+                    client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                    var response = await client.DeleteAsync("http://localhost:52816/api/Permission/Board/" + boardId + "/User/" + username);
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<bool>(jsonString);
+                        return result;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
                     return false;
                 }

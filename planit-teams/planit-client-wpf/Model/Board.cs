@@ -42,6 +42,13 @@ namespace planit_client_wpf.Model
             BoardId = dto.BoardId;
             IsRead = dto.IsRead;
         }
+
+        public ShortBoard(BasicBoardDTO dto)
+        {
+            Name = dto.Name;
+            BoardId = dto.BoardId;
+            IsRead = false;
+        }
     }
 
     public class LongBoard : BindableBase

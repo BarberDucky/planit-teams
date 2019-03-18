@@ -25,7 +25,7 @@
     </UserControl.Resources>
     <Popup IsOpen="{Binding IsOpen}" Placement="Bottom" HorizontalOffset="-15" VerticalOffset="10" Width="100" StaysOpen="False">
         <StackPanel Orientation="Vertical">
-            <Button Content="Read all"></Button>
+            <Button Content="Read all" Command="{Binding ReadAllNotificationsCommand}"></Button>
             <ListBox ItemsSource="{Binding Notifications}" SelectedItem="{Binding SelectedNotification}" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
         </StackPanel>
     </Popup>

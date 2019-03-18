@@ -1,5 +1,7 @@
 ﻿using planit_client_wpf.Base;
+using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,6 +16,9 @@ namespace planit_client_wpf.ViewModel
         private Notification selectedNotification;
         private bool isOpen;
 
+        public CommandBase ReadAllNotificationsCommand { get; private set; }
+
+
         #region Properties
 
         public ObservableCollection<Notification> Notifications { get; set; }
@@ -25,6 +30,7 @@ namespace planit_client_wpf.ViewModel
             {
                 SetProperty(ref selectedNotification, value);
                 selectedNotification.IsRead = true;
+                NotificationService.ReadNotification(ActiveUser.Instance.LoggedUser.Token, selectedNotification.NotificationId);
             }
         }
 
@@ -38,11 +44,27 @@ namespace planit_client_wpf.ViewModel
 
         public NotificationsViewModel()
         {
+            ReadAllNotificationsCommand = new CommandBase(OnReadAllNotifications);
             Notifications = new ObservableCollection<Notification>();
+            InitializeNotifications();
+        }
 
-            Notifications.Add(new Notification() { IsRead = false, NotificationId = 1});
-            Notifications.Add(new Notification() { IsRead = true, NotificationId = 2});
-            Notifications.Add(new Notification() { IsRead = false, NotificationId = 3});
+        private async void OnReadAllNotifications()
+        {
+            await NotificationService.ReadAllNotifications(ActiveUser.Instance.LoggedUser.Token);
+            foreach (Notification notification in Notifications)
+            {
+                notification.IsRead = true;
+            }
+        }
+
+        public async void InitializeNotifications()
+        {
+            List<ReadNotificationDTO> list = await UserService.GetUserNotifications(ActiveUser.Instance.LoggedUser.Token);
+            foreach(ReadNotificationDTO notificationDTO in list)
+            {
+                Notifications.Add(new Notification(notificationDTO));
+            }
         }
     }
 }
