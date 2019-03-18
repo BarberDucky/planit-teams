@@ -106,7 +106,7 @@ namespace planit_client_wpf.ViewModel
                     }
 
                     UsersViewModel = new UsersListViewModel(Board.Users, Board.IsAdmin);
-                    CardListViewModel = new CardListListViewModel(Board.CardLists);
+                    CardListViewModel = new CardListListViewModel(Board.CardLists, Board.BoardId);
 
                 }
                 else
@@ -124,12 +124,21 @@ namespace planit_client_wpf.ViewModel
         {
             if (ActiveUser.IsActive == true && ShortBoard != null)
             {
-                Action<MessageBoxResult> yesno = (MessageBoxResult res) =>
+                Action<MessageBoxResult> yesno = async (MessageBoxResult res) =>
                 {
                     if (res == MessageBoxResult.Yes)
                     {
-                        BoardDeleted?.Invoke(ShortBoard.BoardId);
-                        //Api call
+                        bool result = await BoardService.DeleteBoard(ActiveUser.Instance.LoggedUser.Token, ShortBoard.BoardId);
+                        
+                        if (result)
+                        {
+                            BoardDeleted?.Invoke(ShortBoard.BoardId);
+                        }
+                        else
+                        {
+                            ShowMessageBox(null, "Error deleting board.");
+                        }
+                        
                     }
                 };
 

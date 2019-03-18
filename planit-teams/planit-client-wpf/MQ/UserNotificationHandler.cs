@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using planit_client_wpf.Model;
+using planit_client_wpf.Services;
 
 namespace planit_client_wpf.MQ
 {
@@ -20,9 +21,12 @@ namespace planit_client_wpf.MQ
     {
         public void HandleUserNotification(ObservableCollection<ShortBoard> boardList, ShortBoard selectedBoard, ObservableCollection<Notification> notifications, IMQMessage message)
         {
+            selectedBoard = null;
             ShortBoard deleteBoard = boardList.SingleOrDefault(el => el.BoardId == ((DeleteMessage)message).Data);
-            boardList.Remove(deleteBoard);
-
+            if (deleteBoard != null)
+            {
+                boardList.Remove(deleteBoard);
+            }
         }
     }
 
@@ -34,6 +38,10 @@ namespace planit_client_wpf.MQ
             if (selectedBoard == null || targetBoardId != selectedBoard.BoardId)
             {
                 boardList.SingleOrDefault(el => el.BoardId == targetBoardId).IsRead = false;
+            }
+            else if ( selectedBoard != null && targetBoardId == selectedBoard.BoardId)
+            {
+                BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, targetBoardId);
             }
         }
     }
