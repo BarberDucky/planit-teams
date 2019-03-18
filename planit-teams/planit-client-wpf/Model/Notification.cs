@@ -1,4 +1,5 @@
 ﻿using planit_client_wpf.Base;
+using planit_client_wpf.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,5 +36,20 @@ namespace planit_client_wpf.Model
         }
 
         #endregion
+
+        public Notification() { }
+
+        public Notification(ReadNotificationDTO dto)
+        {
+            NotificationId = dto.NotificationId;
+            TimeStamp = dto.TimeStamp;
+            NotificationType = dto.NotificationType;
+            CardId = dto.CardId;
+            CardName = dto.CardName;
+            ListName = dto.ListName;
+            BoardName = dto.BoardName;
+            Username = dto.Username;
+            IsRead = dto.IsRead;
+        }
     }
 }

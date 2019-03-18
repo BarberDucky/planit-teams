@@ -77,7 +77,26 @@ namespace planit_client_wpf.Services
                 {
                     return null;
                 }
+            }
+        }
 
+        public static async Task<List<ReadNotificationDTO>> GetUserNotifications(string accessToken)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+
+                client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                var response = await client.GetAsync("http://localhost:52816/api/UserApi/UserNotifications");
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var notifications = JsonConvert.DeserializeObject<List<ReadNotificationDTO>>(jsonString);
+                    return notifications;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
     }

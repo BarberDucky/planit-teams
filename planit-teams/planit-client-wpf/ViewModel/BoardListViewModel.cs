@@ -28,6 +28,7 @@ namespace planit_client_wpf.ViewModel
                 SetProperty(ref selectedBoard, value);
                 selectedBoard.IsRead = true;
                 BoardSectedAction?.Invoke(SelectedBoard.BoardId);
+                BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, SelectedBoard.BoardId);
             }
         }
 

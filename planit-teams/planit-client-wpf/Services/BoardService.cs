@@ -78,5 +78,51 @@ namespace planit_client_wpf.Services
                 }
             }
         }
+
+        public static async Task<bool> UpdateBoard(string accessToken, int boardId, UpdateBoardDTO updateBoardDTO)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+
+                string json = JsonConvert.SerializeObject(updateBoardDTO);
+                var buffer = System.Text.Encoding.UTF8.GetBytes(json);
+                var byteContent = new ByteArrayContent(buffer);
+                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                var response = await client.PostAsync("http://localhost:52816/api/Board/" + boardId, byteContent);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<bool>(jsonString);
+                    return result;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public static async Task<bool> DeleteBoard(string accessToken, int boardId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                string id = boardId.ToString();
+                client.DefaultRequestHeaders.Add("Authorization", accessToken);
+                var response = await client.DeleteAsync("http://localhost:52816/api/Board/" + id);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<bool>(jsonString);
+                    return result;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+        }
     }
 }

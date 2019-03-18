@@ -15,7 +15,7 @@ namespace planit_client_wpf.Services
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                var response = await client.PostAsync("http://localhost:52816/api/BoardNotification/Board/" + boardId, null);
+                var response = await client.PutAsync("http://localhost:52816/api/BoardNotification/Board/" + boardId, null);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {

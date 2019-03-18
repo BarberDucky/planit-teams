@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace planit_client_wpf.ViewModel
 {
@@ -58,6 +61,7 @@ namespace planit_client_wpf.ViewModel
         {
             //Init MQ
             MQService = new MQService();
+            InitializeMQ();
 
             //Init komande
             LogoutCommand = new CommandBase(OnLogoutButtonClick, CanLogout);
@@ -97,7 +101,21 @@ namespace planit_client_wpf.ViewModel
 
             if (readUserDTO != null)
             {
-                MQService.SubscribeToExchange(readUserDTO.ExchangeName, () => { ShowMessageBox(null, "Stigla poruka"); return true; });
+                MQService.SubscribeToExchange(readUserDTO.ExchangeName, (IMQMessage message) => 
+                {
+                    Application.Current.Dispatcher.BeginInvoke(
+                      DispatcherPriority.Background,
+                      new Action(() => {
+                          IUserNotificationHandler userNotificationHandler = UserNotifHandlerFactory.CreateHandler(message);
+                          userNotificationHandler.HandleUserNotification(
+                              ((BoardListViewModel)leftViewModel).Boards,
+                              ((BoardListViewModel)leftViewModel).SelectedBoard,
+                              ((NotificationsViewModel)notificationViewModel).Notifications,
+                              message);
+                          ShowMessageBox(null, "Stigla poruka");
+                      }));
+                    return true;
+                });
             }
         }
 
