@@ -1,5 +1,7 @@
 ﻿using planit_client_wpf.Base;
+using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +24,34 @@ namespace planit_client_wpf.ViewModel
 
         #endregion
 
+        #region Commands
+
+        public CommandBase AddCardCommand { get; protected set; }
+
+        #endregion
+
         public CardListViewModel(ReadCardList list)
         {
             this.CardList = list;
+            AddCardCommand = new CommandBase(OnAddCardClick);
+        }
+
+        public async void OnAddCardClick()
+        {
+            if (ActiveUser.IsActive == true)
+            {
+                //BasicCardDTO dto = await CardService.CreateCard(ActiveUser.Instance.LoggedUser.Token, new CreateCardDTO() { Name = "Untitled", Description = "No Description", DueDate = DateTime.Now.AddDays(7), ListId = cardList.ListId });
+                //if (dto == null)
+                //{
+                //    ShowMessageBox(null, "Creation unsuccessful.");
+                //}
+                //else
+                //{
+                //    CardList.Cards.Add(new ReadCard(dto));
+                //}
+
+                CardList.Cards.Add(new ReadCard(new BasicCardDTO() { Name = "Untitled", Description = "No Description", DueDate = DateTime.Now.AddDays(7) }));
+            }
         }
 
     }

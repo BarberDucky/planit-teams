@@ -3,11 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:planit_client_wpf.View"
+             xmlns:viewModel="clr-namespace:planit_client_wpf.ViewModel"
+             xmlns:view ="clr-namespace:planit_client_wpf.View"      
+             xmlns:model ="clr-namespace:planit_client_wpf.Model"             
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
+
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type model:ReadCard}">
+            <Label Content="{Binding Name}"></Label>
+        </DataTemplate>
+    </UserControl.Resources>
+    
     <Grid>
-        <Label Content="{Binding CardList.Name}" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height ="*" />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="{Binding CardList.Name}" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+        <ListBox Grid.Row="1" ItemsSource="{Binding CardList.Cards}">
+        </ListBox>
+        
+        <Button Grid.Row="2" Content="Add card" Command="{Binding AddCardCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+
     </Grid>
 </UserControl>

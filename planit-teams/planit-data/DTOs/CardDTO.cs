@@ -60,7 +60,9 @@ namespace planit_data.DTOs
         public DateTime TimeStamp { get; set; }
         public DateTime DueDate { get; set; }
         public String ListName { get; set; }
-        public String BoardName { get; set; }
+        //public String BoardName { get; set; }
+        public int BoardId { get; set; }
+        public int ListId { get; set; }
         public List<ReadCommentDTO> Comments { get; set; }
         public ReadCardDTO(Card card)
         {
@@ -71,7 +73,8 @@ namespace planit_data.DTOs
             TimeStamp = card.CreationDate;
             DueDate = card.DueDate;
             ListName = card.List.Name;
-            BoardName = card.List.Board.Name;
+            BoardId = card.List.Board.BoardId;
+            ListId = card.List.ListId;
             this.Comments = ReadCommentDTO.FromEntityList(card.Comments.ToList());
         }
 

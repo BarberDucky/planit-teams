@@ -81,7 +81,7 @@ namespace planit_client_wpf.ViewModel
             CredentialsUserDTO credentials = new CredentialsUserDTO() { username = Username, password = Password, grant_type = "password" };
 
             TokenUserDTO token = await UserService.LoginUser(credentials);
-            if (token.success)
+            if (token != null && token.success)
             {
                 ActiveUser.Instance.LoggedUser = new TokenUser
                 {
@@ -90,7 +90,6 @@ namespace planit_client_wpf.ViewModel
                 };
                 ShowMessageBox(null, "Login successful");
                 LoginButtonAction?.Invoke();
-                int a = 3;
             } 
             else
             {

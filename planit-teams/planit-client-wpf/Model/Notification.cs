@@ -41,15 +41,18 @@ namespace planit_client_wpf.Model
 
         public Notification(ReadNotificationDTO dto)
         {
-            NotificationId = dto.NotificationId;
-            TimeStamp = dto.TimeStamp;
-            NotificationType = dto.NotificationType;
-            CardId = dto.CardId;
-            CardName = dto.CardName;
-            ListName = dto.ListName;
-            BoardName = dto.BoardName;
-            Username = dto.Username;
-            IsRead = dto.IsRead;
+            if(dto != null)
+            {
+                NotificationId = dto.NotificationId;
+                TimeStamp = dto.TimeStamp;
+                NotificationType = dto.NotificationType;
+                CardId = dto.CardId;
+                CardName = dto.CardName;
+                ListName = dto.ListName;
+                BoardName = dto.BoardName;
+                Username = dto.Username;
+                IsRead = dto.IsRead;
+            }
         }
     }
 }

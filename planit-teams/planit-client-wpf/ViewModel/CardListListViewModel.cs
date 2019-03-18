@@ -53,7 +53,7 @@ namespace planit_client_wpf.ViewModel
             if (ActiveUser.IsActive == true)
             {
                 ShowMessageBox(null, "Kreirala se lista");
-                var list = new ReadCardList() { Name = "Utitled" };
+                var list = new ReadCardList(new DTOs.ReadCardListDTO() { Name = "Utitled", ListId=0 });
                 CardLists.Add(list);
                 CardListViewModels.Add(new CardListViewModel(list));
             }
