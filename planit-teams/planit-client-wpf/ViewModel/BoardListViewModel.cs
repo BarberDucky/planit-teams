@@ -29,12 +29,16 @@ namespace planit_client_wpf.ViewModel
                 if (selectedBoard == null)
                     BoardDeselectedAction?.Invoke();
                 else
+<<<<<<< HEAD
                 {
                     BoardSectedAction?.Invoke(SelectedBoard.BoardId);
                     selectedBoard.IsRead = true;
                     BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, SelectedBoard.BoardId);
                 }
                     
+=======
+                    BoardSectedAction?.Invoke(SelectedBoard);
+>>>>>>> added: card list, board rename
             }
         }
 
@@ -48,12 +52,12 @@ namespace planit_client_wpf.ViewModel
 
         #region Actions and Func
 
-        private Action<int> BoardSectedAction { get; set; }
+        private Action<ShortBoard> BoardSectedAction { get; set; }
         private Action BoardDeselectedAction { get; set; }
 
         #endregion
 
-        public BoardListViewModel(Action<int> boardSelectedAction, Action boardDeselectedAction)
+        public BoardListViewModel(Action<ShortBoard> boardSelectedAction, Action boardDeselectedAction)
         {
             Boards = new ObservableCollection<ShortBoard>();
             NewBoardCommand = new CommandBase(OnNewBoardClick);

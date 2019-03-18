@@ -29,7 +29,11 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Width="Auto" Grid.Row="0">
-            <Label Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="{Binding Board.Name}" Width="Auto" Height="Auto"/>
+            <TextBox x:Name="txtName" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="Auto" Height="Auto"/>
+            <Button Grid.Row="2" Content="Rename" 
+                    Command="{Binding RenameBoardCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100">
+            </Button>
             <Button Grid.Row="2" Content="Delete Board" 
                     Command="{Binding DeleteBoardCommand}" Visibility="{Binding DeleteBoardCommandVisible, Converter={StaticResource BoolToVisConverter}}"
                     Margin="10, 10, 10, 10" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
@@ -44,5 +48,5 @@
             </TabItem>
         </TabControl>
     </Grid>
-    
+
 </UserControl>

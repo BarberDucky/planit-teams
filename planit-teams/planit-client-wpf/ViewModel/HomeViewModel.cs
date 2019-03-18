@@ -89,9 +89,12 @@ namespace planit_client_wpf.ViewModel
             return ActiveUser.Instance.LoggedUser != null;
         }
 
-        public void OnBoardSelected(int boardId)
+        public void OnBoardSelected(ShortBoard board)
         {
-            CenterViewModel = new BoardViewModel(boardId, OnBoardDeleted);
+            if(board != null)
+            {
+                CenterViewModel = new BoardViewModel(board, OnBoardDeleted);
+            }
         }
 
         public void OnBoardDeselectd()
