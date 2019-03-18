@@ -15,19 +15,25 @@
             <Label Content="{Binding Name}"></Label>
         </DataTemplate>
     </UserControl.Resources>
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height ="*" />
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Content="{Binding CardList.Name}" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
-        <ListBox Grid.Row="1" ItemsSource="{Binding CardList.Cards}">
-        </ListBox>
-        
-        <Button Grid.Row="2" Content="Add card" Command="{Binding AddCardCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+    <DockPanel Height="600" Width="300">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height ="*" />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-    </Grid>
+            <Label Grid.Row="0" Content="{Binding CardList.Name}" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+            <DockPanel>
+                <ListBox Grid.Row="1" ItemsSource="{Binding CardList.Cards}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                </ListBox>
+            </DockPanel>
+
+            <Button Grid.Row="2" Content="Add card" Command="{Binding AddCardCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+
+        </Grid>
+    </DockPanel>
 </UserControl>
