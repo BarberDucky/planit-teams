@@ -18,11 +18,11 @@ using System.Windows.Shapes;
 namespace planit_client_wpf.View
 {
     /// <summary>
-    /// Interaction logic for HomeView.xaml
+    /// Interaction logic for UsersView.xaml
     /// </summary>
-    public partial class HomeView : UserControl
+    public partial class UsersView : UserControl
     {
-        public HomeView()
+        public UsersView()
         {
             InitializeComponent();
         }
@@ -34,11 +34,9 @@ namespace planit_client_wpf.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            Window wind = Window.GetWindow(this);
-            wind.WindowState = WindowState.Maximized;
             try
             {
-                var vm = (HomeViewModel)DataContext;
+                var vm = (UsersListViewModel)DataContext;
                 vm.MessageBoxRequest += LoginView_MessageBoxRequest;
             }
             catch (Exception)

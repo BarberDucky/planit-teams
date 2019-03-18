@@ -28,7 +28,7 @@ namespace planit_client_wpf.View
         }
 
         void LoginView_MessageBoxRequest(object sender, MessageBoxEventArgs e)
-        {
+        {            
             e.Show();
         }
 

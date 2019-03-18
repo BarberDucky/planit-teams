@@ -26,9 +26,15 @@ namespace planit_client_wpf.ViewModel
             set
             {
                 SetProperty(ref selectedBoard, value);
-                selectedBoard.IsRead = true;
-                BoardSectedAction?.Invoke(SelectedBoard.BoardId);
-                BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, SelectedBoard.BoardId);
+                if (selectedBoard == null)
+                    BoardDeselectedAction?.Invoke();
+                else
+                {
+                    BoardSectedAction?.Invoke(SelectedBoard.BoardId);
+                    selectedBoard.IsRead = true;
+                    BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, SelectedBoard.BoardId);
+                }
+                    
             }
         }
 
@@ -37,21 +43,22 @@ namespace planit_client_wpf.ViewModel
         #region Commands
         
         public CommandBase NewBoardCommand { get; private set; }
-        //public CommandBase DeleteBoardCommand { get; private set; }
+
         #endregion
 
         #region Actions and Func
 
         private Action<int> BoardSectedAction { get; set; }
+        private Action BoardDeselectedAction { get; set; }
 
         #endregion
 
-        public BoardListViewModel(Action<int> boardSelectedAction)
+        public BoardListViewModel(Action<int> boardSelectedAction, Action boardDeselectedAction)
         {
             Boards = new ObservableCollection<ShortBoard>();
             NewBoardCommand = new CommandBase(OnNewBoardClick);
-            //DeleteBoardCommand = new CommandBase(OnDeleteBoardClick, CanDelete);
             BoardSectedAction = boardSelectedAction;
+            BoardDeselectedAction = boardDeselectedAction;
 
             LoadBoardsByUser();
         }
@@ -96,27 +103,16 @@ namespace planit_client_wpf.ViewModel
                     //ShowMessageBox(null, "Dodavanje radi, samo se to ne vidi za sad, izadji i udji opet. Cekamo rabbita.");
                 }
             }
+        }      
+
+        public void RemoveSelectedBoard(int boardId)
+        {
+            SelectedBoard = null;
+            if(Boards != null)
+            {
+                var item = Boards.FirstOrDefault(x => x.BoardId == boardId);
+                Boards.Remove(item);
+            }
         }
-
-        //private void OnDeleteBoardClick()
-        //{
-        //    if (ActiveUser.IsActive == true)
-        //    {
-        //        ShowMessageBox(null, "Ovde bi isao delete kad bi postojao...");
-        //        //if (dto == null)
-        //        //{
-        //        //    ShowMessageBox(null, "Delete unsuccessful.");
-        //        //}
-        //        //else
-        //        //{
-        //        //    ShowMessageBox(null, "Dodavanje radi, samo se to ne vidi za sad, izadji i udji opet. Cekamo rabbita.");
-        //        //}
-        //    }
-        //}
-
-        //private bool CanDelete()
-        //{
-        //    return true;
-        //}
     }
 }

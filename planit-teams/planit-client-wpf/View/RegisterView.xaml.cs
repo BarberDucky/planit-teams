@@ -34,6 +34,8 @@ namespace planit_client_wpf.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            Window wind = Window.GetWindow(this);
+            wind.WindowState = WindowState.Normal;
             try
             {
                 var vm = (RegisterViewModel)DataContext;
