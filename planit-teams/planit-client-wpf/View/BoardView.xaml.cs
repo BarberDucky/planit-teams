@@ -28,22 +28,37 @@ namespace planit_client_wpf.View
         }
 
         void MessageBoxRequest(object sender, MessageBoxEventArgs e)
-        {            
+        {
             e.Show();
         }
+        
+        //private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        var vm = (BoardViewModel)DataContext;
+        //        vm.MessageBoxRequest += MessageBoxRequest;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        MessageBox.Show("Error on message box request");
+        //    }
+        //}
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             try
             {
                 var vm = (BoardViewModel)DataContext;
-                vm.MessageBoxRequest += MessageBoxRequest;
+                if (vm != null)
+                {
+                    vm.MessageBoxRequest += MessageBoxRequest;
+                }
             }
             catch (Exception)
             {
                 MessageBox.Show("Error on message box request");
             }
         }
-
     }
 }

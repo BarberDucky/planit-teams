@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
+using System.Threading;
 
 namespace planit_client_wpf.ViewModel
 {
@@ -108,6 +109,7 @@ namespace planit_client_wpf.ViewModel
             {
                 var list = LeftViewModel as BoardListViewModel;
                 list.RemoveSelectedBoard(boardId);
+                CenterViewModel = new EmptyViewModel();
             }
         }
 
@@ -119,6 +121,7 @@ namespace planit_client_wpf.ViewModel
             {
                 MQService.SubscribeToExchange(readUserDTO.ExchangeName, (IMQMessage message) => 
                 {
+                    if (Application.Current == null) return false;
                     Application.Current.Dispatcher.BeginInvoke(
                       DispatcherPriority.Background,
                       new Action(() => {

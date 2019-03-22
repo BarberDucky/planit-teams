@@ -40,17 +40,16 @@ namespace planit_client_wpf.ViewModel
         {
             if (ActiveUser.IsActive == true)
             {
-                //BasicCardDTO dto = await CardService.CreateCard(ActiveUser.Instance.LoggedUser.Token, new CreateCardDTO() { Name = "Untitled", Description = "No Description", DueDate = DateTime.Now.AddDays(7), ListId = cardList.ListId });
-                //if (dto == null)
-                //{
-                //    ShowMessageBox(null, "Creation unsuccessful.");
-                //}
-                //else
-                //{
-                //    CardList.Cards.Add(new ReadCard(dto));
-                //}
+                BasicCardDTO dto = await CardService.CreateCard(ActiveUser.Instance.LoggedUser.Token, new CreateCardDTO() { Name = "Untitled", Description = "No Description", DueDate = DateTime.Now.AddDays(7), ListId = cardList.ListId });
 
-                CardList.Cards.Add(new ReadCard(new BasicCardDTO() { Name = "Untitled", Description = "No Description", DueDate = DateTime.Now.AddDays(7) }));
+                if (dto != null)
+                {
+                    CardList.Cards.Add(new ReadCard(dto));
+                }
+                else
+                {
+                    ShowMessageBox(null, "Error creating card.");
+                }
             }
         }
 

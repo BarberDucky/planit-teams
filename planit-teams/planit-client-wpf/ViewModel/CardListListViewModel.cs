@@ -1,5 +1,7 @@
 ﻿using planit_client_wpf.Base;
+using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +15,7 @@ namespace planit_client_wpf.ViewModel
     {
         private ObservableCollection<ReadCardList> cardLists;
         private ObservableCollection<ViewModelBase> cardListViewModels;
+        private int parentBoardId;
 
         #region Properties
 
@@ -36,8 +39,9 @@ namespace planit_client_wpf.ViewModel
 
         #endregion
 
-        public CardListListViewModel(ObservableCollection<ReadCardList> cardLists)
+        public CardListListViewModel(ObservableCollection<ReadCardList> cardLists, int parentBoardId)
         {
+            this.parentBoardId = parentBoardId;
             this.CardLists = cardLists;
             this.CardListViewModels = new ObservableCollection<ViewModelBase>();
             foreach(ReadCardList cardList in cardLists)
@@ -48,14 +52,24 @@ namespace planit_client_wpf.ViewModel
             NewListCommand = new CommandBase(OnNewListClick);
         }
 
-        public void OnNewListClick()
+        public async void OnNewListClick()
         {
             if (ActiveUser.IsActive == true)
             {
-                ShowMessageBox(null, "Kreirala se lista");
-                var list = new ReadCardList(new DTOs.ReadCardListDTO() { Name = "Utitled", ListId=0 });
-                CardLists.Add(list);
-                CardListViewModels.Add(new CardListViewModel(list));
+                CreateCardListDTO createCardListDTO = new CreateCardListDTO() { BoardId = parentBoardId, Color = "white", Name = "Untitled list" };
+                BasicCardListDTO basicCardListDTO = await CardListService.CreateCardList(ActiveUser.Instance.LoggedUser.Token, createCardListDTO);
+
+                if (basicCardListDTO != null)
+                {
+                    ShowMessageBox(null, "Kreirala se lista");
+                    var list = new ReadCardList(basicCardListDTO);
+                    CardLists.Add(list);
+                    CardListViewModels.Add(new CardListViewModel(list));
+                }
+                else
+                {
+                    ShowMessageBox(null, "Error creating list.");
+                }
             }
             else
             {
