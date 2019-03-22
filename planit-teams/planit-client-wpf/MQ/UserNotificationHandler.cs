@@ -21,11 +21,11 @@ namespace planit_client_wpf.MQ
     {
         public void HandleUserNotification(ObservableCollection<ShortBoard> boardList, ShortBoard selectedBoard, ObservableCollection<Notification> notifications, IMQMessage message)
         {
-            selectedBoard = null;
             ShortBoard deleteBoard = boardList.SingleOrDefault(el => el.BoardId == ((DeleteMessage)message).Data);
-            if (deleteBoard != null)
+            boardList.Remove(deleteBoard);
+            if (selectedBoard != null && selectedBoard.BoardId == deleteBoard.BoardId)
             {
-                boardList.Remove(deleteBoard);
+                selectedBoard = null;
             }
         }
     }
@@ -39,7 +39,7 @@ namespace planit_client_wpf.MQ
             {
                 boardList.SingleOrDefault(el => el.BoardId == targetBoardId).IsRead = false;
             }
-            else if ( selectedBoard != null && targetBoardId == selectedBoard.BoardId)
+            else if (selectedBoard != null && targetBoardId == selectedBoard.BoardId)
             {
                 BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, targetBoardId);
             }

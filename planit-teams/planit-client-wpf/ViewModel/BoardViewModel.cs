@@ -124,12 +124,12 @@ namespace planit_client_wpf.ViewModel
         {
             if (ActiveUser.IsActive == true && ShortBoard != null)
             {
-                Action<MessageBoxResult> yesno = (MessageBoxResult res) =>
+                Action<MessageBoxResult> yesno = async (MessageBoxResult res) =>
                 {
                     if (res == MessageBoxResult.Yes)
                     {
-                        //bool result = await BoardService.DeleteBoard(ActiveUser.Instance.LoggedUser.Token, ShortBoard.BoardId);
-                        bool result = true;
+                        bool result = await BoardService.DeleteBoard(ActiveUser.Instance.LoggedUser.Token, Board.BoardId); 
+
                         if (result)
                         {
                             BoardDeleted?.Invoke(ShortBoard.BoardId);
@@ -138,7 +138,7 @@ namespace planit_client_wpf.ViewModel
                         {
                             ShowMessageBox(null, "Error deleting board.");
                         }
-                        
+
                     }
                 };
 

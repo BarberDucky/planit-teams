@@ -41,8 +41,8 @@ namespace planit_client_wpf.ViewModel
 
         public CardListListViewModel(ObservableCollection<ReadCardList> cardLists, int parentBoardId)
         {
-            this.CardLists = cardLists;
             this.parentBoardId = parentBoardId;
+            this.CardLists = cardLists;
             this.CardListViewModels = new ObservableCollection<ViewModelBase>();
             foreach(ReadCardList cardList in cardLists)
             {
@@ -56,19 +56,19 @@ namespace planit_client_wpf.ViewModel
         {
             if (ActiveUser.IsActive == true)
             {
-                CreateCardListDTO createCardListDTO = new CreateCardListDTO() { Name = "Untitled list", Color = "white", BoardId = parentBoardId };
-                BasicCardListDTO createdCardList = await CardListService.CreateCardList(ActiveUser.Instance.LoggedUser.Token, createCardListDTO);
+                CreateCardListDTO createCardListDTO = new CreateCardListDTO() { BoardId = parentBoardId, Color = "white", Name = "Untitled list" };
+                BasicCardListDTO basicCardListDTO = await CardListService.CreateCardList(ActiveUser.Instance.LoggedUser.Token, createCardListDTO);
 
-                if (createdCardList != null)
+                if (basicCardListDTO != null)
                 {
                     ShowMessageBox(null, "Kreirala se lista");
-                    var list = new ReadCardList(createdCardList);
+                    var list = new ReadCardList(basicCardListDTO);
                     CardLists.Add(list);
                     CardListViewModels.Add(new CardListViewModel(list));
                 }
                 else
                 {
-                    ShowMessageBox(null, "Error getting user.");
+                    ShowMessageBox(null, "Error creating list.");
                 }
             }
             else
