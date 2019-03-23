@@ -7,16 +7,20 @@
              xmlns:view ="clr-namespace:planit_client_wpf.View"      
              xmlns:model ="clr-namespace:planit_client_wpf.Model"             
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Loaded="UserControl_Loaded">
+             d:DesignHeight="600" d:DesignWidth="300">
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:ReadCard}">
-            <Label Content="{Binding Name}"></Label>
+            <Border BorderThickness="1" BorderBrush="Gray" 
+                    CornerRadius="10">
+                <Label Content="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10, 10, 10, 10"></Label>
+            </Border>
         </DataTemplate>
     </UserControl.Resources>
 
-    <DockPanel Height="600" Width="300">
+    <DockPanel
+        Height="600"
+        Width="300">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -24,16 +28,27 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Content="{Binding CardList.Name}" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
-            <DockPanel>
-                <ListBox Grid.Row="1" ItemsSource="{Binding CardList.Cards}"
+            <Label Grid.Row="0" Content="{Binding CardList.Name}" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+            <ListBox Grid.Row="1" ItemsSource="{Binding CardList.Cards}" 
+                     Height="{Binding ElementName=LayoutRoot, Path=ActualHeight}"
                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto">
-                </ListBox>
-            </DockPanel>
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     HorizontalContentAlignment="Stretch"
+                     Margin="5, 5, 5, 5">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Margin" Value="5"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
 
-            <Button Grid.Row="2" Content="Add card" Command="{Binding AddCardCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+            <StackPanel  Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Content="Add card" Command="{Binding AddCardCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+                <Button Content="Delete list" Command="{Binding DeleteListCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+            </StackPanel>
 
         </Grid>
     </DockPanel>
+    
 </UserControl>

@@ -11,7 +11,7 @@
     
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:ReadUser}">
-            <StackPanel Orientation="Horizontal">
+            <DockPanel>
                 <!--<Label Content="Username: " Margin="5, 5, 5, 5"></Label>
                 <Label Content="{Binding Username}" Margin="5, 5, 5, 5"></Label>
                 <Label Content="First name: " Margin="5, 5, 5, 5"></Label>
@@ -21,23 +21,49 @@
                 <Label Content="Email: " Margin="5, 5, 5, 5"></Label>
                 <Label Content="{Binding Email}" Margin="5, 5, 5, 5"></Label>
                 -->
-                <Label Content="{Binding Display}"/>
-                <Button Content="X" Width="30" Height="30"/>
-            </StackPanel>
+                <Label Content="{Binding Display}" HorizontalAlignment="Left"/>
+                <Button Content="X" Width="30" Height="30" HorizontalAlignment="Right"/>
+            </DockPanel>
         </DataTemplate>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
     </UserControl.Resources>
 
-    <Grid>
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height = "*" />
-            <RowDefinition Height = "Auto" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical"
+            Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisConverter}}"
+            Margin="10, 10, 10, 10">
+            <TextBox
+                HorizontalAlignment="Stretch"
+                Margin="0, 0, 0, 5"
+                Text="{Binding NewUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            </TextBox>
+            <Button Grid.Row="1" Content="Add User" 
+                Command="{Binding AddUserCommand}"                 
+                HorizontalAlignment="Right" VerticalAlignment="Center" 
+                Width="100"></Button>
+        </StackPanel>
 
-        <ListBox Grid.Row="0" ItemsSource="{Binding Users}" HorizontalAlignment="Center" VerticalAlignment="Top">
-        </ListBox>
-        <Button Grid.Row="1" Content="Add User" Command="{Binding AddUserCommand}"
-                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisConverter}}"
-                Margin="10, 10, 10, 10" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100"></Button>
+        <ScrollViewer
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto"
+            HorizontalAlignment="Stretch">
+            <ListBox 
+            Grid.Row="0" Grid.Column="0"
+            ItemsSource="{Binding Users}" 
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            
+            HorizontalContentAlignment="Stretch">
+            </ListBox>
+        </ScrollViewer>
+
+
     </Grid>
 </UserControl>

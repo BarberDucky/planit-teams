@@ -51,7 +51,7 @@
                 <ColumnDefinition Width="*" MinWidth="400"/>
             </Grid.ColumnDefinitions>
 
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
+            <!--<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>-->
 
             <ContentControl Grid.Row="0" Grid.Column="0" Content = "{Binding LeftViewModel}" />
             <ContentControl Grid.Row="0" Grid.Column="1" Content = "{Binding CenterViewModel}" />

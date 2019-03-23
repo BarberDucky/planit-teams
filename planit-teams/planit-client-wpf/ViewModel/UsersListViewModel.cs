@@ -13,6 +13,7 @@ namespace planit_client_wpf.ViewModel
     {
         private ObservableCollection<ReadUser> users;
         private bool isAdmin;
+        private string newUsername;
 
         #region Properties
 
@@ -26,6 +27,16 @@ namespace planit_client_wpf.ViewModel
         {
             get { return isAdmin; }
             set { SetProperty(ref isAdmin, value); }
+        }
+
+        public string NewUsername
+        {
+            get { return newUsername; }
+            set
+            {
+                SetProperty(ref newUsername, value);
+                AddUserCommand.RaiseCanExecuteChanged();
+            }
         }
 
         #endregion
@@ -45,7 +56,7 @@ namespace planit_client_wpf.ViewModel
 
         public void AddUserButtonClick()
         {
-            ShowMessageBox(null, "Pravimo se da ovo otvara dialog u kom se unosi username.");
+            ShowMessageBox(null, "Dodaje se " + NewUsername);
             //Users.Add(new ReadUser(new DTOs.ReadUserDTO() { FirstName = "Damjan", LastName = "Trifunovic", Email = "dakica@gmail.com", Username = "dakica" }));
             //Show dialog nekako, get dialog result -> username usera koji se dodaje...
             //ReadUserDTO user = UserService.GetUser(username);
@@ -57,7 +68,7 @@ namespace planit_client_wpf.ViewModel
 
         public bool CanAddUser()
         {
-            return isAdmin;
+            return isAdmin && !String.IsNullOrWhiteSpace(NewUsername);
         }
 
     }

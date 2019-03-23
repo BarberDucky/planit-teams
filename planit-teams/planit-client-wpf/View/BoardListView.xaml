@@ -13,7 +13,9 @@
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:ShortBoard}">
             <StackPanel Orientation="Horizontal">
-                <Label Content="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="{Binding Name, Mode=TwoWay, 
+                    UpdateSourceTrigger=PropertyChanged}"
+                       HorizontalAlignment="Center"/>
                 
                 <Ellipse Fill="Red" Width="10" Height="10">
                     <Ellipse.Style>
@@ -38,7 +40,12 @@
             <RowDefinition Height = "Auto"/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" ItemsSource="{Binding Boards}" SelectedItem="{Binding SelectedBoard}" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <ListBox Grid.Row="0" ItemsSource="{Binding Boards}" 
+                 SelectedItem="{Binding SelectedBoard}" 
+                 HorizontalAlignment="Stretch"  
+                 HorizontalContentAlignment="Stretch"
+                 VerticalAlignment="Stretch"
+                 Margin="20, 20, 20, 20"/>
         <Button Grid.Row="1" Content="Add Board" Command="{Binding NewBoardCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
 
     </Grid>

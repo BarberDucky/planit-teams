@@ -7,7 +7,7 @@
         xmlns:viewModel="clr-namespace:planit_client_wpf.ViewModel"
         xmlns:view ="clr-namespace:planit_client_wpf.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="PlanIT Teams" Height="450" Width="700">
 
     <Window.DataContext>
         <viewModel:MainWindowViewModel/>
