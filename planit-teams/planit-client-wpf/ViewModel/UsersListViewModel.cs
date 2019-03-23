@@ -1,5 +1,7 @@
 ﻿using planit_client_wpf.Base;
+using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +15,9 @@ namespace planit_client_wpf.ViewModel
     {
         private ObservableCollection<ReadUser> users;
         private bool isAdmin;
+        private string newUsername;
+        private ReadUser selectedUser;
+        public bool leaveBoardCommandVisible;
 
         #region Properties
 
@@ -28,11 +33,39 @@ namespace planit_client_wpf.ViewModel
             set { SetProperty(ref isAdmin, value); }
         }
 
+        public string NewUsername
+        {
+            get { return newUsername; }
+            set
+            {
+                SetProperty(ref newUsername, value);
+                AddUserCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public ReadUser SelectedUser
+        {
+            get { return selectedUser; }
+            set
+            {
+                SetProperty(ref selectedUser, value);
+            }
+        }
+
+        public bool LeaveBoardCommandVisible
+        {
+            get { return leaveBoardCommandVisible; }
+            set { SetProperty(ref leaveBoardCommandVisible, value); }
+        }
+
         #endregion
 
         #region Commands
 
         public CommandBase AddUserCommand { get; protected set; }
+        public CommandBase<ReadUser> RemoveUserCommand { get; protected set; }
+        public CommandBase LeaveBoardCommmand { get; private set; }
+
 
         #endregion
 
@@ -40,24 +73,54 @@ namespace planit_client_wpf.ViewModel
         {
             this.Users = users;
             this.isAdmin = isAdmin;
+            leaveBoardCommandVisible = !isAdmin;
             AddUserCommand = new CommandBase(AddUserButtonClick, CanAddUser);
+            RemoveUserCommand = new CommandBase<ReadUser>(RemoveUserButtonClick, CanRemoveUser);
+            LeaveBoardCommmand = new CommandBase(OnLeaveBoardClick, CanLeaveBoard);
         }
 
         public void AddUserButtonClick()
         {
-            ShowMessageBox(null, "Pravimo se da ovo otvara dialog u kom se unosi username.");
-            //Users.Add(new ReadUser(new DTOs.ReadUserDTO() { FirstName = "Damjan", LastName = "Trifunovic", Email = "dakica@gmail.com", Username = "dakica" }));
-            //Show dialog nekako, get dialog result -> username usera koji se dodaje...
-            //ReadUserDTO user = UserService.GetUser(username);
-            //if(user != null)
+            Users.Add(new ReadUser(new DTOs.ReadUserDTO() { FirstName = "Damjan", LastName = "Trifunovic", Email = "dakica@gmail.com", Username = NewUsername }));
+            ShowMessageBox(null, "Dodajem " + NewUsername + " u lokalnu listu ali ne zovem api.");
+            //ReadUserDTO user = UserService.GetUserByUsername(NewUsername);
+            //if (user != null)
             //{
-            //    Users.Add(new ReadUser(user));
+            //    bool succ = BoardService.AddUserToBoard(...nesto);
+            //    if(succ == true)
+            //    {
+            //        Users.Add(new ReadUser(user));
+            //    }
             //}
         }
 
         public bool CanAddUser()
         {
-            return isAdmin;
+            return isAdmin && !String.IsNullOrWhiteSpace(NewUsername);
+        }
+
+        public void RemoveUserButtonClick(ReadUser user)
+        {
+            //Da li mogu sam sebe da obrisem iz boarda iako nisam admin?
+            ReadUser u = Users.FirstOrDefault(x => x.username == user.username);
+            Users.Remove(u);
+            ShowMessageBox(null, "Brisem " + u.username + " iz lokalne liste ali ne zovem api.");
+        }
+
+        //Privremeno dok se ne resi ko koga dodaje i brise
+        public bool CanRemoveUser(ReadUser user)
+        {
+            return isAdmin && ActiveUser.IsActive == true && ActiveUser.Instance.LoggedUser.Username != user.Username;
+        }
+
+        public void OnLeaveBoardClick()
+        {
+            ShowMessageBox(null, "Pravim se da napustam board, ustv ne zovem api...");
+        }
+
+        public bool CanLeaveBoard()
+        {
+            return isAdmin == false;
         }
 
     }

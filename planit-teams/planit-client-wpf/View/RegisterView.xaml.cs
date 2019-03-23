@@ -32,19 +32,19 @@ namespace planit_client_wpf.View
             e.Show();
         }
 
+        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (DataContext != null && DataContext is RegisterViewModel)
+            {
+                var vm = DataContext as RegisterViewModel;
+                vm.MessageBoxRequest += MessageBoxRequest;
+            }
+        }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             Window wind = Window.GetWindow(this);
             wind.WindowState = WindowState.Normal;
-            try
-            {
-                var vm = (RegisterViewModel)DataContext;
-                vm.MessageBoxRequest += MessageBoxRequest;
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error on message box request");
-            }
         }
     }
 }

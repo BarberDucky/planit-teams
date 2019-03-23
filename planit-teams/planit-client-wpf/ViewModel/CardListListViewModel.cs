@@ -13,19 +13,12 @@ namespace planit_client_wpf.ViewModel
 {
     public class CardListListViewModel : ViewModelBase
     {
-        private ObservableCollection<ReadCardList> cardLists;
-        private ObservableCollection<ViewModelBase> cardListViewModels;
+        private ObservableCollection<CardListViewModel> cardListViewModels;
         private int parentBoardId;
 
         #region Properties
 
-        public ObservableCollection<ReadCardList> CardLists
-        {
-            get { return cardLists; }
-            set { SetProperty(ref cardLists, value); }
-        }
-
-        public ObservableCollection<ViewModelBase> CardListViewModels
+        public ObservableCollection<CardListViewModel> CardListViewModels
         {
             get { return cardListViewModels; }
             set { SetProperty(ref cardListViewModels, value); }
@@ -42,11 +35,11 @@ namespace planit_client_wpf.ViewModel
         public CardListListViewModel(ObservableCollection<ReadCardList> cardLists, int parentBoardId)
         {
             this.parentBoardId = parentBoardId;
-            this.CardLists = cardLists;
-            this.CardListViewModels = new ObservableCollection<ViewModelBase>();
+            this.CardListViewModels = new ObservableCollection<CardListViewModel>();
+
             foreach(ReadCardList cardList in cardLists)
             {
-                CardListViewModels.Add(new CardListViewModel(cardList));
+                CardListViewModels.Add(new CardListViewModel(cardList, OnDeleteCardList));
             }
 
             NewListCommand = new CommandBase(OnNewListClick);
@@ -63,8 +56,7 @@ namespace planit_client_wpf.ViewModel
                 {
                     ShowMessageBox(null, "Kreirala se lista");
                     var list = new ReadCardList(basicCardListDTO);
-                    CardLists.Add(list);
-                    CardListViewModels.Add(new CardListViewModel(list));
+                    CardListViewModels.Add(new CardListViewModel(list, OnDeleteCardList));
                 }
                 else
                 {
@@ -77,5 +69,28 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
+        public async void OnDeleteCardList(ReadCardList cardList)
+        {
+            if (ActiveUser.IsActive == true)
+            {
+                bool succ = await CardListService.DeleteCardList(ActiveUser.Instance.LoggedUser.Token, cardList.ListId);
+                if(succ == true)
+                {
+                    CardListViewModel vm = CardListViewModels.FirstOrDefault(x => x.CardList.ListId == cardList.ListId);
+                    CardListViewModels.Remove(vm);
+                    ShowMessageBox(null, "Card list deleted.");
+                }
+                else
+                {
+                    ShowMessageBox(null, "Error deleting card list.");
+                }
+            }
+            else
+            {
+                ShowMessageBox(null, "Error getting user.");
+            }
+        }
+
     }
+
 }

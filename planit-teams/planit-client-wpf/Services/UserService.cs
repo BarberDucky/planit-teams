@@ -2,6 +2,7 @@
 using planit_client_wpf.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -32,6 +33,7 @@ namespace planit_client_wpf.Services
                 }
                 catch (Exception e)
                 {
+                    Debug.WriteLine(e.Message);
                     return false;
                 }
             }
@@ -69,6 +71,7 @@ namespace planit_client_wpf.Services
                 }
                 catch (Exception e)
                 {
+                    Debug.WriteLine(e.Message);
                     return null;
                 }
             }
@@ -95,6 +98,7 @@ namespace planit_client_wpf.Services
                 }
                 catch (Exception e)
                 {
+                    Debug.WriteLine(e.Message);
                     return null;
                 }
             }
@@ -121,6 +125,7 @@ namespace planit_client_wpf.Services
                 }
                 catch (Exception e)
                 {
+                    Debug.WriteLine(e.Message);
                     return null;
                 }
             }

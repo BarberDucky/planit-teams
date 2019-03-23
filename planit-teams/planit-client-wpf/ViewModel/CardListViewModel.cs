@@ -27,13 +27,24 @@ namespace planit_client_wpf.ViewModel
         #region Commands
 
         public CommandBase AddCardCommand { get; protected set; }
+        public CommandBase<ReadCardList> DeleteCardListCommand { get; protected set; }
+        public CommandBase<ReadCardList> RenameCardListCommand { get; protected set; }
 
         #endregion
 
-        public CardListViewModel(ReadCardList list)
+        #region Action and Func
+
+        private Action<ReadCardList> DeleteCardListAction { get;  set; }
+
+        #endregion
+
+        public CardListViewModel(ReadCardList list, Action<ReadCardList> onDeleteCardList)
         {
             this.CardList = list;
             AddCardCommand = new CommandBase(OnAddCardClick);
+            DeleteCardListCommand = new CommandBase<ReadCardList>(OnDeleteCardList);
+            DeleteCardListAction = onDeleteCardList;
+            RenameCardListCommand = new CommandBase<ReadCardList>(OnRenameCardList);
         }
 
         public async void OnAddCardClick()
@@ -53,5 +64,14 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
+        public void OnDeleteCardList(ReadCardList card)
+        {
+            DeleteCardListAction?.Invoke(card);
+        }
+
+        public void OnRenameCardList(ReadCardList cardList)
+        {
+            ShowMessageBox(null, "Pravimo se da se otvara rename card list dijalog");
+        }
     }
 }

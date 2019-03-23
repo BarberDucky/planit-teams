@@ -6,25 +6,37 @@
              xmlns:local="clr-namespace:planit_client_wpf.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
+             DataContextChanged="UserControl_DataContextChanged"
              Loaded="UserControl_Loaded">
-    <Grid Margin="50, 50, 50, 50" HorizontalAlignment="Center" VerticalAlignment="Center">
+    
+    <Grid Margin="50, 50, 50, 50" 
+          HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
-            <RowDefinition Height = "Auto" />
+            <RowDefinition Height = "Auto"/>
             <RowDefinition Height = "Auto" />
             <RowDefinition Height = "Auto" />
             <RowDefinition Height = "Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Content="Username" Grid.Row="0" Grid.Column="0"/>
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Content="Password" Grid.Row="1" Grid.Column="0"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Button Grid.Row="2" Content="Login" Grid.Column="0" Command="{Binding LoginCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" Width="100"/>
-        <Button Grid.Row="2" Content="Register" Grid.Column="1" Command="{Binding RegisterCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" Width="100"/>
+        <Label Content="Username" Grid.Row="0" Grid.Column="0" Margin="5, 5, 5, 5"/>
+        <TextBox Grid.Row="0" Grid.Column="1" 
+                 Text="{Binding Username, Mode=TwoWay, 
+            UpdateSourceTrigger=PropertyChanged}" 
+                 Margin="5, 5, 5, 5"/>
+        <Label Content="Password" Grid.Row="1" Grid.Column="0" Margin="5, 5, 5, 5"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5, 5, 5, 5"/>
+        <StackPanel 
+            Grid.Row="2" Orientation="Horizontal"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Margin="10, 10, 10, 10">
+            <Button  Content="Login" Grid.Column="0" Command="{Binding LoginCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" Width="100"/>
+            <Button  Content="Register" Grid.Column="1" Command="{Binding RegisterCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" Width="100"/>
+        </StackPanel>
     </Grid>
 </UserControl>

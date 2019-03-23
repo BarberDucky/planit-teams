@@ -7,27 +7,57 @@
              xmlns:view ="clr-namespace:planit_client_wpf.View"      
              xmlns:model ="clr-namespace:planit_client_wpf.Model"             
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Loaded="UserControl_Loaded">
+             d:DesignHeight="600" d:DesignWidth="300"
+             DataContextChanged="UserControl_DataContextChanged">
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:ReadCard}">
-            <Label Content="{Binding Name}"></Label>
+            <Border BorderThickness="1" BorderBrush="Gray" 
+                    CornerRadius="10">
+                <Label Content="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10, 10, 10, 10"></Label>
+            </Border>
         </DataTemplate>
     </UserControl.Resources>
+
+    <DockPanel
+        Height="600"
+        Width="300">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height ="*" />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal"  Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="{Binding CardList.Name}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button Content="Rename list" 
+                        Command="{Binding RenameCardListCommand}" CommandParameter="{Binding CardList}"
+                        Margin="10, 10, 10, 10" Width="100"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </StackPanel>
+            
+            <ListBox Grid.Row="1" ItemsSource="{Binding CardList.Cards}" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     HorizontalContentAlignment="Stretch"
+                     Margin="5, 5, 5, 5">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Margin" Value="5"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+
+            <StackPanel  Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Content="Add card" Command="{Binding AddCardCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+                <Button Content="Delete list" 
+                        Command="{Binding DeleteCardListCommand}" CommandParameter="{Binding CardList}"
+                        Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+            </StackPanel>
+
+        </Grid>
+    </DockPanel>
     
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height ="*" />
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <Label Grid.Row="0" Content="{Binding CardList.Name}" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
-        <ListBox Grid.Row="1" ItemsSource="{Binding CardList.Cards}">
-        </ListBox>
-        
-        <Button Grid.Row="2" Content="Add card" Command="{Binding AddCardCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
-
-    </Grid>
 </UserControl>

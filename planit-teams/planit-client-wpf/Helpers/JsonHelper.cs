@@ -4,6 +4,7 @@ using planit_client_wpf.DTOs;
 using planit_client_wpf.MQ;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -111,6 +112,7 @@ namespace planit_client_wpf.Helpers
             }
             catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
                 return MessageType.Change;
             }
         }

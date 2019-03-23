@@ -3,11 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:planit_client_wpf"
         xmlns:viewModel="clr-namespace:planit_client_wpf.ViewModel"
         xmlns:view ="clr-namespace:planit_client_wpf.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="PlanIT Teams" Height="450" Width="700">
 
     <Window.DataContext>
         <viewModel:MainWindowViewModel/>
