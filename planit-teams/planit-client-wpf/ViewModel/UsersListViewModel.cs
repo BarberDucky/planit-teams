@@ -1,5 +1,7 @@
 ﻿using planit_client_wpf.Base;
+using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,6 +16,7 @@ namespace planit_client_wpf.ViewModel
         private ObservableCollection<ReadUser> users;
         private bool isAdmin;
         private string newUsername;
+        private ReadUser selectedUser;
 
         #region Properties
 
@@ -39,11 +42,22 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
+        public ReadUser SelectedUser
+        {
+            get { return selectedUser; }
+            set
+            {
+                SetProperty(ref selectedUser, value);
+            }
+        }
+
         #endregion
 
         #region Commands
 
         public CommandBase AddUserCommand { get; protected set; }
+        public CommandBase<ReadUser> RemoveUserCommand { get; protected set; }
+
 
         #endregion
 
@@ -52,23 +66,40 @@ namespace planit_client_wpf.ViewModel
             this.Users = users;
             this.isAdmin = isAdmin;
             AddUserCommand = new CommandBase(AddUserButtonClick, CanAddUser);
+            RemoveUserCommand = new CommandBase<ReadUser>(RemoveUserButtonClick, CanRemoveUser);
         }
 
         public void AddUserButtonClick()
         {
-            ShowMessageBox(null, "Dodaje se " + NewUsername);
-            //Users.Add(new ReadUser(new DTOs.ReadUserDTO() { FirstName = "Damjan", LastName = "Trifunovic", Email = "dakica@gmail.com", Username = "dakica" }));
-            //Show dialog nekako, get dialog result -> username usera koji se dodaje...
-            //ReadUserDTO user = UserService.GetUser(username);
-            //if(user != null)
+            Users.Add(new ReadUser(new DTOs.ReadUserDTO() { FirstName = "Damjan", LastName = "Trifunovic", Email = "dakica@gmail.com", Username = NewUsername }));
+            //ReadUserDTO user = UserService.GetUserByUsername(NewUsername);
+            //if (user != null)
             //{
-            //    Users.Add(new ReadUser(user));
+            //    bool succ = BoardService.AddUserToBoard(...nesto);
+            //    if(succ == true)
+            //    {
+            //        Users.Add(new ReadUser(user));
+            //    }
             //}
         }
 
         public bool CanAddUser()
         {
             return isAdmin && !String.IsNullOrWhiteSpace(NewUsername);
+        }
+
+        public void RemoveUserButtonClick(ReadUser user)
+        {
+            //Da li mogu sam sebe da obrisem iz boarda iako nisam admin?
+            ReadUser u = Users.FirstOrDefault(x => x.username == user.username);
+            Users.Remove(u);
+            ShowMessageBox(null, "Brise se " + u.username);
+        }
+
+        //Privremeno dok se ne resi ko koga dodaje i brise
+        public bool CanRemoveUser(ReadUser user)
+        {
+            return isAdmin && ActiveUser.IsActive == true && ActiveUser.Instance.LoggedUser.Username != user.Username;
         }
 
     }

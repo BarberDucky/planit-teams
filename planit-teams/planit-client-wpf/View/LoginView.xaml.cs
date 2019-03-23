@@ -34,10 +34,10 @@ namespace planit_client_wpf.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            Window wind = Window.GetWindow(this);
-            wind.WindowState = WindowState.Normal;
             try
             {
+                Window wind = Window.GetWindow(this);
+                wind.WindowState = WindowState.Normal;
                 var vm = (LoginViewModel)DataContext;
                 vm.MessageBoxRequest += MessageBoxRequest;
             }

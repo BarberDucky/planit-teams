@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:model="clr-namespace:planit_client_wpf.Model"
-             xmlns:local="clr-namespace:planit_client_wpf.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
@@ -22,7 +21,9 @@
                 <Label Content="{Binding Email}" Margin="5, 5, 5, 5"></Label>
                 -->
                 <Label Content="{Binding Display}" HorizontalAlignment="Left"/>
-                <Button Content="X" Width="30" Height="30" HorizontalAlignment="Right"/>
+                <Button Content="X" Width="30" Height="30" HorizontalAlignment="Right"
+                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.RemoveUserCommand}"
+                       CommandParameter="{Binding}"/>
             </DockPanel>
         </DataTemplate>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
@@ -59,7 +60,6 @@
             Grid.Row="0" Grid.Column="0"
             ItemsSource="{Binding Users}" 
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-            
             HorizontalContentAlignment="Stretch">
             </ListBox>
         </ScrollViewer>
