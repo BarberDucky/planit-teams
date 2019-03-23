@@ -38,6 +38,7 @@
             <Button Grid.Row="2" Content="Delete Board" 
                     Command="{Binding DeleteBoardCommand}" Visibility="{Binding DeleteBoardCommandVisible, Converter={StaticResource BoolToVisConverter}}"
                     Margin="10, 10, 10, 10" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+            
         </StackPanel>
 
         <TabControl Grid.Row="1">

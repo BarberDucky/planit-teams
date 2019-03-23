@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
-    
+
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:ReadUser}">
             <DockPanel>
@@ -37,19 +37,25 @@
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        
+
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical"
-            Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisConverter}}"
             Margin="10, 10, 10, 10">
             <TextBox
                 HorizontalAlignment="Stretch"
                 Margin="0, 0, 0, 5"
-                Text="{Binding NewUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                Text="{Binding NewUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisConverter}}">
             </TextBox>
             <Button Grid.Row="1" Content="Add User" 
                 Command="{Binding AddUserCommand}"                 
                 HorizontalAlignment="Right" VerticalAlignment="Center" 
-                Width="100"></Button>
+                Width="100"
+                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisConverter}}"></Button>
+            <Button 
+                Content="Leave Board" 
+                Command="{Binding LeaveBoardCommmand}" 
+                Visibility="{Binding LeaveBoardCommandVisible, Converter={StaticResource BoolToVisConverter}}"
+                Width="100"/>
         </StackPanel>
 
         <ScrollViewer

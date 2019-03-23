@@ -45,7 +45,9 @@
 
             <StackPanel  Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button Content="Add card" Command="{Binding AddCardCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
-                <Button Content="Delete list" Command="{Binding DeleteListCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+                <Button Content="Delete list" 
+                        Command="{Binding DeleteCardListCommand}" CommandParameter="{Binding CardList}"
+                        Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
             </StackPanel>
 
         </Grid>

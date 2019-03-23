@@ -17,6 +17,7 @@ namespace planit_client_wpf.ViewModel
         private ReadBoard board;
         private ViewModelBase usersViewModel;
         private ViewModelBase cardListViewModel;
+        public bool deleteBoardCommandVisible;
 
         #region Properties 
 
@@ -61,7 +62,6 @@ namespace planit_client_wpf.ViewModel
         public CommandBase DeleteBoardCommand { get; private set; }
         public CommandBase RenameBoardCommand { get; private set; }
 
-        public bool deleteBoardCommandVisible;
         public bool DeleteBoardCommandVisible
         {
             get { return deleteBoardCommandVisible; }
@@ -71,6 +71,7 @@ namespace planit_client_wpf.ViewModel
                 DeleteBoardCommand.RaiseCanExecuteChanged();
             }
         }
+
         #endregion
 
         #region Actions and Func
@@ -81,14 +82,20 @@ namespace planit_client_wpf.ViewModel
 
         public BoardViewModel(ShortBoard shortBoard, Action<int> boardDeleted)
         {
+            //Partial data
             ShortBoard = shortBoard;
+
+            //View models
+            UsersViewModel = new EmptyViewModel();
+            CardListViewModel = new EmptyViewModel();
+
+            //Commands
             DeleteBoardCommand = new CommandBase(OnDeleteBoardClick);
             DeleteBoardCommandVisible = false;
             BoardDeleted = boardDeleted;
             RenameBoardCommand = new CommandBase(OnRenameBoardClick, CanRenameBoard);
-            UsersViewModel = new EmptyViewModel();
-            CardListViewModel = new EmptyViewModel();
 
+            //Load data
             LoadBoard();
         }
 
@@ -148,6 +155,11 @@ namespace planit_client_wpf.ViewModel
             {
                 ShowMessageBox(null, "Error getting user.");
             }
+        }
+
+        public bool CanDeleteBoard()
+        {
+            return Board != null && Board.IsAdmin == true;
         }
 
         public void OnRenameBoardClick()
