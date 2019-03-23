@@ -1,4 +1,5 @@
-﻿using planit_client_wpf.ViewModel;
+﻿using planit_client_wpf.Base;
+using planit_client_wpf.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,20 @@ namespace planit_client_wpf.View
         public NotificationsView()
         {
             InitializeComponent();
+        }
+
+        void MessageBoxRequest(object sender, MessageBoxEventArgs e)
+        {
+            e.Show();
+        }
+
+        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (DataContext != null && DataContext is NotificationsViewModel)
+            {
+                var vm = DataContext as NotificationsViewModel;
+                vm.MessageBoxRequest += MessageBoxRequest;
+            }
         }
     }
 }

@@ -7,7 +7,8 @@
              xmlns:view ="clr-namespace:planit_client_wpf.View"      
              xmlns:model ="clr-namespace:planit_client_wpf.Model"             
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="300"
+             DataContextChanged="UserControl_DataContextChanged">
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:ReadCard}">
@@ -28,10 +29,16 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Content="{Binding CardList.Name}" 
-                   HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+            <StackPanel Orientation="Horizontal"  Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="{Binding CardList.Name}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button Content="Rename list" 
+                        Command="{Binding RenameCardListCommand}" CommandParameter="{Binding CardList}"
+                        Margin="10, 10, 10, 10" Width="100"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </StackPanel>
+            
             <ListBox Grid.Row="1" ItemsSource="{Binding CardList.Cards}" 
-                     Height="{Binding ElementName=LayoutRoot, Path=ActualHeight}"
                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      HorizontalContentAlignment="Stretch"

@@ -6,7 +6,7 @@
              xmlns:model="clr-namespace:planit_client_wpf.Model"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Loaded="UserControl_Loaded">
+             DataContextChanged="UserControl_DataContextChanged">
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:ReadUser}">

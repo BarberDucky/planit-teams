@@ -60,6 +60,8 @@ namespace planit_client_wpf.ViewModel
         #region Commands
 
         public CommandBase DeleteBoardCommand { get; private set; }
+
+        //TODO - da li je rename board admin komanda?
         public CommandBase RenameBoardCommand { get; private set; }
 
         public bool DeleteBoardCommandVisible
@@ -166,7 +168,7 @@ namespace planit_client_wpf.ViewModel
         {
             if (ActiveUser.IsActive == true && ShortBoard != null)
             {                
-                ShowMessageBox(null, "Kao se zove bord servis...");
+                ShowMessageBox(null, "Pravimo se da se otvara dijalog u kome moze da se renamuje board.");
             }
             else
             {

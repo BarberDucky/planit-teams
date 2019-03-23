@@ -32,16 +32,12 @@ namespace planit_client_wpf.View
             e.Show();
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            try
+            if(DataContext != null && DataContext is UsersListViewModel)
             {
-                var vm = (UsersListViewModel)DataContext;
+                var vm = DataContext as UsersListViewModel;
                 vm.MessageBoxRequest += MessageBoxRequest;
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error on message box request");
             }
         }
     }

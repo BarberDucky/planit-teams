@@ -32,32 +32,12 @@ namespace planit_client_wpf.View
             e.Show();
         }
         
-        //private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        var vm = (BoardViewModel)DataContext;
-        //        vm.MessageBoxRequest += MessageBoxRequest;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        MessageBox.Show("Error on message box request");
-        //    }
-        //}
-
         private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            try
+            if (DataContext != null && DataContext is BoardViewModel)
             {
-                var vm = (BoardViewModel)DataContext;
-                if (vm != null)
-                {
-                    vm.MessageBoxRequest += MessageBoxRequest;
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error on message box request");
+                var vm = DataContext as BoardViewModel;
+                vm.MessageBoxRequest += MessageBoxRequest;
             }
         }
     }

@@ -2,6 +2,7 @@
 using planit_client_wpf.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,19 +33,19 @@ namespace planit_client_wpf.View
             e.Show();
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            try
+            if (DataContext != null && DataContext is LoginViewModel)
+            {
+                var vm = DataContext as LoginViewModel;
+                vm.MessageBoxRequest += MessageBoxRequest;
+            }
+        }
+
+            private void UserControl_Loaded(object sender, RoutedEventArgs e)
             {
                 Window wind = Window.GetWindow(this);
                 wind.WindowState = WindowState.Normal;
-                var vm = (LoginViewModel)DataContext;
-                vm.MessageBoxRequest += MessageBoxRequest;
             }
-            catch (Exception)
-            {
-                MessageBox.Show("Error on message box request");
-            }
-        }
     }
 }
