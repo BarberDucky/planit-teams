@@ -160,8 +160,6 @@ namespace planit_data.Services
             return succ;
         }
 
-        //TODO Nece da se obrise
-        //Treba da se updateuje context
         public bool DeleteCard(int id)
         {
             bool success = false;
@@ -189,7 +187,7 @@ namespace planit_data.Services
             {
                 User user = u.UserRepository.GetUserByUsername(username);
                 Card card = u.CardRepository.GetById(cardId);
-                if (user != null && card != null)
+                if (user != null && card != null && !card.ObserverUsers.Contains(user))
                 {
                     card.ObserverUsers.Add(user);
                     succ = u.Save();
