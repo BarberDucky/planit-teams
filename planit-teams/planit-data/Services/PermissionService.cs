@@ -105,8 +105,9 @@ namespace planit_data.Services
             using (UnitOfWork unit = new UnitOfWork())
             {
                 bool isAdmin = unit.PermissionRepository.IsAdmin(dto.BoardId, admin);
+                Permission perm = unit.PermissionRepository.GetPermissionByUsername(dto.BoardId, dto.Username);
 
-                if (isAdmin)
+                if (isAdmin && perm == null)
                 {
                     Board b = unit.BoardRepository.GetById(dto.BoardId);
                     User u = unit.UserRepository.GetUserByUsername(dto.Username);
@@ -143,7 +144,6 @@ namespace planit_data.Services
             return ret;
         }
 
-        //TODO Treba ovde obrisati tog usera i iz svih kartica koje watchuje
         public bool DeletePermission(int boardId, string username, string admin)
         {
             bool ret = false;
@@ -158,6 +158,7 @@ namespace planit_data.Services
                     User user = perm.User;
                     unit.PermissionRepository.Delete(perm.PermissionId);
                     unit.BoardNotificationRepository.Delete(boardId, user.UserId);
+                    unit.CardRepository.Delete(boardId, user);
 
                     ret = unit.Save();
 

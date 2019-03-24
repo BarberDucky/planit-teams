@@ -132,6 +132,7 @@
     <Compile Include="RabbitMQ\RabbitMQService.cs" />
     <Compile Include="Repository\ApplicationUserRepository.cs" />
     <Compile Include="Repository\BoardNotificationRepository.cs" />
+    <Compile Include="Repository\CardRepository.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\PermissionRepository.cs" />
