@@ -45,6 +45,7 @@ namespace planit_client_wpf.Helpers
             {
                 int parsedData = JsonConvert.DeserializeObject<int>(stringData);
                 return new BoardNotificationMessage() { MessageType = MessageType.BoardNotification, MessageEntity = entity, Data = parsedData };
+                // return new BoardNotificationMessageTest() { MessageType = MessageType.BoardNotification, MessageEntity = entity, Data = parsedData };
             }
             else if (entity == MessageEntity.Board)
             {
@@ -79,7 +80,39 @@ namespace planit_client_wpf.Helpers
 
         }
 
-        private static JToken GetJTokenByKey(string key, JObject obj)
+        public static IMQMessageTest GetMessageTest(string stringMessage)
+        {
+            var jsonMessage = GetJObjectFromString(stringMessage);
+            if (jsonMessage == null)
+                return null;
+
+            var messageType = GetJTokenByKey("MessageType", jsonMessage);
+            if (messageType == null)
+                return null;
+
+            var messageEntity = GetJTokenByKey("MessageEntity", jsonMessage);
+            if (messageEntity == null)
+                return null;
+
+            var data = GetJTokenByKey("Data", jsonMessage);
+            if (data == null)
+                return null;
+
+            var stringData = data.ToString();
+
+            var type = (MessageType)messageType.Value<int>();
+            var entity = (MessageEntity)messageEntity.Value<int>();
+
+            if (type == MessageType.BoardNotification)
+            {
+                int parsedData = JsonConvert.DeserializeObject<int>(stringData);
+                return new BoardNotificationMessageTest() { MessageType = MessageType.BoardNotification, MessageEntity = entity, Data = parsedData };
+            }
+
+            return null;
+        }
+
+        public static JToken GetJTokenByKey(string key, JObject obj)
         {
             if (obj.ContainsKey(key))
             {
@@ -91,7 +124,7 @@ namespace planit_client_wpf.Helpers
             }
         }
 
-        private static JObject GetJObjectFromString(string str)
+        public static JObject GetJObjectFromString(string str)
         {
             try
             {
@@ -104,7 +137,7 @@ namespace planit_client_wpf.Helpers
             }
         }
 
-        private static MessageType GetMessageType(JToken token)
+        public static MessageType GetMessageType(JToken token)
         {
             try
             {

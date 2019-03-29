@@ -1,4 +1,5 @@
 ﻿using planit_client_wpf.DTOs;
+using planit_client_wpf.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,15 @@ namespace planit_client_wpf.MQ
 
     public interface IMQMessage
     {
+
     }
+
+    public interface IMQMessageTest
+    {
+        MessageEnum GetEnum();
+        object GetData();
+    }
+
 
     public class BoardMesage : IMQMessage
     {
@@ -112,6 +121,29 @@ namespace planit_client_wpf.MQ
         public DeleteMessage()
         {
             MessageType = MessageType.Delete;
+        }
+    }
+
+    public class BoardNotificationMessageTest : IMQMessageTest
+    {
+        public MessageEntity MessageEntity { get; set; }
+        public MessageType MessageType { get; set; }
+        public int Data { get; set; }
+
+        public BoardNotificationMessageTest()
+        {
+            MessageEntity = MessageEntity.Board;
+            MessageType = MessageType.BoardNotification;
+        }
+
+        public MessageEnum GetEnum()
+        {
+            return MessageEnum.TestEnum;
+        }
+
+        public object GetData()
+        {
+            return Data;
         }
     }
 }
