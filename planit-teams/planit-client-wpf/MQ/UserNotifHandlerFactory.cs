@@ -18,7 +18,8 @@ namespace planit_client_wpf.MQ
             {
                 return new DeletePermissionHandler();
             }
-            else if (message is BoardNotificationMessage && ((BoardNotificationMessage)message).MessageEntity == MessageEntity.Board)
+            else if (message is BoardNotificationMessage &&
+                ((BoardNotificationMessage)message).MessageEntity == MessageEntity.Board)
             {
                 return new BoardChangeHandler();
             }

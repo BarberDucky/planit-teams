@@ -119,22 +119,32 @@ namespace planit_client_wpf.ViewModel
 
             if (readUserDTO != null)
             {
-                MQService.SubscribeToExchange(readUserDTO.ExchangeName, (IMQMessage message) => 
-                {
-                    if (Application.Current == null) return false;
-                    Application.Current.Dispatcher.BeginInvoke(
-                      DispatcherPriority.Background,
-                      new Action(() => {
-                          IUserNotificationHandler userNotificationHandler = UserNotifHandlerFactory.CreateHandler(message);
-                          userNotificationHandler.HandleUserNotification(
-                              ((BoardListViewModel)leftViewModel).Boards,
-                              ((BoardListViewModel)leftViewModel).SelectedBoard,
-                              ((NotificationsViewModel)notificationViewModel).Notifications,
-                              message);
-                          ShowMessageBox(null, "Stigla poruka");
-                      }));
-                    return true;
-                });
+                //MQService.SubscribeToExchange(readUserDTO.ExchangeName, (IMQMessage message) => 
+                //{
+                //    if (Application.Current == null) return false;
+                //    Application.Current.Dispatcher.BeginInvoke(
+                //      DispatcherPriority.Background,
+                //      new Action(() => {
+                //          IUserNotificationHandler userNotificationHandler = UserNotifHandlerFactory.CreateHandler(message);
+                //          userNotificationHandler.HandleUserNotification(
+                //              ((BoardListViewModel)leftViewModel).Boards,
+                //              ((BoardListViewModel)leftViewModel).SelectedBoard,
+                //              ((NotificationsViewModel)notificationViewModel).Notifications,
+                //              message);
+                //          ShowMessageBox(null, "Stigla poruka");
+                //      }));
+                //    return true;
+                //});
+
+                MQService.SubscribeToExchange(readUserDTO.ExchangeName);
+
+                Action<object> action = (idto) => {
+                    var bl = LeftViewModel as BoardListViewModel;
+                    int dto = (int)idto;
+                    bl.Boards.SingleOrDefault(el => el.BoardId == dto).IsRead = false;
+                    ShowMessageBox(null, "Dakiceee ne ljuti seee"); };
+
+                MessageBroker.Instance.Subscribe(action, MessageEnum.TestEnum);
             }
         }
 
@@ -145,5 +155,7 @@ namespace planit_client_wpf.ViewModel
                 ((NotificationsViewModel)NotificationViewModel).IsOpen = true;
             }
         }
+
+
     }
 }

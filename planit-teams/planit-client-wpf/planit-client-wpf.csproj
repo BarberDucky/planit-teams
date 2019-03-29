@@ -68,6 +68,8 @@
     <Compile Include="Base\ViewModelBase.cs" />
     <Compile Include="Base\CommandBase.cs" />
     <Compile Include="ActiveUser.cs" />
+    <Compile Include="DTOs\IdDTO.cs" />
+    <Compile Include="DTOs\IDTO.cs" />
     <Compile Include="DTOs\NotificationDTO.cs" />
     <Compile Include="DTOs\PermissionDTO.cs" />
     <Compile Include="Helpers\JsonHelper.cs" />
@@ -78,6 +80,9 @@
     <Compile Include="Model\Notification.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="MQ\IUserNotificationHandler.cs" />
+    <Compile Include="MQ\IMessageBroker.cs" />
+    <Compile Include="MQ\MessageBroker.cs" />
+    <Compile Include="MQ\MessageEnum.cs" />
     <Compile Include="MQ\MQMessage.cs" />
     <Compile Include="MQ\MQService.cs" />
     <Compile Include="MQ\UserNotifHandlerFactory.cs" />
