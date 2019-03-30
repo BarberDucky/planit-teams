@@ -135,6 +135,11 @@ namespace planit_data.Services
                             RabbitMQService.PublishToExchange(u.ExchangeName,
                                 new MessageContext(new BoardMessageStrategy(new BasicBoardDTO(b),
                                 MessageType.Create)));
+
+                            RabbitMQService.PublishToExchange(b.ExchangeName,
+                                new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(u),
+                                MessageType.Create)));
+
                         }
 
                     }
@@ -166,6 +171,12 @@ namespace planit_data.Services
                     {
                         RabbitMQService.PublishToExchange(user.ExchangeName,
                             new MessageContext(new BoardMessageStrategy(boardId)));
+
+                        Board b = unit.BoardRepository.GetById(boardId);
+
+                        RabbitMQService.PublishToExchange(b.ExchangeName,
+                               new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(user),
+                               MessageType.Delete)));
                     }
                 }
 

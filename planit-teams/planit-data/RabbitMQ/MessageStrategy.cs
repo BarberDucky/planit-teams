@@ -182,4 +182,23 @@ namespace planit_data.RabbitMQ
             return JsonConvert.SerializeObject(boardMessage);
         }
     }
+
+    public class PermissionMessageStrategy : IMessageStrategy
+    {
+        private PermissionMessage permMessage;
+
+        public PermissionMessageStrategy(ReadUserDTO data, MessageType type)
+        {
+            permMessage = new PermissionMessage()
+            {
+                Data = data,
+                MessageType =type 
+            };
+        }
+
+        public string Serialize()
+        {
+            return JsonConvert.SerializeObject(permMessage);
+        }
+    }
 }

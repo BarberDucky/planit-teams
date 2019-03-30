@@ -13,7 +13,8 @@ namespace planit_data.RabbitMQ
         CardList,
         Card,
         Comment, 
-        Notification
+        Notification,
+        Permission
     }
 
     public enum MessageType
@@ -108,6 +109,18 @@ namespace planit_data.RabbitMQ
         public DeleteMessage()
         {
             MessageType = MessageType.Delete;
+        }
+    }
+
+    public class PermissionMessage
+    {
+        public MessageEntity MessageEntity { get; set; }
+        public MessageType MessageType { get; set; }
+        public ReadUserDTO Data { get; set; }
+
+        public PermissionMessage()
+        {
+            MessageEntity = MessageEntity.Permission;
         }
     }
 }
