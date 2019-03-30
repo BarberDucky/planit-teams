@@ -4,6 +4,7 @@ using planit_client_forms.DTOs;
 using planit_client_forms.MQ;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,7 +66,7 @@ namespace planit_client_forms.Helpers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.Write(e.Message);
                 return null;
             }
         }
@@ -78,6 +79,7 @@ namespace planit_client_forms.Helpers
             }
             catch(Exception e)
             {
+                Debug.Write(e.Message);
                 return MessageType.Error;
             }
         }

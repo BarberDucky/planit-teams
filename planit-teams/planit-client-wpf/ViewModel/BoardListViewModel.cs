@@ -34,8 +34,7 @@ namespace planit_client_wpf.ViewModel
                 else
                 {
                     BoardSectedAction?.Invoke(selectedBoard);
-                    selectedBoard.IsRead = true;
-                    BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, SelectedBoard.BoardId);
+                    ReadBoardNotification();
                 }
             }
         }
@@ -76,7 +75,7 @@ namespace planit_client_wpf.ViewModel
             Subscribe();
         }
 
-        private async Task LoadBoardsByUser()
+        private async void LoadBoardsByUser()
         {
             if (ActiveUser.IsActive == true)
             {
@@ -127,6 +126,15 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
+        private async void ReadBoardNotification()
+        {
+            bool succ = await BoardNotificationService.
+                ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, SelectedBoard.BoardId);
+
+            if (succ)
+                selectedBoard.IsRead = true;
+        }
+
         #region Subscribe for Notifications
 
         private void InitActions()
@@ -143,6 +151,7 @@ namespace planit_client_wpf.ViewModel
             MessageBroker.Instance.Subscribe(deletePermissionAction, MessageEnum.UserBoardDelete);
         }
 
+        //TODO - What to do ovde?
         private void BoardNotificationAction(object obj)
         {
             int id = (int)obj;

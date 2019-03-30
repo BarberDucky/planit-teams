@@ -41,7 +41,7 @@ namespace planit_client_wpf.MQ
             }
             else if (selectedBoard != null && targetBoardId == selectedBoard.BoardId)
             {
-                BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, targetBoardId);
+                //BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, targetBoardId);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -183,6 +184,7 @@ namespace planit_data.Services
             }
             catch (Exception e)
             {
+                Debug.Write(e.Message);
                 return false;
             }
         }

@@ -1,6 +1,7 @@
 ﻿using planit_client_wpf.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,6 +52,7 @@ namespace planit_client_wpf.MQ
             }
             catch (Exception e)
             {
+                Debug.Write(e.Message);
                 return MessageEnum.Error;
             }
 

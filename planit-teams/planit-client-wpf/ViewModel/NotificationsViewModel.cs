@@ -30,8 +30,7 @@ namespace planit_client_wpf.ViewModel
             set
             {
                 SetProperty(ref selectedNotification, value);
-                selectedNotification.IsRead = true;
-                NotificationService.ReadNotification(ActiveUser.Instance.LoggedUser.Token, selectedNotification.NotificationId);
+                SelectNotification();
             }
         }
 
@@ -71,6 +70,21 @@ namespace planit_client_wpf.ViewModel
             foreach(ReadNotificationDTO notificationDTO in list)
             {
                 Notifications.Add(new Notification(notificationDTO));
+            }
+        }
+
+        private async void SelectNotification()
+        {
+            bool succ = await NotificationService.ReadNotification(ActiveUser.Instance.LoggedUser.Token,
+                selectedNotification.NotificationId);
+
+            if(succ)
+            {
+                selectedNotification.IsRead = true;
+            }
+            else
+            {
+                ShowMessageBox(null, "Error reading notification");
             }
         }
 

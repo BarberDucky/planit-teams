@@ -101,7 +101,7 @@ namespace planit_client_wpf.ViewModel
             LoadBoard();
         }
 
-        public async Task LoadBoard()
+        public async void LoadBoard()
         {
             if (ActiveUser.IsActive == true && ShortBoard != null)
             {

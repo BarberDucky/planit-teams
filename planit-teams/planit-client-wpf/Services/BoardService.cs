@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace planit_client_wpf.Services
@@ -51,7 +52,7 @@ namespace planit_client_wpf.Services
                     client.DefaultRequestHeaders.Add("Authorization", accessToken);
                     var response = await client.GetAsync("http://localhost:52816/api/Board/" + id);
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
+                    {                      
                         var jsonString = await response.Content.ReadAsStringAsync();
                         var board = JsonConvert.DeserializeObject<ReadBoardDTO>(jsonString);
                         return board;
