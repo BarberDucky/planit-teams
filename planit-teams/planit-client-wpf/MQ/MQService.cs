@@ -15,21 +15,29 @@ namespace planit_client_wpf.MQ
         private IConnection connection;
         private IModel channel;
         private ConnectionFactory factory;
+        private Dictionary<string, string> tags;
 
-        public IModel Channel
+        private static MQService instance;
+
+        public static MQService Instance
         {
             get
             {
-                return channel;
+                if (instance == null)
+                {
+                    instance = new MQService();
+                }
+
+                return instance;
             }
         }
 
-        public MQService()
+        private MQService()
         {
             factory = new ConnectionFactory() { HostName = "localhost" };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
-
+            tags = new Dictionary<string, string>();
         }
 
         //public void SubscribeToExchange(string exchangeName, Func<IMQMessage, bool> Method)
@@ -57,6 +65,9 @@ namespace planit_client_wpf.MQ
 
         public void SubscribeToExchange(string exchangeName)
         {
+            if (tags.ContainsKey(exchangeName))
+                return;
+
             var queueName = channel.QueueDeclare().QueueName;
 
             channel.QueueBind(queue: queueName,
@@ -79,9 +90,33 @@ namespace planit_client_wpf.MQ
                 }
 
             };
-            channel.BasicConsume(queue: queueName,
+           string tag = channel.BasicConsume(queue: queueName,
                                  autoAck: true,
                                  consumer: consumer);
+
+            tags.Add(exchangeName, tag);
+        }
+
+        public void Unsubscribe(string exchangeName)
+        {
+            if (exchangeName == null || !tags.ContainsKey(exchangeName))
+                return;
+
+            string tag = tags[exchangeName];
+
+            channel.BasicCancel(tag);
+
+            tags.Remove(exchangeName);
+        }
+
+        public void UnsubscribeFromAll()
+        {
+            foreach(var val in tags.Values)
+            {
+                channel.BasicCancel(val);
+            }
+
+            tags.Clear();
         }
     }
 }
