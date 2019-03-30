@@ -13,7 +13,7 @@ namespace planit_client_wpf.Helpers
 {
     public class JsonHelper
     {
-        public static IMQMessage GetMessage(string stringMessage)
+        public static MQMessage GetMessage(string stringMessage)
         {
             var jsonMessage = GetJObjectFromString(stringMessage);
             if (jsonMessage == null)

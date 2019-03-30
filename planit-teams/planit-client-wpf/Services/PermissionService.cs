@@ -13,7 +13,7 @@ namespace planit_client_wpf.Services
 {
     public class PermissionService
     {
-        public static async Task<bool> CreatePermission(string accessToken, AddUserBoardPermisionDTO addUserBoardPermisionDTO)
+        public static async Task<ReadUserDTO> CreatePermission(string accessToken, AddUserBoardPermisionDTO addUserBoardPermisionDTO)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -29,18 +29,18 @@ namespace planit_client_wpf.Services
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         var jsonString = await response.Content.ReadAsStringAsync();
-                        var result = JsonConvert.DeserializeObject<bool>(jsonString);
+                        var result = JsonConvert.DeserializeObject<ReadUserDTO>(jsonString);
                         return result;
                     }
                     else
                     {
-                        return false;
+                        return null;
                     }
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
-                    return false;
+                    return null;
                 }
             }
         }

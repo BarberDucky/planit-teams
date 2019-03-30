@@ -24,13 +24,9 @@ namespace planit_api.Controllers
         //}
 
         //POST: api/Permission
-        public bool Post([FromBody]AddUserBoardPermisionDTO value)
+        public ReadUserDTO Post([FromBody]AddUserBoardPermisionDTO value)
         {
-            if (value != null)
-            {
-                return ps.AddUserBoardPermision(value, User.Identity.Name);
-            }
-            return false;
+            return ps.AddUserBoardPermision(value, User.Identity.Name);
         }
 
         [HttpDelete]

@@ -19,7 +19,7 @@ namespace planit_client_wpf.Services
                 try
                 {
                     client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                    var response = await client.PostAsync("http://localhost:52816/api/Notification/Read/" + notificationId, null);
+                    var response = await client.PutAsync("http://localhost:52816/api/Notification/Read/" + notificationId, null);
 
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
@@ -47,7 +47,7 @@ namespace planit_client_wpf.Services
                 try
                 {
                     client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                    var response = await client.PostAsync("http://localhost:52816/api/Notification/ReadAll", null);
+                    var response = await client.PutAsync("http://localhost:52816/api/Notification/ReadAll", null);
 
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {

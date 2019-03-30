@@ -114,7 +114,7 @@ namespace planit_client_wpf.ViewModel
                         DeleteBoardCommandVisible = true;
                     }
 
-                    UsersViewModel = new UsersListViewModel(Board.Users, Board.IsAdmin);
+                    UsersViewModel = new UsersListViewModel(Board.Users, Board.IsAdmin, Board.BoardId);
                     CardListViewModel = new CardListListViewModel(Board.CardLists, Board.BoardId);
 
                 }

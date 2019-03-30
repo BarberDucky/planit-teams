@@ -39,7 +39,7 @@ namespace planit_data.Services
             bool ret = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                
+
                 User user = uw.UserRepository.GetById(notificationDTO.UserId);
                 Card card = uw.CardRepository.GetById(notificationDTO.CardId);
 
@@ -49,7 +49,9 @@ namespace planit_data.Services
 
                     List<User> users = uw.PermissionRepository
                         .GetAllUsersWithPermissionOnBoard(b.BoardId);
-                    
+
+                    List<Notification> notifs = new List<Notification>();
+
                     foreach (var u in users)
                     {
                         Notification obj = new Notification
@@ -60,14 +62,21 @@ namespace planit_data.Services
                             BelongsToUserId = u.UserId
                         };
 
-                        ReadNotificationDTO dto = new ReadNotificationDTO(obj);
                         uw.NotificationRepository.Insert(obj);
-
-                        RabbitMQService.PublishToExchange(u.ExchangeName,
-                            new MessageContext(new NotificationMessageStrategy(dto, MessageType.Move)));
+                        notifs.Add(obj);
                     }
 
                     ret = uw.Save();
+
+                    if (ret)
+                    {
+                        foreach (var n in notifs)
+                        {
+                            RabbitMQService.PublishToExchange(n.BelongsToUser.ExchangeName,
+                            new MessageContext(new NotificationMessageStrategy(
+                                new ReadNotificationDTO(n), MessageType.Move)));
+                        }
+                    }
                 }
             }
             return ret;
@@ -84,6 +93,7 @@ namespace planit_data.Services
 
                 if (user != null && card != null)
                 {
+                    List<Notification> notifs = new List<Notification>();
 
                     foreach (var u in card.ObserverUsers)
                     {
@@ -96,13 +106,20 @@ namespace planit_data.Services
                             BelongsToUserId = u.UserId
                         };
 
-                        ReadNotificationDTO dto = new ReadNotificationDTO(obj);
                         uw.NotificationRepository.Insert(obj);
-
-                        RabbitMQService.PublishToExchange(u.ExchangeName,
-                            new MessageContext(new NotificationMessageStrategy(dto, MessageType.Change)));
+                        notifs.Add(obj);
                     }
                     ret = uw.Save();
+
+                    if (ret)
+                    {
+                        foreach (var n in notifs)
+                        {
+                            RabbitMQService.PublishToExchange(n.BelongsToUser.ExchangeName,
+                            new MessageContext(new NotificationMessageStrategy
+                            (new ReadNotificationDTO(n), MessageType.Move)));
+                        }
+                    }
                 }
 
                 return ret;
@@ -147,12 +164,12 @@ namespace planit_data.Services
             try
             {
                 bool succ = false;
-                using(UnitOfWork unit = new UnitOfWork())
+                using (UnitOfWork unit = new UnitOfWork())
                 {
                     User user = unit.UserRepository.GetUserByUsername(username);
                     if (user != null)
                     {
-                        foreach(var n in user.Notifications)
+                        foreach (var n in user.Notifications)
                         {
                             n.IsRead = true;
                             unit.NotificationRepository.Update(n);

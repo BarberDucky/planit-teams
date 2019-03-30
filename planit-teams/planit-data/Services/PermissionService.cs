@@ -99,7 +99,7 @@ namespace planit_data.Services
             return ret;
         }
 
-        public bool AddUserBoardPermision(AddUserBoardPermisionDTO dto, string admin)
+        public ReadUserDTO AddUserBoardPermision(AddUserBoardPermisionDTO dto, string admin)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
@@ -140,13 +140,15 @@ namespace planit_data.Services
                                 new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(u),
                                 MessageType.Create)));
 
+                            return new ReadUserDTO(u);
+
                         }
 
                     }
                 }
             }
 
-            return ret;
+            return null;
         }
 
         public bool DeletePermission(int boardId, string username, string admin)

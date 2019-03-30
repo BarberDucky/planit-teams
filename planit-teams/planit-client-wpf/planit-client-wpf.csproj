@@ -77,7 +77,10 @@
     <Compile Include="Model\Comment.cs" />
     <Compile Include="Model\Notification.cs" />
     <Compile Include="Model\User.cs" />
+    <Compile Include="MQ\IMessageBroker.cs" />
     <Compile Include="MQ\IUserNotificationHandler.cs" />
+    <Compile Include="MQ\MessageBroker.cs" />
+    <Compile Include="MQ\MessageEnum.cs" />
     <Compile Include="MQ\MQMessage.cs" />
     <Compile Include="MQ\MQService.cs" />
     <Compile Include="MQ\UserNotifHandlerFactory.cs" />

@@ -1,6 +1,7 @@
 ﻿using planit_client_wpf.Base;
 using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.MQ;
 using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
@@ -42,11 +43,17 @@ namespace planit_client_wpf.ViewModel
 
         #endregion
 
+        #region Message Actions
+        Action<object> getNotification;
+        #endregion
+
         public NotificationsViewModel()
         {
             ReadAllNotificationsCommand = new CommandBase(OnReadAllNotifications);
             Notifications = new ObservableCollection<Notification>();
             InitializeNotifications();
+            InitActions();
+            Subscribe();
         }
 
         private async void OnReadAllNotifications()
@@ -66,5 +73,30 @@ namespace planit_client_wpf.ViewModel
                 Notifications.Add(new Notification(notificationDTO));
             }
         }
+
+        #region Subscribe for Notifications
+
+        private void InitActions()
+        {
+            getNotification = new Action<object>(MoveNotification);
+        }
+
+        private void Subscribe()
+        {
+            MessageBroker.Instance.Subscribe(getNotification, MessageEnum.UserNotificationMove);
+            MessageBroker.Instance.Subscribe(getNotification, MessageEnum.UserNotificationChange);
+        }
+
+        private void MoveNotification(object obj)
+        {
+            ReadNotificationDTO dto = (ReadNotificationDTO)obj;
+
+            if (dto != null)
+            {
+                Notifications.Add(new Notification(dto));
+            }
+        }
+
+        #endregion
     }
 }
