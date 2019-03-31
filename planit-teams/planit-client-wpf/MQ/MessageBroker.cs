@@ -50,9 +50,16 @@ namespace planit_client_wpf.MQ
 
         public void Subscribe(Action<object> subscription, MessageEnum messageType)
         {
-            if (subscription != null && !dictionary.ContainsKey(messageType))
+            if (subscription == null)
+                return;
+
+            if (!dictionary.ContainsKey(messageType))
             {
                 dictionary.Add(messageType, subscription);
+            }
+            else
+            {
+                dictionary[messageType] += subscription;
             }
         }
 
@@ -74,6 +81,16 @@ namespace planit_client_wpf.MQ
             dictionary?.Clear();
         }
 
-        
+        public void UnsubscribeStartingFrom(MessageEnum start)
+        {
+            var keys = dictionary.Keys.ToArray();
+            foreach (var key in keys)
+            {
+                if (key >= start)
+                {
+                    dictionary.Remove(key);
+                }
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace planit_client_wpf.Model
         private int boardId;
         private string name;
         private bool isRead;
+        private string exchangeName;
 
         #region Properties
 
@@ -21,7 +22,7 @@ namespace planit_client_wpf.Model
         {
             get { return boardId; }
             set { boardId = value; }
-}
+        }
 
         public string Name
         {
@@ -35,6 +36,12 @@ namespace planit_client_wpf.Model
             set { SetProperty(ref isRead, value); }
         }
 
+        public string ExchangeName
+        {
+            get { return exchangeName; }
+            set { SetProperty(ref exchangeName, value); }
+        }
+
         #endregion
 
         public ShortBoard(ShortBoardDTO dto)
@@ -42,6 +49,7 @@ namespace planit_client_wpf.Model
             Name = dto.Name;
             BoardId = dto.BoardId;
             IsRead = dto.IsRead;
+            ExchangeName = dto.ExchangeName;
         }
 
         public ShortBoard(BasicBoardDTO dto)
@@ -49,6 +57,7 @@ namespace planit_client_wpf.Model
             Name = dto.Name;
             BoardId = dto.BoardId;
             IsRead = false;
+            ExchangeName = dto.ExchangeName;
         }
     }
 
@@ -101,7 +110,7 @@ namespace planit_client_wpf.Model
 
         public ReadBoard(ReadBoardDTO dto)
         {
-           if(dto != null)
+            if (dto != null)
             {
                 BoardId = dto.BoardId;
                 Name = dto.Name;
@@ -117,7 +126,7 @@ namespace planit_client_wpf.Model
                 }
 
                 Users = new ObservableCollection<ReadUser>();
-                if(dto.Users != null)
+                if (dto.Users != null)
                 {
                     foreach (ReadUserDTO users in dto.Users)
                     {

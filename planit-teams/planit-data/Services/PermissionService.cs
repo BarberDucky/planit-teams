@@ -99,6 +99,7 @@ namespace planit_data.Services
             return ret;
         }
 
+        //TODO - Uncomment metode
         public ReadUserDTO AddUserBoardPermision(AddUserBoardPermisionDTO dto, string admin)
         {
             bool ret = false;
@@ -136,9 +137,9 @@ namespace planit_data.Services
                                 new MessageContext(new BoardMessageStrategy(new BasicBoardDTO(b),
                                 MessageType.Create)));
 
-                            RabbitMQService.PublishToExchange(b.ExchangeName,
-                                new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(u),
-                                MessageType.Create)));
+                            //RabbitMQService.PublishToExchange(b.ExchangeName,
+                            //    new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(u),
+                            //    MessageType.Create)));
 
                             return new ReadUserDTO(u);
 
@@ -176,9 +177,9 @@ namespace planit_data.Services
 
                         Board b = unit.BoardRepository.GetById(boardId);
 
-                        RabbitMQService.PublishToExchange(b.ExchangeName,
-                               new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(user),
-                               MessageType.Delete)));
+                        //RabbitMQService.PublishToExchange(b.ExchangeName,
+                        //       new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(user),
+                        //       MessageType.Delete)));
                     }
                 }
 

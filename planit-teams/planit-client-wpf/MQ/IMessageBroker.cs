@@ -12,5 +12,6 @@ namespace planit_client_wpf.MQ
         void Publish(object message, MessageEnum mesageType);
         void Subscribe(Action<object> subscription, MessageEnum messageType);
         void Unsubscribe(MessageEnum messageType);
+        void UnsubscribeStartingFrom(MessageEnum start);
     }
 }

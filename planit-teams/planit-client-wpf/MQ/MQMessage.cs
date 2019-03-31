@@ -43,7 +43,7 @@ namespace planit_client_wpf.MQ
             string entity = MessageEntity.ToString();
             string type = MessageType.ToString();
 
-            string name = $"User{entity}{type}";
+            string name = $"{entity}{type}";
 
             try
             {

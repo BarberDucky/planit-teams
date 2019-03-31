@@ -146,9 +146,9 @@ namespace planit_client_wpf.ViewModel
 
         private void Subscribe()
         {
-            MessageBroker.Instance.Subscribe(boardNotificationAction, MessageEnum.UserBoardBoardNotification);
-            MessageBroker.Instance.Subscribe(addPermissionAction, MessageEnum.UserBoardCreate);
-            MessageBroker.Instance.Subscribe(deletePermissionAction, MessageEnum.UserBoardDelete);
+            MessageBroker.Instance.Subscribe(boardNotificationAction, MessageEnum.BoardBoardNotification);
+            MessageBroker.Instance.Subscribe(addPermissionAction, MessageEnum.BoardCreate);
+            MessageBroker.Instance.Subscribe(deletePermissionAction, MessageEnum.BoardDelete);
         }
 
         //TODO - What to do ovde?

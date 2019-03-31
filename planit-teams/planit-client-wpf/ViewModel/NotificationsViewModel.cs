@@ -97,8 +97,8 @@ namespace planit_client_wpf.ViewModel
 
         private void Subscribe()
         {
-            MessageBroker.Instance.Subscribe(getNotification, MessageEnum.UserNotificationMove);
-            MessageBroker.Instance.Subscribe(getNotification, MessageEnum.UserNotificationChange);
+            MessageBroker.Instance.Subscribe(getNotification, MessageEnum.NotificationMove);
+            MessageBroker.Instance.Subscribe(getNotification, MessageEnum.NotificationChange);
         }
 
         private void MoveNotification(object obj)

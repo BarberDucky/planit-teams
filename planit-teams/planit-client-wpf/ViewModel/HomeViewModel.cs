@@ -21,8 +21,6 @@ namespace planit_client_wpf.ViewModel
         private ViewModelBase centerViewModel;
         private ViewModelBase notificationViewModel;
 
-        private MQService MQService;
-
         #region Properies
 
         public ViewModelBase LeftViewModel
@@ -95,6 +93,9 @@ namespace planit_client_wpf.ViewModel
         {
             if (board != null)
             {
+                BoardViewModel vm = CenterViewModel as BoardViewModel;
+                vm?.UnsubscribeFromBoard();
+
                 CenterViewModel = new BoardViewModel(board, OnBoardDeleted);
             }
         }

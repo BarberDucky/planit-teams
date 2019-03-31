@@ -1,6 +1,7 @@
 ﻿using planit_client_wpf.Base;
 using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.MQ;
 using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
@@ -46,18 +47,27 @@ namespace planit_client_wpf.ViewModel
 
         #endregion
 
+        #region Message actions
+
+        Action<object> createCardList;
+
+        #endregion
+
         public CardListListViewModel(ObservableCollection<ReadCardList> cardLists, int parentBoardId)
         {
             this.parentBoardId = parentBoardId;
             this.CardListViewModels = new ObservableCollection<CardListViewModel>();
 
-            foreach(ReadCardList cardList in cardLists)
+            foreach (ReadCardList cardList in cardLists)
             {
                 CardListViewModels.Add(new CardListViewModel(cardList, OnDeleteCardList, OnSelectedCard));
             }
 
             NewListCommand = new CommandBase(OnNewListClick);
             RightViewModel = new EmptyViewModel();
+
+            InitActions();
+            Subscribe();
         }
 
         public async void OnNewListClick()
@@ -69,7 +79,7 @@ namespace planit_client_wpf.ViewModel
 
                 if (basicCardListDTO != null)
                 {
-                    ShowMessageBox(null, "Kreirala se lista");
+                   // ShowMessageBox(null, "Kreirala se lista");
                     var list = new ReadCardList(basicCardListDTO);
                     CardListViewModels.Add(new CardListViewModel(list, OnDeleteCardList, OnSelectedCard));
                 }
@@ -89,7 +99,7 @@ namespace planit_client_wpf.ViewModel
             if (ActiveUser.IsActive == true)
             {
                 bool succ = await CardListService.DeleteCardList(ActiveUser.Instance.LoggedUser.Token, cardList.ListId);
-                if(succ == true)
+                if (succ == true)
                 {
                     CardListViewModel vm = CardListViewModels.FirstOrDefault(x => x.CardList.ListId == cardList.ListId);
                     CardListViewModels.Remove(vm);
@@ -119,6 +129,29 @@ namespace planit_client_wpf.ViewModel
 
         }
 
+        #region Subscribe for Notifications
+
+        private void InitActions()
+        {
+            createCardList = new Action<object>(CreateCardListAction);
+        }
+
+        private void Subscribe()
+        {
+            MessageBroker.Instance.Subscribe(createCardList, MessageEnum.CardListCreate);
+        }
+
+        private void CreateCardListAction(object obj)
+        {
+            BasicCardListDTO cardList = (BasicCardListDTO)obj;
+
+            if (cardList != null)
+            {
+               CardListViewModels.Add(new CardListViewModel(new ReadCardList(cardList), OnDeleteCardList)); 
+            }
+        }
+
+        #endregion
     }
 
 }

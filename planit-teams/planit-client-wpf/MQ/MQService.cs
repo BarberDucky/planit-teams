@@ -75,6 +75,7 @@ namespace planit_client_wpf.MQ
                               routingKey: "");
 
             var consumer = new EventingBasicConsumer(channel);
+
             consumer.Received += (model, ea) =>
             {
                 var body = ea.Body;
@@ -82,14 +83,18 @@ namespace planit_client_wpf.MQ
 
                 MQMessage msg = JsonHelper.GetMessage(message);
 
-                MessageEnum msgEnum = msg.GetEnum();
-
-                if (msgEnum != MessageEnum.Error)
+                if (msg != null)
                 {
-                    MessageBroker.Instance.Publish(msg.GetData(), msgEnum);
+                    MessageEnum msgEnum = msg.GetEnum();
+
+                    if (msgEnum != MessageEnum.Error)
+                    {
+                        MessageBroker.Instance.Publish(msg.GetData(), msgEnum);
+                    }
                 }
 
             };
+
            string tag = channel.BasicConsume(queue: queueName,
                                  autoAck: true,
                                  consumer: consumer);
