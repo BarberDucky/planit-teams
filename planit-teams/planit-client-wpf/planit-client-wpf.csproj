@@ -92,6 +92,8 @@
     <Compile Include="ViewModel\BoardViewModel.cs" />
     <Compile Include="ViewModel\CardListViewModel.cs" />
     <Compile Include="ViewModel\CardListListViewModel.cs" />
+    <Compile Include="ViewModel\CardViewModel.cs" />
+    <Compile Include="ViewModel\CommentsViewModel.cs" />
     <Compile Include="ViewModel\DetailViewModel.cs" />
     <Compile Include="ViewModel\EmptyViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
@@ -112,8 +114,11 @@
     <Compile Include="View\CardListView.xaml.cs">
       <DependentUpon>CardListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DetailView.xaml.cs">
-      <DependentUpon>DetailView.xaml</DependentUpon>
+    <Compile Include="View\CardView.xaml.cs">
+      <DependentUpon>CardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CommentsView.xaml.cs">
+      <DependentUpon>CommentsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EmptyView.xaml.cs">
       <DependentUpon>EmptyView.xaml</DependentUpon>
@@ -168,7 +173,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DetailView.xaml">
+    <Page Include="View\CardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CommentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

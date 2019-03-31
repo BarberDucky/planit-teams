@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="planit_client_wpf.View.CardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModel="clr-namespace:planit_client_wpf.ViewModel"
+             xmlns:view="clr-namespace:planit_client_wpf.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type viewModel:CommentsViewModel}">
+            <view:CommentsView/>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid 
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        Margin="10, 10, 10, 10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height ="2*" />
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="20*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Column ="1" Grid.Row="0" Content="Edit" 
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Width="100"></Button>
+        
+        <Label Grid.Column="0" Grid.Row="1" Content="Card Name:" Margin="10, 10, 10, 10"></Label>
+        <Label Grid.Column="1" Grid.Row="1" Content="{Binding Card.Name}" Margin="10, 10, 10, 10"></Label>
+
+        <Label Grid.Column="0" Grid.Row="2" Content="Description: " Margin="10, 10, 10, 10"></Label>
+        <Label Grid.Column="1" Grid.Row="2" Content="{Binding Card.Description}" Margin="10, 10, 10, 10"></Label>
+        
+        <Label Grid.Column="0" Grid.Row="3" Content="Created On: " Margin="10, 10, 10, 10"></Label>
+        <Label Grid.Column="1" Grid.Row="3" Content="{Binding Card.Timestamp}" Margin="10, 10, 10, 10"></Label>
+
+        <Label Grid.Column="0" Grid.Row="4" Content="Due Date: " Margin="10, 10, 10, 10"></Label>
+        <Label Grid.Column="1" Grid.Row="4" Content="{Binding Card.DueDate}" Margin="10, 10, 10, 10"></Label>
+
+        <ContentControl Grid.Row="5" Grid.ColumnSpan="2" Content = "{Binding Comments}" />
+
+    </Grid>
+</UserControl>

@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:view="clr-namespace:planit_client_wpf.View"
              xmlns:viewModel="clr-namespace:planit_client_wpf.ViewModel"
-             xmlns:model="clr-namespace:planit_client_wpf.Model"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContextChanged="cardListList_DataContextChanged">
@@ -14,32 +13,50 @@
         <DataTemplate DataType="{x:Type viewModel:CardListViewModel}">
             <view:CardListView></view:CardListView>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:EmptyViewModel}">
+            <view:EmptyView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:CardViewModel}">
+            <view:CardView></view:CardView>
+        </DataTemplate>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
     </UserControl.Resources>
+
     
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height = "*" />
-            <RowDefinition Height = "Auto" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height = "*" />
+                <RowDefinition Height = "Auto" />
+            </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" 
+            <ListBox Grid.Row="0" 
                  ItemsSource="{Binding CardListViewModels}"
                  IsSynchronizedWithCurrentItem="True">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Margin" Value="20"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-        </ListBox>
-        
-        <Button Grid.Row="1" Content="Add List" Command="{Binding NewListCommand}"
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Margin" Value="20"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+
+            <Button Grid.Row="1" Content="Add List" Command="{Binding NewListCommand}"
                 Margin="10, 10, 10, 10" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100"></Button>
+        </Grid>
+        <ContentControl Grid.Row="0" Grid.Column="1" Content = "{Binding RightViewModel}"/>
+
     </Grid>
     
 </UserControl>

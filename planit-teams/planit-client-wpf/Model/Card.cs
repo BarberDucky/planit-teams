@@ -87,6 +87,7 @@ namespace planit_client_wpf.Model
                 DueDate = dto.DueDate;
                 BoardId = dto.BoardId;
                 ListId = dto.ListId;
+                Comments = new ObservableCollection<ReadComment>();
             }
 
         }

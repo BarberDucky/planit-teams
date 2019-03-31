@@ -29,7 +29,6 @@
                         </Style>
                     </Ellipse.Style>
                 </Ellipse>
-                <!--<Button Content="Delete" Command="{Binding DeleteBoardCommand}"/>-->
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
