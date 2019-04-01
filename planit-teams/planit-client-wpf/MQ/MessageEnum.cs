@@ -17,6 +17,9 @@ namespace planit_client_wpf.MQ
         CardListCreate,
         CardListDelete,
         PermissionCreate,
-        PermissionDelete
+        PermissionDelete,
+        CardCreate,
+        CardDelete,
+        CommentCreate
     }
 }

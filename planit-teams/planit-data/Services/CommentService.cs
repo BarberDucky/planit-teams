@@ -90,7 +90,7 @@ namespace planit_data.Services
 
                         commentDTO = new BasicCommentDTO(comment);
                         RabbitMQService.PublishToExchange(card.List.Board.ExchangeName,
-                            new MessageContext(new CommentMessageStrategy(commentDTO)));
+                            new MessageContext(new CommentMessageStrategy(commentDTO, username)));
 
                         BoardNotificationService.ChangeBoardNotifications(card.List.Board.BoardId);
                     }
