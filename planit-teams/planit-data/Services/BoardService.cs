@@ -51,8 +51,9 @@ namespace planit_data.Services
             using (UnitOfWork unit = new UnitOfWork())
             {
                 Board b = unit.BoardRepository.GetById(boardId);
+                User user = unit.UserRepository.GetUserByUsername(username);
 
-                if (b != null)
+                if (b != null && user != null)
                 {
                     List<User> users = unit.PermissionRepository
                         .GetAllUsersWithPermissionOnBoard(b.BoardId);
@@ -60,7 +61,7 @@ namespace planit_data.Services
                     bool isAdmin = unit.PermissionRepository
                         .IsAdmin(b.BoardId, username);
 
-                    boardDTO = new ReadBoardDTO(b, isAdmin, users);
+                    boardDTO = new ReadBoardDTO(b, username, isAdmin, users);
                 }
             }
 

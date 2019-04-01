@@ -12,6 +12,7 @@ namespace planit_data.Repository
         public CardRepository(ApplicationContext context) 
             : base(context)
         {
+
         }
 
         public void Delete(int boardId, User user)
@@ -23,6 +24,16 @@ namespace planit_data.Repository
             {
                 c.ObserverUsers.Remove(user);
             }
+        }
+
+        public bool IsWatched(int cardId, User user)
+        {
+            Card card = GetById(cardId);
+
+            if (card == null)
+                return false;
+
+            return card.ObserverUsers.Contains(user);
         }
     }
 }

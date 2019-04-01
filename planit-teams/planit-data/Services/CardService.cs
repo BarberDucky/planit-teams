@@ -220,5 +220,22 @@ namespace planit_data.Services
 
             return succ;
         }
+
+        public static bool IsWatched(int cardId, string username)
+        {
+            bool isWatched = false;
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                User user = unit.UserRepository.GetUserByUsername(username);
+
+                if (user != null)
+                {
+                    isWatched = unit.CardRepository.IsWatched(cardId, user);
+                }
+                
+            }
+
+            return isWatched;
+        }
     }
 }

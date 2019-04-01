@@ -30,7 +30,7 @@ namespace planit_data.DTOs
         public String Name { get; set; }
         public String Color { get; set; }
         public int BoardId { get; set; }
-       // public string Username { get; set; }
+        // public string Username { get; set; }
 
         public CardList FromDTO()
         {
@@ -50,13 +50,25 @@ namespace planit_data.DTOs
         public int BoardId { get; set; }
         public List<ReadCardDTO> Cards { get; set; }
 
-        public ReadCardListDTO(CardList list)
+        private void Load(CardList list)
         {
             this.ListId = list.ListId;
             this.Name = list.Name;
             this.Color = list.Color;
             this.BoardId = list.Board.BoardId;
+        }
+
+        public ReadCardListDTO(CardList list)
+        {
+            Load(list);
             this.Cards = ReadCardDTO.FromEntityList(list.Cards.ToList());
+        }
+
+        public ReadCardListDTO(CardList list, string username)
+            //: this(list)
+        {
+            Load(list);
+            this.Cards = ReadCardDTO.FromEntityList(list.Cards.ToList(), username);
         }
 
         public static List<ReadCardListDTO> FromEntityList(List<CardList> list)
@@ -68,6 +80,22 @@ namespace planit_data.DTOs
                 if (c != null)
                 {
                     newList.Add(new ReadCardListDTO(c));
+                }
+
+            }
+
+            return newList;
+        }
+
+        public static List<ReadCardListDTO> FromEntityList(List<CardList> list, string username)
+        {
+            List<ReadCardListDTO> newList = new List<ReadCardListDTO>();
+
+            foreach (CardList c in list)
+            {
+                if (c != null)
+                {
+                    newList.Add(new ReadCardListDTO(c, username));
                 }
 
             }
