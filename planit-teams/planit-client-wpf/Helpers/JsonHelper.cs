@@ -126,6 +126,11 @@ namespace planit_client_wpf.Helpers
 
         }
 
+        public static MQMessage GetMessageTestConverter(string json)
+        {
+            return JsonConvert.DeserializeObject<MQMessage>(json, new JsonMessageConverter());
+        }
+
         private static JToken GetJTokenByKey(string key, JObject obj)
         {
             if (obj.ContainsKey(key))

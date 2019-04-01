@@ -81,8 +81,8 @@ namespace planit_client_wpf.MQ
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body);
 
-                MQMessage msg = JsonHelper.GetMessageTest(message);
-                //MQMessage msgTest = JsonHelper.GetMessageTest(message);
+                MQMessage msg = JsonHelper.GetMessageTestConverter(message);
+                //MQMessage msgTest = JsonHelper.GetMessageTestConverter(message);
 
                 if (msg != null && msg.Username != ActiveUser.Instance.LoggedUser.Username)
                 {

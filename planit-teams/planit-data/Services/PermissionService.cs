@@ -107,7 +107,7 @@ namespace planit_data.Services
                 bool isAdmin = unit.PermissionRepository.IsAdmin(dto.BoardId, admin);
                 Permission perm = unit.PermissionRepository.GetPermissionByUsername(dto.BoardId, dto.Username);
 
-                if (isAdmin && perm != null)
+                if (isAdmin && perm == null)
                 {
                     Board b = unit.BoardRepository.GetById(dto.BoardId);
                     User u = unit.UserRepository.GetUserByUsername(dto.Username);
