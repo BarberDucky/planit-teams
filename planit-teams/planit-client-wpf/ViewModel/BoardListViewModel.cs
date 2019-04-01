@@ -1,6 +1,7 @@
 ﻿using planit_client_wpf.Base;
 using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.MQ;
 using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace planit_client_wpf.ViewModel
 {
@@ -21,7 +24,7 @@ namespace planit_client_wpf.ViewModel
         public ObservableCollection<ShortBoard> Boards { get; set; }
 
         public ShortBoard SelectedBoard
-        { 
+        {
             get { return selectedBoard; }
             set
             {
@@ -31,16 +34,15 @@ namespace planit_client_wpf.ViewModel
                 else
                 {
                     BoardSectedAction?.Invoke(selectedBoard);
-                    selectedBoard.IsRead = true;
-                    BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, SelectedBoard.BoardId);
-                }                  
+                    ReadBoardNotification();
+                }
             }
         }
 
         #endregion
 
         #region Commands
-        
+
         public CommandBase NewBoardCommand { get; private set; }
 
         #endregion
@@ -52,6 +54,14 @@ namespace planit_client_wpf.ViewModel
 
         #endregion
 
+        #region Message Actions
+
+        Action<object> boardNotificationAction;
+        Action<object> addPermissionAction;
+        Action<object> deletePermissionAction;
+
+        #endregion
+
         public BoardListViewModel(Action<ShortBoard> boardSelectedAction, Action boardDeselectedAction)
         {
             Boards = new ObservableCollection<ShortBoard>();
@@ -60,9 +70,12 @@ namespace planit_client_wpf.ViewModel
             BoardDeselectedAction = boardDeselectedAction;
 
             LoadBoardsByUser();
+
+            InitActions();
+            Subscribe();
         }
 
-        private async Task LoadBoardsByUser()
+        private async void LoadBoardsByUser()
         {
             if (ActiveUser.IsActive == true)
             {
@@ -89,10 +102,10 @@ namespace planit_client_wpf.ViewModel
 
         private async void OnNewBoardClick()
         {
-            if(ActiveUser.IsActive == true)
+            if (ActiveUser.IsActive == true)
             {
                 ShortBoardDTO dto = await BoardService.CreateBoard(ActiveUser.Instance.LoggedUser.Token, new CreateBoardDTO("Unnamed Board"));
-                if(dto == null)
+                if (dto == null)
                 {
                     ShowMessageBox(null, "Creation unsuccessful.");
                 }
@@ -101,16 +114,83 @@ namespace planit_client_wpf.ViewModel
                     Boards.Add(new ShortBoard(dto));
                 }
             }
-        }      
+        }
 
         public void RemoveSelectedBoard(int boardId)
         {
             SelectedBoard = null;
-            if(Boards != null)
+            if (Boards != null)
             {
                 var item = Boards.FirstOrDefault(x => x.BoardId == boardId);
                 Boards.Remove(item);
             }
         }
+
+        private async void ReadBoardNotification()
+        {
+            bool succ = await BoardNotificationService.
+                ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, SelectedBoard.BoardId);
+
+            if (succ)
+                selectedBoard.IsRead = true;
+        }
+
+        #region Subscribe for Notifications
+
+        private void InitActions()
+        {
+            boardNotificationAction = new Action<object>(BoardNotificationAction);
+            addPermissionAction = new Action<object>(AddPermissionUserAction);
+            deletePermissionAction = new Action<object>(DeletePermissionUserAction);
+        }
+
+        private void Subscribe()
+        {
+            MessageBroker.Instance.Subscribe(boardNotificationAction, MessageEnum.BoardBoardNotification);
+            MessageBroker.Instance.Subscribe(addPermissionAction, MessageEnum.BoardCreate);
+            MessageBroker.Instance.Subscribe(deletePermissionAction, MessageEnum.BoardDelete);
+        }
+
+        //TODO - What to do ovde?
+        private void BoardNotificationAction(object obj)
+        {
+            int id = (int)obj;
+
+            if (selectedBoard == null || id != selectedBoard.BoardId)
+            {
+                Boards.SingleOrDefault(el => el.BoardId == id).IsRead = false;
+            }
+            else if (selectedBoard != null && id == selectedBoard.BoardId)
+            {
+                BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, id);
+            }
+        }
+
+        private void AddPermissionUserAction(object obj)
+        {
+            BasicBoardDTO board = (BasicBoardDTO)obj;
+
+            if (board != null)
+            {
+                Boards.Add(new ShortBoard(board));
+            }
+            ShowMessageBox(null, "Stigla poruka");
+        }
+
+        private void DeletePermissionUserAction(object obj)
+        {
+            int id = (int)obj;
+
+            ShortBoard deleteBoard = Boards.SingleOrDefault(el => el.BoardId == id);
+
+            Boards.Remove(deleteBoard);
+
+            if (selectedBoard != null && selectedBoard.BoardId == deleteBoard.BoardId)
+            {
+                selectedBoard = null;
+            }
+        }
+
+        #endregion
     }
 }

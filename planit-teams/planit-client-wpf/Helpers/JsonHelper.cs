@@ -13,7 +13,7 @@ namespace planit_client_wpf.Helpers
 {
     public class JsonHelper
     {
-        public static IMQMessage GetMessage(string stringMessage)
+        public static MQMessage GetMessage(string stringMessage)
         {
             var jsonMessage = GetJObjectFromString(stringMessage);
             if (jsonMessage == null)
@@ -27,6 +27,8 @@ namespace planit_client_wpf.Helpers
             if (messageEntity == null)
                 return null;
 
+            var messageUsername = GetJTokenByKey("Username", jsonMessage);
+
             var data = GetJTokenByKey("Data", jsonMessage);
             if (data == null)
                 return null;
@@ -35,6 +37,7 @@ namespace planit_client_wpf.Helpers
 
             var type = (MessageType)messageType.Value<int>();
             var entity = (MessageEntity)messageEntity.Value<int>();
+            var username = (string)messageUsername.Value<string>();
 
             if (type == MessageType.Delete)
             {
@@ -59,7 +62,7 @@ namespace planit_client_wpf.Helpers
             else if (entity == MessageEntity.CardList)
             {
                 BasicCardListDTO parsedData = JsonConvert.DeserializeObject<BasicCardListDTO>(stringData);
-                return new CardListMessage() { MessageType = type, MessageEntity = entity, Data = parsedData };
+                return new CardListMessage() { MessageType = type, MessageEntity = entity, Data = parsedData, Username = username };
             }
             else if (entity == MessageEntity.Comment)
             {
@@ -77,6 +80,55 @@ namespace planit_client_wpf.Helpers
             }
 
 
+        }
+
+        public static MQMessage GetMessageTest(string stringMessage)
+        {
+            BasicMQMessage msg = JsonConvert.DeserializeObject<BasicMQMessage>(stringMessage);
+
+            if(msg.MessageEntity == MessageEntity.Permission)
+            {
+                return JsonConvert.DeserializeObject<PermissionMessage>(stringMessage);
+
+            } else if (msg.MessageType == MessageType.Delete)
+            {
+                return JsonConvert.DeserializeObject<DeleteMessage>(stringMessage);
+            }
+            else if (msg.MessageType == MessageType.BoardNotification)
+            {
+                return JsonConvert.DeserializeObject<BoardNotificationMessage>(stringMessage);
+            }
+            else if (msg.MessageEntity == MessageEntity.Board)
+            {
+                return JsonConvert.DeserializeObject<BoardMesage>(stringMessage);
+            }
+            else if (msg.MessageEntity == MessageEntity.Card)
+            {
+                return JsonConvert.DeserializeObject<CardMessage>(stringMessage);
+            }
+            else if (msg.MessageEntity == MessageEntity.CardList)
+            {
+                return JsonConvert.DeserializeObject<CardListMessage>(stringMessage);
+            }
+            else if (msg.MessageEntity == MessageEntity.Comment)
+            {
+                return JsonConvert.DeserializeObject<CommentMessage>(stringMessage);
+            }
+            else if (msg.MessageEntity == MessageEntity.Notification)
+            {
+                return JsonConvert.DeserializeObject<NotificationMessage>(stringMessage);
+            }
+            else
+            {
+                return null;
+            }
+
+
+        }
+
+        public static MQMessage GetMessageTestConverter(string json)
+        {
+            return JsonConvert.DeserializeObject<MQMessage>(json, new JsonMessageConverter());
         }
 
         private static JToken GetJTokenByKey(string key, JObject obj)

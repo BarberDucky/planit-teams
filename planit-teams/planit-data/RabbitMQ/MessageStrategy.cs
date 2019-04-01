@@ -93,18 +93,18 @@ namespace planit_data.RabbitMQ
         private CardListMessage cardListMessage;
         private DeleteMessage deleteMessage;
 
-        public CardListMessageStrategy(BasicCardListDTO data, MessageType type)
+        public CardListMessageStrategy(BasicCardListDTO data, MessageType type, string username)
         {
-            cardListMessage = new CardListMessage()
+            cardListMessage = new CardListMessage(username)
             {
                 Data = data,
                 MessageType = type
             };
         }
 
-        public CardListMessageStrategy(int id)
+        public CardListMessageStrategy(int id, string username)
         {
-            deleteMessage = new DeleteMessage()
+            deleteMessage = new DeleteMessage(username)
             {
                 Data = id,
                 MessageEntity = MessageEntity.CardList
@@ -180,6 +180,25 @@ namespace planit_data.RabbitMQ
         public string Serialize()
         {
             return JsonConvert.SerializeObject(boardMessage);
+        }
+    }
+
+    public class PermissionMessageStrategy : IMessageStrategy
+    {
+        private PermissionMessage permMessage;
+
+        public PermissionMessageStrategy(ReadUserDTO data, MessageType type, string username)
+        {
+            permMessage = new PermissionMessage(username)
+            {
+                Data = data,
+                MessageType =type 
+            };
+        }
+
+        public string Serialize()
+        {
+            return JsonConvert.SerializeObject(permMessage);
         }
     }
 }

@@ -99,14 +99,15 @@ namespace planit_data.Services
             return ret;
         }
 
-        public bool AddUserBoardPermision(AddUserBoardPermisionDTO dto, string admin)
+        public ReadUserDTO AddUserBoardPermision(AddUserBoardPermisionDTO dto, string admin)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
                 bool isAdmin = unit.PermissionRepository.IsAdmin(dto.BoardId, admin);
+                Permission perm = unit.PermissionRepository.GetPermissionByUsername(dto.BoardId, dto.Username);
 
-                if (isAdmin)
+                if (isAdmin && perm == null)
                 {
                     Board b = unit.BoardRepository.GetById(dto.BoardId);
                     User u = unit.UserRepository.GetUserByUsername(dto.Username);
@@ -134,16 +135,22 @@ namespace planit_data.Services
                             RabbitMQService.PublishToExchange(u.ExchangeName,
                                 new MessageContext(new BoardMessageStrategy(new BasicBoardDTO(b),
                                 MessageType.Create)));
+
+                            RabbitMQService.PublishToExchange(b.ExchangeName,
+                                new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(u),
+                                MessageType.Create, admin)));
+
+                            return new ReadUserDTO(u);
+
                         }
 
                     }
                 }
             }
 
-            return ret;
+            return null;
         }
 
-        //TODO Treba ovde obrisati tog usera i iz svih kartica koje watchuje
         public bool DeletePermission(int boardId, string username, string admin)
         {
             bool ret = false;
@@ -155,17 +162,29 @@ namespace planit_data.Services
                 if (isAdmin && admin != username)
                 {
                     Permission perm = unit.PermissionRepository.GetPermissionByUsername(boardId, username);
-                    User user = perm.User;
-                    unit.PermissionRepository.Delete(perm.PermissionId);
-                    unit.BoardNotificationRepository.Delete(boardId, user.UserId);
 
-                    ret = unit.Save();
-
-                    if (ret)
+                    if (perm != null)
                     {
-                        RabbitMQService.PublishToExchange(user.ExchangeName,
-                            new MessageContext(new BoardMessageStrategy(boardId)));
+                        User user = perm.User;
+                        unit.PermissionRepository.Delete(perm.PermissionId);
+                        unit.BoardNotificationRepository.Delete(boardId, user.UserId);
+                        unit.CardRepository.Delete(boardId, user);
+
+                        ret = unit.Save();
+
+                        if (ret)
+                        {
+                            RabbitMQService.PublishToExchange(user.ExchangeName,
+                                new MessageContext(new BoardMessageStrategy(boardId)));
+
+                            Board b = unit.BoardRepository.GetById(boardId);
+
+                            RabbitMQService.PublishToExchange(b.ExchangeName,
+                                   new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(user),
+                                   MessageType.Delete, admin)));
+                        }
                     }
+
                 }
 
             }

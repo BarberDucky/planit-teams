@@ -129,11 +129,11 @@ namespace planit_data.Services
             using (UnitOfWork uw = new UnitOfWork())
             {
                 Card card = uw.CardRepository.GetById(cardId);
-                if (card.List.ListId != listId)
+                if (card != null && card.List.ListId != listId)
                 {
                     CardList list = uw.CardListRepository.GetById(listId);
                     User user = uw.UserRepository.GetUserByUsername(username);
-                    if (card != null && list != null && user != null)
+                    if (list != null && user != null)
                     {
                         list.Cards.Add(card);
                         uw.CardListRepository.Update(list);
@@ -160,24 +160,28 @@ namespace planit_data.Services
             return succ;
         }
 
-        //TODO Nece da se obrise
-        //Treba da se updateuje context
         public bool DeleteCard(int id)
         {
             bool success = false;
             using (UnitOfWork uw = new UnitOfWork())
             {
-                Board board = uw.CardRepository.GetById(id).List.Board;
-                uw.CardRepository.Delete(id);
-                success = uw.Save();
+                Card card = uw.CardRepository.GetById(id);
 
-                if (success)
+                if (card != null)
                 {
-                    RabbitMQService.PublishToExchange(board.ExchangeName,
-                        new MessageContext(new CardMessageStrategy(id)));
+                    Board board = card.List.Board;
+                    uw.CardRepository.Delete(id);
+                    success = uw.Save();
 
-                    BoardNotificationService.ChangeBoardNotifications(board.BoardId);
+                    if (success)
+                    {
+                        RabbitMQService.PublishToExchange(board.ExchangeName,
+                            new MessageContext(new CardMessageStrategy(id)));
+
+                        BoardNotificationService.ChangeBoardNotifications(board.BoardId);
+                    }
                 }
+
             }
             return success;
         }
@@ -189,7 +193,7 @@ namespace planit_data.Services
             {
                 User user = u.UserRepository.GetUserByUsername(username);
                 Card card = u.CardRepository.GetById(cardId);
-                if (user != null && card != null)
+                if (user != null && card != null && !card.ObserverUsers.Contains(user))
                 {
                     card.ObserverUsers.Add(user);
                     succ = u.Save();

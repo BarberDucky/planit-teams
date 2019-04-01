@@ -1,6 +1,7 @@
 ﻿using planit_client_wpf.Base;
 using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.MQ;
 using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
@@ -101,7 +102,16 @@ namespace planit_client_wpf.ViewModel
             LoadBoard();
         }
 
-        public async Task LoadBoard()
+        public void UnsubscribeFromBoard()
+        {
+            if (ShortBoard != null)
+            {
+                MQService.Instance.Unsubscribe(ShortBoard.ExchangeName);
+                MessageBroker.Instance.UnsubscribeStartingFrom(MessageEnum.CardListCreate);
+            }
+        }
+
+        public async void LoadBoard()
         {
             if (ActiveUser.IsActive == true && ShortBoard != null)
             {
@@ -114,8 +124,11 @@ namespace planit_client_wpf.ViewModel
                         DeleteBoardCommandVisible = true;
                     }
 
-                    UsersViewModel = new UsersListViewModel(Board.Users, Board.IsAdmin);
+                    UsersViewModel = new UsersListViewModel(Board.Users, Board.IsAdmin, Board.BoardId);
                     CardListViewModel = new CardListListViewModel(Board.CardLists, Board.BoardId);
+
+                    //Subscribe to board
+                    MQService.Instance.SubscribeToExchange(ShortBoard.ExchangeName);
 
                 }
                 else
@@ -127,7 +140,7 @@ namespace planit_client_wpf.ViewModel
             {
                 ShowMessageBox(null, "Error getting user.");
             }
-        }     
+        }
 
         public void OnDeleteBoardClick()
         {
@@ -137,7 +150,7 @@ namespace planit_client_wpf.ViewModel
                 {
                     if (res == MessageBoxResult.Yes)
                     {
-                        bool result = await BoardService.DeleteBoard(ActiveUser.Instance.LoggedUser.Token, Board.BoardId); 
+                        bool result = await BoardService.DeleteBoard(ActiveUser.Instance.LoggedUser.Token, Board.BoardId);
 
                         if (result)
                         {
@@ -167,7 +180,7 @@ namespace planit_client_wpf.ViewModel
         public void OnRenameBoardClick()
         {
             if (ActiveUser.IsActive == true && ShortBoard != null)
-            {                
+            {
                 ShowMessageBox(null, "Pravimo se da se otvara dijalog u kome moze da se renamuje board.");
             }
             else

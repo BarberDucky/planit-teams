@@ -1,6 +1,7 @@
 ﻿using planit_client_wpf.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,8 @@ namespace planit_client_wpf.MQ
         CardList,
         Card,
         Comment,
-        Notification
+        Notification,
+        Permission
     }
 
     public enum MessageType
@@ -28,90 +30,127 @@ namespace planit_client_wpf.MQ
 
     public interface IMQMessage
     {
+
     }
 
-    public class BoardMesage : IMQMessage
+    public class BasicMQMessage
     {
         public MessageEntity MessageEntity { get; set; }
         public MessageType MessageType { get; set; }
+        public string Username { get; set; }
+    }
+
+    public abstract class MQMessage : BasicMQMessage
+    {
+        //public MessageEntity MessageEntity { get; set; }
+        //public MessageType MessageType { get; set; }
+        //public string Username { get; set; }
+
+        public MessageEnum GetEnum()
+        {
+            string entity = MessageEntity.ToString();
+            string type = MessageType.ToString();
+
+            string name = $"{entity}{type}";
+
+            try
+            {
+                MessageEnum msgEnum = (MessageEnum)Enum.Parse(typeof(MessageEnum), name);
+                return msgEnum;
+            }
+            catch (Exception e)
+            {
+                Debug.Write(e.Message);
+                return MessageEnum.Error;
+            }
+
+        }
+
+        public abstract object GetData();
+    }
+
+    public class BoardMesage : MQMessage
+    {
         public BasicBoardDTO Data { get; set; }
 
-        public BoardMesage()
+        public override object GetData()
         {
-            MessageEntity = MessageEntity.Board;
+            return Data;
         }
     }
 
-    public class CardListMessage : IMQMessage
+    public class CardListMessage : MQMessage
     {
-        public MessageEntity MessageEntity { get; set; }
-        public MessageType MessageType { get; set; }
         public BasicCardListDTO Data { get; set; }
 
-        public CardListMessage()
+        public override object GetData()
         {
-            MessageEntity = MessageEntity.CardList;
+            return Data;
         }
     }
 
-    public class CardMessage : IMQMessage
+    public class CardMessage : MQMessage
     {
-        public MessageEntity MessageEntity { get; set; }
-        public MessageType MessageType { get; set; }
         public BasicCardDTO Data { get; set; }
 
         public CardMessage()
         {
             MessageEntity = MessageEntity.Card;
         }
+
+        public override object GetData()
+        {
+            return Data;
+        }
     }
 
-    public class CommentMessage : IMQMessage
+    public class CommentMessage : MQMessage
     {
-        public MessageEntity MessageEntity { get; set; }
-        public MessageType MessageType { get; set; }
         public BasicCommentDTO Data { get; set; }
 
-        public CommentMessage()
+        public override object GetData()
         {
-            MessageEntity = MessageEntity.Comment;
+            return Data;
         }
     }
 
-    public class NotificationMessage : IMQMessage
+    public class NotificationMessage : MQMessage
     {
-        public MessageEntity MessageEntity { get; set; }
-        public MessageType MessageType { get; set; }
         public ReadNotificationDTO Data { get; set; }
 
-        public NotificationMessage()
+        public override object GetData()
         {
-            MessageEntity = MessageEntity.Notification;
+            return Data;
         }
     }
 
-    public class BoardNotificationMessage : IMQMessage
+    public class BoardNotificationMessage : MQMessage
     {
-        public MessageEntity MessageEntity { get; set; }
-        public MessageType MessageType { get; set; }
         public int Data { get; set; }
 
-        public BoardNotificationMessage()
+        public override object GetData()
         {
-            MessageEntity = MessageEntity.Board;
-            MessageType = MessageType.BoardNotification;
+            return Data;
         }
     }
 
-    public class DeleteMessage : IMQMessage
+    public class PermissionMessage : MQMessage
     {
-        public MessageEntity MessageEntity;
-        public MessageType MessageType;
+        public ReadUserDTO Data { get; set; }
+
+        public override object GetData()
+        {
+            return Data;
+        }
+    }
+
+    public class DeleteMessage : MQMessage
+    {
         public int Data;
 
-        public DeleteMessage()
+        public override object GetData()
         {
-            MessageType = MessageType.Delete;
+            return Data;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace planit_data.Repository
 
         private UserRepository userRepository;
         private GenericRepository<Board> boardRepository;
-        private GenericRepository<Card> cardRepository;
+        private CardRepository cardRepository;
         private GenericRepository<CardList> cardListRepository;
         private GenericRepository<Comment> commentRepository;
         private GenericRepository<Notification> notificationRepository;
@@ -41,12 +41,12 @@ namespace planit_data.Repository
                 return boardRepository;
             }
         }
-        public GenericRepository<Card> CardRepository
+        public CardRepository CardRepository
         {
             get
             {
                 if (cardRepository == null)
-                    cardRepository = new GenericRepository<Card>(context);
+                    cardRepository = new CardRepository(context);
                 return cardRepository;
             }
         }

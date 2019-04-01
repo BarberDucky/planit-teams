@@ -21,8 +21,6 @@ namespace planit_client_wpf.ViewModel
         private ViewModelBase centerViewModel;
         private ViewModelBase notificationViewModel;
 
-        private MQService MQService;
-
         #region Properies
 
         public ViewModelBase LeftViewModel
@@ -61,12 +59,11 @@ namespace planit_client_wpf.ViewModel
         public HomeViewModel(Action goToLogin)
         {
             //Init MQ
-            MQService = new MQService();
             InitializeMQ();
 
             //Init komande
             LogoutCommand = new CommandBase(OnLogoutButtonClick, CanLogout);
-            ToggleNotificationsCommand= new CommandBase(OnToggleNotification);
+            ToggleNotificationsCommand = new CommandBase(OnToggleNotification);
 
             GoToLogin = goToLogin;
 
@@ -81,7 +78,9 @@ namespace planit_client_wpf.ViewModel
 
         public void OnLogoutButtonClick()
         {
+            MQService.Instance.UnsubscribeFromAll();
             ActiveUser.Instance.LoggedUser = null;
+            MessageBroker.Instance.Dispose();
             GoToLogin?.Invoke();
         }
 
@@ -92,11 +91,15 @@ namespace planit_client_wpf.ViewModel
 
         public void OnBoardSelected(ShortBoard board)
         {
-            if(board != null)
+            if (board != null)
             {
+                BoardViewModel vm = CenterViewModel as BoardViewModel;
+                vm?.UnsubscribeFromBoard();
+
                 CenterViewModel = new BoardViewModel(board, OnBoardDeleted);
             }
         }
+
 
         public void OnBoardDeselectd()
         {
@@ -105,7 +108,7 @@ namespace planit_client_wpf.ViewModel
 
         public void OnBoardDeleted(int boardId)
         {
-            if(LeftViewModel is BoardListViewModel)
+            if (LeftViewModel is BoardListViewModel)
             {
                 var list = LeftViewModel as BoardListViewModel;
                 list.RemoveSelectedBoard(boardId);
@@ -119,22 +122,8 @@ namespace planit_client_wpf.ViewModel
 
             if (readUserDTO != null)
             {
-                MQService.SubscribeToExchange(readUserDTO.ExchangeName, (IMQMessage message) => 
-                {
-                    if (Application.Current == null) return false;
-                    Application.Current.Dispatcher.BeginInvoke(
-                      DispatcherPriority.Background,
-                      new Action(() => {
-                          IUserNotificationHandler userNotificationHandler = UserNotifHandlerFactory.CreateHandler(message);
-                          userNotificationHandler.HandleUserNotification(
-                              ((BoardListViewModel)leftViewModel).Boards,
-                              ((BoardListViewModel)leftViewModel).SelectedBoard,
-                              ((NotificationsViewModel)notificationViewModel).Notifications,
-                              message);
-                          ShowMessageBox(null, "Stigla poruka");
-                      }));
-                    return true;
-                });
+                MQService.Instance.SubscribeToExchange(readUserDTO.ExchangeName);
+
             }
         }
 
