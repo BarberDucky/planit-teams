@@ -27,19 +27,7 @@ namespace planit_client_wpf.ViewModel
             set { SetProperty(ref comments, value); }
         }
 
-        #endregion
-
-        //#region Commands
-
-        //public CommandBase<ReadCard> DeleteCardCommand { get; protected set; }
-
-        //#endregion
-
-        //#region Action and Func
-
-        //private Action<ReadCard> onDeleteCardAction; 
-
-        //#endregion
+        #endregion    
 
         public CardViewModel(ReadCard card)
         {
@@ -47,14 +35,8 @@ namespace planit_client_wpf.ViewModel
             {
                 this.card = card;
                 comments = new CommentsViewModel(card.Comments, card.CardId);
-                //DeleteCardCommand = new CommandBase<ReadCard>(OnDeleteCard);
-                //onDeleteCardAction = onDeleteCard;
             }
         }
 
-        //public void OnDeleteCard(ReadCard card)
-        //{
-        //    onDeleteCardAction?.Invoke(card);
-        //}
     }
 }

@@ -90,17 +90,15 @@ namespace planit_client_wpf.ViewModel
             ShowMessageBox(null, "Pravimo se da se otvara rename card list dijalog");
         }
 
-        public void OnDeleteCard(ReadCard card)
+        public async void OnDeleteCard(ReadCard card)
         {
             if (ActiveUser.IsActive == true && CardList != null)
             {
-                //bool succ = await CardService.DeleteCard(ActiveUser.Instance.LoggedUser.Token, card.ListId);
-                bool succ = true;
+                bool succ = await CardService.DeleteCard(ActiveUser.Instance.LoggedUser.Token, card.CardId);
                 if (succ == true)
                 {
                     ReadCard rc = CardList.Cards.FirstOrDefault(x => x.CardId == card.CardId);
                     CardList.Cards.Remove(rc);
-                    ShowMessageBox(null, "Ovaj button ne radi sa apijem");
                 }
                 else
                 {
