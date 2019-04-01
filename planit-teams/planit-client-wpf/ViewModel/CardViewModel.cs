@@ -12,6 +12,7 @@ namespace planit_client_wpf.ViewModel
     {
         public ReadCard card;
         public ViewModelBase comments;
+        private EditCardViewModel editForm;
 
         #region Properties
 
@@ -27,7 +28,19 @@ namespace planit_client_wpf.ViewModel
             set { SetProperty(ref comments, value); }
         }
 
-        #endregion    
+        public EditCardViewModel EditFormViewModel
+        {
+            get { return editForm; }
+            set { SetProperty(ref editForm, value); }
+        }
+
+        #endregion
+
+        #region Commands
+
+        public CommandBase EditCardCommand { get; protected set; }
+
+        #endregion
 
         public CardViewModel(ReadCard card)
         {
@@ -35,7 +48,22 @@ namespace planit_client_wpf.ViewModel
             {
                 this.card = card;
                 comments = new CommentsViewModel(card.Comments, card.CardId);
+                EditCardCommand = new CommandBase(OnEditCard);
+                EditFormViewModel = null;
             }
+        }
+
+        public void OnEditCard()
+        {
+            ReadCard c = new ReadCard(new DTOs.BasicCardDTO() { Name = card.Name, Description = card.Description });
+            EditFormViewModel = new EditCardViewModel(OnEditCardExecute, c);
+            EditFormViewModel.IsOpen = true;
+        }
+
+        public bool OnEditCardExecute(BindableBase model)
+        {
+            ShowMessageBox(null, "radiii");
+            return true;
         }
 
     }

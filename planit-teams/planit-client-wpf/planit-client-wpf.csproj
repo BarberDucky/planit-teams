@@ -63,6 +63,7 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Base\EditViewModelBase.cs" />
     <Compile Include="Base\MessageBoxEventArgs.cs" />
     <Compile Include="Base\BindableBase.cs" />
     <Compile Include="Base\ViewModelBase.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="ViewModel\CardViewModel.cs" />
     <Compile Include="ViewModel\CommentsViewModel.cs" />
     <Compile Include="ViewModel\DetailViewModel.cs" />
+    <Compile Include="ViewModel\EditCardViewModel.cs" />
     <Compile Include="ViewModel\EmptyViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
@@ -123,6 +125,9 @@
     </Compile>
     <Compile Include="View\CommentsView.xaml.cs">
       <DependentUpon>CommentsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EditCardView.xaml.cs">
+      <DependentUpon>EditCardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EmptyView.xaml.cs">
       <DependentUpon>EmptyView.xaml</DependentUpon>
@@ -182,6 +187,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CommentsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EditCardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

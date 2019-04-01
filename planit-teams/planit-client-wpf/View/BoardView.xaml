@@ -8,7 +8,7 @@
              xmlns:viewModel="clr-namespace:planit_client_wpf.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             DataContextChanged="UserControl_DataContextChanged">
+             DataContextChanged="UserControl_DataContextChanged" x:Name="BoardControl">
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type viewModel:CardListListViewModel}">

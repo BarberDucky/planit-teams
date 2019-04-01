@@ -6,7 +6,8 @@
         xmlns:viewModel="clr-namespace:planit_client_wpf.ViewModel"
         xmlns:view ="clr-namespace:planit_client_wpf.View"
         mc:Ignorable="d"
-        Title="PlanIT Teams" Height="450" Width="700">
+        Title="PlanIT Teams" Height="450" Width="700"
+        >
 
     <Window.DataContext>
         <viewModel:MainWindowViewModel/>
@@ -24,7 +25,7 @@
         </DataTemplate>
     </Window.Resources>
 
-    <Grid>
-        <ContentControl Content = "{Binding CurrentViewModel}"/>
+    <Grid >
+        <ContentControl Content = "{Binding CurrentViewModel}" />
     </Grid>
 </Window>

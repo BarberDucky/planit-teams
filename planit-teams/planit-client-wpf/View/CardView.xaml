@@ -12,6 +12,9 @@
         <DataTemplate DataType="{x:Type viewModel:CommentsViewModel}">
             <view:CommentsView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:EditCardViewModel}">
+            <view:EditCardView/>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid 
@@ -33,7 +36,7 @@
 
         <Button Grid.Column ="1" Grid.Row="0" Content="Edit" 
                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                Width="100"></Button>
+                Width="100" Command="{Binding EditCardCommand}"></Button>
         
         <Label Grid.Column="0" Grid.Row="1" Content="Card Name:" Margin="10, 10, 10, 10"></Label>
         <Label Grid.Column="1" Grid.Row="1" Content="{Binding Card.Name}" Margin="10, 10, 10, 10"></Label>
@@ -48,6 +51,7 @@
         <Label Grid.Column="1" Grid.Row="4" Content="{Binding Card.DueDate}" Margin="10, 10, 10, 10"></Label>
 
         <ContentControl Grid.Row="5" Grid.ColumnSpan="2" Content = "{Binding Comments}" />
+        <ContentControl Content = "{Binding EditFormViewModel}" />
 
     </Grid>
 </UserControl>
