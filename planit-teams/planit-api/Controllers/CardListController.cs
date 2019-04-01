@@ -35,7 +35,7 @@ namespace planit_api.Controllers
         [Route("api/CardList")]
         public BasicCardListDTO Post([FromBody]CreateCardListDTO cardList)
         {
-            return service.InsertCardList(cardList);
+            return service.InsertCardList(cardList, User.Identity.Name);
         }
 
         // PUT: api/CardList/5
@@ -55,7 +55,7 @@ namespace planit_api.Controllers
         [Route("api/CardList/{id}")]
         public bool Delete(int id)
         {
-            return service.DeleteCardList(id);
+            return service.DeleteCardList(id, User.Identity.Name);
         }
 
         [HttpGet]

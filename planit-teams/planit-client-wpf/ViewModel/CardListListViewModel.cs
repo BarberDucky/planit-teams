@@ -49,7 +49,8 @@ namespace planit_client_wpf.ViewModel
 
         #region Message actions
 
-        Action<object> createCardList;
+        private Action<object> createCardList;
+        private Action<object> deleteCardList;
 
         #endregion
 
@@ -134,11 +135,13 @@ namespace planit_client_wpf.ViewModel
         private void InitActions()
         {
             createCardList = new Action<object>(CreateCardListAction);
+            deleteCardList = new Action<object>(DeleteCardListAction);
         }
 
         private void Subscribe()
         {
             MessageBroker.Instance.Subscribe(createCardList, MessageEnum.CardListCreate);
+            MessageBroker.Instance.Subscribe(deleteCardList, MessageEnum.CardListDelete);
         }
 
         private void CreateCardListAction(object obj)
@@ -149,6 +152,14 @@ namespace planit_client_wpf.ViewModel
             {
                CardListViewModels.Add(new CardListViewModel(new ReadCardList(cardList), OnDeleteCardList)); 
             }
+        }
+
+        private void DeleteCardListAction(object obj)
+        {
+            int cardListId = (int)obj;
+    
+            CardListViewModel vm = CardListViewModels.FirstOrDefault(x => x.CardList.ListId == cardListId);
+            CardListViewModels.Remove(vm);
         }
 
         #endregion

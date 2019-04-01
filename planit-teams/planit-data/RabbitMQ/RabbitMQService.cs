@@ -34,6 +34,6 @@ namespace planit_data.RabbitMQ
                     basicProperties: null,
                     body: body);
             }
-        } 
+        }
     }
 }

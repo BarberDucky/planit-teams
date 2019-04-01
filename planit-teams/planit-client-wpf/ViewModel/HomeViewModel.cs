@@ -100,6 +100,7 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
+
         public void OnBoardDeselectd()
         {
             CenterViewModel = new EmptyViewModel();

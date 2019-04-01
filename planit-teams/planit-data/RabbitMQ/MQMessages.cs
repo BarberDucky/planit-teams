@@ -12,7 +12,7 @@ namespace planit_data.RabbitMQ
         Board,
         CardList,
         Card,
-        Comment, 
+        Comment,
         Notification,
         Permission
     }
@@ -26,71 +26,101 @@ namespace planit_data.RabbitMQ
         BoardNotification,
         Change
     }
-   
-    public class BoardMesage
+
+    public class MQMessage
     {
         public MessageEntity MessageEntity { get; set; }
         public MessageType MessageType { get; set; }
+        public string Username { get; set; }
+
+        public MQMessage()
+        {
+            Username = string.Empty;
+        }
+
+        public MQMessage(string username)
+        {
+            this.Username = username;
+        }
+    }
+
+    public class BoardMesage : MQMessage
+    {
         public BasicBoardDTO Data { get; set; }
 
         public BoardMesage()
         {
             MessageEntity = MessageEntity.Board;
         }
+
+        public BoardMesage(string username)
+            : base(username)
+        {
+            MessageEntity = MessageEntity.Board;
+        }
     }
 
-    public class CardListMessage
+    public class CardListMessage : MQMessage
     {
-        public MessageEntity MessageEntity { get; set; }
-        public MessageType MessageType { get; set; }
         public BasicCardListDTO Data { get; set; }
 
-        public CardListMessage()
+        public CardListMessage(string username)
+            : base(username)
         {
             MessageEntity = MessageEntity.CardList;
         }
     }
 
-    public class CardMessage
+    public class CardMessage : MQMessage
     {
-        public MessageEntity MessageEntity { get; set; }
-        public MessageType MessageType { get; set; }
         public BasicCardDTO Data { get; set; }
 
         public CardMessage()
         {
             MessageEntity = MessageEntity.Card;
         }
+
+        public CardMessage(string username)
+           : base(username)
+        {
+            MessageEntity = MessageEntity.Card;
+        }
     }
 
-    public class CommentMessage
+    public class CommentMessage : MQMessage
     {
-        public MessageEntity MessageEntity { get; set; }
-        public MessageType MessageType { get; set; }
         public BasicCommentDTO Data { get; set; }
 
         public CommentMessage()
         {
             MessageEntity = MessageEntity.Comment;
         }
+
+        public CommentMessage(string username)
+          : base(username)
+        {
+            MessageEntity = MessageEntity.Comment;
+        }
     }
 
-    public class NotificationMessage
+    public class NotificationMessage : MQMessage
     {
-        public MessageEntity MessageEntity { get; set; }
-        public MessageType MessageType { get; set; }
         public ReadNotificationDTO Data { get; set; }
 
         public NotificationMessage()
         {
             MessageEntity = MessageEntity.Notification;
         }
+
+        public NotificationMessage(string username)
+          : base(username)
+        {
+            MessageEntity = MessageEntity.Notification;
+        }
     }
 
-    public class BoardNotificationMessage
+    public class BoardNotificationMessage : MQMessage
     {
-        public MessageEntity MessageEntity { get; set; }
-        public MessageType MessageType { get; set; }
         public int Data { get; set; }
 
         public BoardNotificationMessage()
@@ -98,29 +128,39 @@ namespace planit_data.RabbitMQ
             MessageEntity = MessageEntity.Board;
             MessageType = MessageType.BoardNotification;
         }
+
+        public BoardNotificationMessage(string username)
+          : base(username)
+        {
+            MessageEntity = MessageEntity.Board;
+            MessageType = MessageType.BoardNotification;
+        }
     }
 
-    public class DeleteMessage
+    public class PermissionMessage : MQMessage
     {
-        public MessageEntity MessageEntity;
-        public MessageType MessageType;
+        public ReadUserDTO Data { get; set; }
+
+        public PermissionMessage(string username)
+          : base(username)
+        {
+            MessageEntity = MessageEntity.Permission;
+        }
+    }
+
+    public class DeleteMessage : MQMessage
+    {
         public int Data;
 
         public DeleteMessage()
         {
             MessageType = MessageType.Delete;
         }
-    }
 
-    public class PermissionMessage
-    {
-        public MessageEntity MessageEntity { get; set; }
-        public MessageType MessageType { get; set; }
-        public ReadUserDTO Data { get; set; }
-
-        public PermissionMessage()
+        public DeleteMessage(string username)
+         : base(username)
         {
-            MessageEntity = MessageEntity.Permission;
+            MessageType = MessageType.Delete;
         }
     }
 }

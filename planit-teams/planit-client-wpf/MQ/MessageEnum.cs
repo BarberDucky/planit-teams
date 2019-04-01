@@ -14,6 +14,9 @@ namespace planit_client_wpf.MQ
         BoardBoardNotification,
         NotificationMove,
         NotificationChange,
-        CardListCreate
+        CardListCreate,
+        CardListDelete,
+        PermissionCreate,
+        PermissionDelete
     }
 }

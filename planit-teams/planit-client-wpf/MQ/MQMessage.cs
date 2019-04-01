@@ -14,7 +14,8 @@ namespace planit_client_wpf.MQ
         CardList,
         Card,
         Comment,
-        Notification
+        Notification,
+        Permission
     }
 
     public enum MessageType
@@ -32,11 +33,18 @@ namespace planit_client_wpf.MQ
 
     }
 
-    public abstract class MQMessage
+    public class BasicMQMessage
     {
         public MessageEntity MessageEntity { get; set; }
         public MessageType MessageType { get; set; }
+        public string Username { get; set; }
+    }
 
+    public abstract class MQMessage : BasicMQMessage
+    {
+        //public MessageEntity MessageEntity { get; set; }
+        //public MessageType MessageType { get; set; }
+        //public string Username { get; set; }
 
         public MessageEnum GetEnum()
         {
@@ -119,6 +127,16 @@ namespace planit_client_wpf.MQ
     public class BoardNotificationMessage : MQMessage
     {
         public int Data { get; set; }
+
+        public override object GetData()
+        {
+            return Data;
+        }
+    }
+
+    public class PermissionMessage : MQMessage
+    {
+        public ReadUserDTO Data { get; set; }
 
         public override object GetData()
         {

@@ -81,9 +81,10 @@ namespace planit_client_wpf.MQ
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body);
 
-                MQMessage msg = JsonHelper.GetMessage(message);
+                MQMessage msg = JsonHelper.GetMessageTest(message);
+                //MQMessage msgTest = JsonHelper.GetMessageTest(message);
 
-                if (msg != null)
+                if (msg != null && msg.Username != ActiveUser.Instance.LoggedUser.Username)
                 {
                     MessageEnum msgEnum = msg.GetEnum();
 
@@ -95,9 +96,9 @@ namespace planit_client_wpf.MQ
 
             };
 
-           string tag = channel.BasicConsume(queue: queueName,
-                                 autoAck: true,
-                                 consumer: consumer);
+            string tag = channel.BasicConsume(queue: queueName,
+                                  autoAck: true,
+                                  consumer: consumer);
 
             tags.Add(exchangeName, tag);
         }
@@ -116,7 +117,7 @@ namespace planit_client_wpf.MQ
 
         public void UnsubscribeFromAll()
         {
-            foreach(var val in tags.Values)
+            foreach (var val in tags.Values)
             {
                 channel.BasicCancel(val);
             }

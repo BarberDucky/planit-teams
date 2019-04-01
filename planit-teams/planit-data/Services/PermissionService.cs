@@ -99,7 +99,6 @@ namespace planit_data.Services
             return ret;
         }
 
-        //TODO - Uncomment metode
         public ReadUserDTO AddUserBoardPermision(AddUserBoardPermisionDTO dto, string admin)
         {
             bool ret = false;
@@ -108,7 +107,7 @@ namespace planit_data.Services
                 bool isAdmin = unit.PermissionRepository.IsAdmin(dto.BoardId, admin);
                 Permission perm = unit.PermissionRepository.GetPermissionByUsername(dto.BoardId, dto.Username);
 
-                if (isAdmin && perm == null)
+                if (isAdmin && perm != null)
                 {
                     Board b = unit.BoardRepository.GetById(dto.BoardId);
                     User u = unit.UserRepository.GetUserByUsername(dto.Username);
@@ -137,9 +136,9 @@ namespace planit_data.Services
                                 new MessageContext(new BoardMessageStrategy(new BasicBoardDTO(b),
                                 MessageType.Create)));
 
-                            //RabbitMQService.PublishToExchange(b.ExchangeName,
-                            //    new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(u),
-                            //    MessageType.Create)));
+                            RabbitMQService.PublishToExchange(b.ExchangeName,
+                                new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(u),
+                                MessageType.Create, admin)));
 
                             return new ReadUserDTO(u);
 
@@ -163,24 +162,29 @@ namespace planit_data.Services
                 if (isAdmin && admin != username)
                 {
                     Permission perm = unit.PermissionRepository.GetPermissionByUsername(boardId, username);
-                    User user = perm.User;
-                    unit.PermissionRepository.Delete(perm.PermissionId);
-                    unit.BoardNotificationRepository.Delete(boardId, user.UserId);
-                    unit.CardRepository.Delete(boardId, user);
 
-                    ret = unit.Save();
-
-                    if (ret)
+                    if (perm != null)
                     {
-                        RabbitMQService.PublishToExchange(user.ExchangeName,
-                            new MessageContext(new BoardMessageStrategy(boardId)));
+                        User user = perm.User;
+                        unit.PermissionRepository.Delete(perm.PermissionId);
+                        unit.BoardNotificationRepository.Delete(boardId, user.UserId);
+                        unit.CardRepository.Delete(boardId, user);
 
-                        Board b = unit.BoardRepository.GetById(boardId);
+                        ret = unit.Save();
 
-                        //RabbitMQService.PublishToExchange(b.ExchangeName,
-                        //       new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(user),
-                        //       MessageType.Delete)));
+                        if (ret)
+                        {
+                            RabbitMQService.PublishToExchange(user.ExchangeName,
+                                new MessageContext(new BoardMessageStrategy(boardId)));
+
+                            Board b = unit.BoardRepository.GetById(boardId);
+
+                            RabbitMQService.PublishToExchange(b.ExchangeName,
+                                   new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(user),
+                                   MessageType.Delete, admin)));
+                        }
                     }
+
                 }
 
             }

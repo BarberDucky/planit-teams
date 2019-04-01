@@ -27,6 +27,8 @@ namespace planit_client_wpf.Helpers
             if (messageEntity == null)
                 return null;
 
+            var messageUsername = GetJTokenByKey("Username", jsonMessage);
+
             var data = GetJTokenByKey("Data", jsonMessage);
             if (data == null)
                 return null;
@@ -35,6 +37,7 @@ namespace planit_client_wpf.Helpers
 
             var type = (MessageType)messageType.Value<int>();
             var entity = (MessageEntity)messageEntity.Value<int>();
+            var username = (string)messageUsername.Value<string>();
 
             if (type == MessageType.Delete)
             {
@@ -59,7 +62,7 @@ namespace planit_client_wpf.Helpers
             else if (entity == MessageEntity.CardList)
             {
                 BasicCardListDTO parsedData = JsonConvert.DeserializeObject<BasicCardListDTO>(stringData);
-                return new CardListMessage() { MessageType = type, MessageEntity = entity, Data = parsedData };
+                return new CardListMessage() { MessageType = type, MessageEntity = entity, Data = parsedData, Username = username };
             }
             else if (entity == MessageEntity.Comment)
             {
@@ -70,6 +73,50 @@ namespace planit_client_wpf.Helpers
             {
                 ReadNotificationDTO parsedData = JsonConvert.DeserializeObject<ReadNotificationDTO>(stringData);
                 return new NotificationMessage() { MessageType = type, MessageEntity = entity, Data = parsedData };
+            }
+            else
+            {
+                return null;
+            }
+
+
+        }
+
+        public static MQMessage GetMessageTest(string stringMessage)
+        {
+            BasicMQMessage msg = JsonConvert.DeserializeObject<BasicMQMessage>(stringMessage);
+
+            if(msg.MessageEntity == MessageEntity.Permission)
+            {
+                return JsonConvert.DeserializeObject<PermissionMessage>(stringMessage);
+
+            } else if (msg.MessageType == MessageType.Delete)
+            {
+                return JsonConvert.DeserializeObject<DeleteMessage>(stringMessage);
+            }
+            else if (msg.MessageType == MessageType.BoardNotification)
+            {
+                return JsonConvert.DeserializeObject<BoardNotificationMessage>(stringMessage);
+            }
+            else if (msg.MessageEntity == MessageEntity.Board)
+            {
+                return JsonConvert.DeserializeObject<BoardMesage>(stringMessage);
+            }
+            else if (msg.MessageEntity == MessageEntity.Card)
+            {
+                return JsonConvert.DeserializeObject<CardMessage>(stringMessage);
+            }
+            else if (msg.MessageEntity == MessageEntity.CardList)
+            {
+                return JsonConvert.DeserializeObject<CardListMessage>(stringMessage);
+            }
+            else if (msg.MessageEntity == MessageEntity.Comment)
+            {
+                return JsonConvert.DeserializeObject<CommentMessage>(stringMessage);
+            }
+            else if (msg.MessageEntity == MessageEntity.Notification)
+            {
+                return JsonConvert.DeserializeObject<NotificationMessage>(stringMessage);
             }
             else
             {

@@ -1,6 +1,7 @@
 ﻿using planit_client_wpf.Base;
 using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.MQ;
 using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
@@ -70,6 +71,13 @@ namespace planit_client_wpf.ViewModel
 
         #endregion
 
+        #region Message actions
+
+        private Action<object> addPermission;
+        private Action<object> deletePermission;
+
+        #endregion
+
         public UsersListViewModel(ObservableCollection<ReadUser> users, bool isAdmin, int parentBoardId)
         {
             this.Users = users;
@@ -79,22 +87,13 @@ namespace planit_client_wpf.ViewModel
             AddUserCommand = new CommandBase(AddUserButtonClick, CanAddUser);
             RemoveUserCommand = new CommandBase<ReadUser>(RemoveUserButtonClick, CanRemoveUser);
             LeaveBoardCommmand = new CommandBase(OnLeaveBoardClick, CanLeaveBoard);
+
+            InitActions();
+            Subscribe();
         }
 
         public async void AddUserButtonClick()
         {
-            //Users.Add(new ReadUser(new DTOs.ReadUserDTO() { FirstName = "Damjan", LastName = "Trifunovic", Email = "dakica@gmail.com", Username = NewUsername }));
-            //ShowMessageBox(null, "Dodajem " + NewUsername + " u lokalnu listu ali ne zovem api.");
-            ////ReadUserDTO user = UserService.GetUserByUsername(NewUsername);
-            ////if (user != null)
-            ////{
-            ////    bool succ = BoardService.AddUserToBoard(...nesto);
-            ////    if(succ == true)
-            ////    {
-            ////        Users.Add(new ReadUser(user));
-            ////    }
-            ////}
-
             if (ActiveUser.IsActive == true)
             {
                 AddUserBoardPermisionDTO dto = new AddUserBoardPermisionDTO()
@@ -128,11 +127,6 @@ namespace planit_client_wpf.ViewModel
 
         public async void RemoveUserButtonClick(ReadUser user)
         {
-            //Da li mogu sam sebe da obrisem iz boarda iako nisam admin?
-            //ReadUser u = Users.FirstOrDefault(x => x.username == user.username);
-            //Users.Remove(u);
-            //ShowMessageBox(null, "Brisem " + u.username + " iz lokalne liste ali ne zovem api.");
-
             if (ActiveUser.IsActive == true)
             {
                 bool succ = await PermissionService.DeletePermission(ActiveUser.Instance.LoggedUser.Token,
@@ -172,5 +166,41 @@ namespace planit_client_wpf.ViewModel
             return isAdmin == false;
         }
 
+        #region Subscribe for Notifications
+
+        private void InitActions()
+        {
+            addPermission = new Action<object>(AddUserPermissionAction);
+            deletePermission = new Action<object>(DeleteUserPermissionAction);
+        }
+
+        private void Subscribe()
+        {
+            MessageBroker.Instance.Subscribe(addPermission, MessageEnum.PermissionCreate);
+            MessageBroker.Instance.Subscribe(deletePermission, MessageEnum.PermissionDelete);
+        }
+
+        private void AddUserPermissionAction(object obj)
+        {
+            ReadUserDTO user = (ReadUserDTO)obj;
+
+            if (user != null && user.Username != ActiveUser.Instance.LoggedUser.Username)
+            {
+                Users.Add(new ReadUser(user));
+            }
+        }
+
+        private void DeleteUserPermissionAction(object obj)
+        {
+            ReadUserDTO user = (ReadUserDTO)obj;
+
+            if (user != null && user.Username != ActiveUser.Instance.LoggedUser.Username)
+            {
+                ReadUser u = Users.FirstOrDefault(x => x.username == user.Username);
+                Users.Remove(u);
+            }
+        }
+
+        #endregion
     }
 }

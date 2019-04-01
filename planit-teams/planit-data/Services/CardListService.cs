@@ -42,7 +42,7 @@ namespace planit_data.Services
             return cardListDTO;
         }
 
-        public BasicCardListDTO InsertCardList(CreateCardListDTO cardListDto)
+        public BasicCardListDTO InsertCardList(CreateCardListDTO cardListDto, string username)
         {
             //if (!PermissionHelper.HasPermissionOnBoard(cardListDto.BoardId, userId))
             //{
@@ -64,7 +64,7 @@ namespace planit_data.Services
                     {
                         dto = new BasicCardListDTO(list);
                         RabbitMQService.PublishToExchange(board.ExchangeName,
-                            new MessageContext(new CardListMessageStrategy(dto, MessageType.Create)));
+                            new MessageContext(new CardListMessageStrategy(dto, MessageType.Create, username)));
 
                         BoardNotificationService.ChangeBoardNotifications(board.BoardId);
                     }
@@ -88,6 +88,7 @@ namespace planit_data.Services
             }
         }
 
+        //TODO - Hard code username
         public bool UpdateCardList(int cardlistId, UpdateCardListDTO cardListDTO)
         {
             bool ret = false;
@@ -108,7 +109,7 @@ namespace planit_data.Services
                     {
                         BasicCardListDTO dto = new BasicCardListDTO(cardList);
                         RabbitMQService.PublishToExchange(cardList.Board.ExchangeName,
-                            new MessageContext(new CardListMessageStrategy(dto, MessageType.Update)));
+                            new MessageContext(new CardListMessageStrategy(dto, MessageType.Update, "Milica")));
 
                         BoardNotificationService.ChangeBoardNotifications(cardList.Board.BoardId);
                     }
@@ -119,26 +120,31 @@ namespace planit_data.Services
             return ret;
         }
 
-        public bool DeleteCardList(int id)
+        public bool DeleteCardList(int id, string username)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
             {
-                Board board = unit.CardListRepository.GetById(id).Board;
-                string exchangeName = board.ExchangeName;
-                int boardId = board.BoardId;
+                CardList cardlist = unit.CardListRepository.GetById(id);
 
-
-                unit.CardListRepository.Delete(id);
-                ret = unit.Save();
-
-                if (ret)
+                if (cardlist != null)
                 {
-                    RabbitMQService.PublishToExchange(exchangeName,
-                        new MessageContext(new CardListMessageStrategy(id)));
+                    Board board = cardlist.Board;
+                    string exchangeName = board.ExchangeName;
+                    int boardId = board.BoardId;
 
-                    BoardNotificationService.ChangeBoardNotifications(boardId);
+                    unit.CardListRepository.Delete(id);
+                    ret = unit.Save();
+
+                    if (ret)
+                    {
+                        RabbitMQService.PublishToExchange(exchangeName,
+                            new MessageContext(new CardListMessageStrategy(id, username)));
+
+                        BoardNotificationService.ChangeBoardNotifications(boardId);
+                    }
                 }
+
 
             }
 
