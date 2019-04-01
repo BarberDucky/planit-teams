@@ -150,7 +150,7 @@ namespace planit_client_wpf.ViewModel
 
             if (cardList != null)
             {
-               CardListViewModels.Add(new CardListViewModel(new ReadCardList(cardList), OnDeleteCardList)); 
+               CardListViewModels.Add(new CardListViewModel(new ReadCardList(cardList), OnDeleteCardList, OnSelectedCard)); 
             }
         }
 
