@@ -35,6 +35,12 @@ namespace planit_client_wpf.Model
             set { SetProperty(ref isRead, value); }
         }
 
+        public String NotificationMessage
+        {
+            get { return "Card '" + CardName + "' was " + NotificationType.ToString() + "d, at list '"
+                    + ListName + "', at board '" + BoardName + "', by user '" + Username + "'."; }
+        }
+
         #endregion
 
         public Notification() { }
