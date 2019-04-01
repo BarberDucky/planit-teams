@@ -55,6 +55,19 @@ namespace planit_client_wpf.Model
 
         public ReadComment(ReadCommentDTO dto)
         {
+            if (dto != null)
+            {
+                CommentId = dto.CommentId;
+                Text = dto.Text;
+                TimeStamp = dto.TimeStamp;
+                //CardId = dto.CardId;
+                //ListId = dto.ListId;
+                Username = dto.Username;
+            }
+        }
+
+        public ReadComment(BasicCommentDTO dto)
+        {
             if(dto != null)
             {
                 CommentId = dto.CommentId;

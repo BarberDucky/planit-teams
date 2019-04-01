@@ -15,6 +15,8 @@ namespace planit_client_wpf.ViewModel
     {
         private ObservableCollection<CardListViewModel> cardListViewModels;
         private int parentBoardId;
+        //private ReadCardList selectedCardList;
+        private ViewModelBase rightViewModel;
 
         #region Properties
 
@@ -22,6 +24,18 @@ namespace planit_client_wpf.ViewModel
         {
             get { return cardListViewModels; }
             set { SetProperty(ref cardListViewModels, value); }
+        }
+
+        //public ReadCardList SelectedCardList
+        //{
+        //    get { return selectedCardList; }
+        //    set { SetProperty(ref selectedCardList, value); }
+        //}
+
+        public ViewModelBase RightViewModel
+        {
+            get { return rightViewModel; }
+            set { SetProperty(ref rightViewModel, value); }
         }
 
         #endregion
@@ -39,10 +53,11 @@ namespace planit_client_wpf.ViewModel
 
             foreach(ReadCardList cardList in cardLists)
             {
-                CardListViewModels.Add(new CardListViewModel(cardList, OnDeleteCardList));
+                CardListViewModels.Add(new CardListViewModel(cardList, OnDeleteCardList, OnSelectedCard));
             }
 
             NewListCommand = new CommandBase(OnNewListClick);
+            RightViewModel = new EmptyViewModel();
         }
 
         public async void OnNewListClick()
@@ -56,7 +71,7 @@ namespace planit_client_wpf.ViewModel
                 {
                     ShowMessageBox(null, "Kreirala se lista");
                     var list = new ReadCardList(basicCardListDTO);
-                    CardListViewModels.Add(new CardListViewModel(list, OnDeleteCardList));
+                    CardListViewModels.Add(new CardListViewModel(list, OnDeleteCardList, OnSelectedCard));
                 }
                 else
                 {
@@ -89,6 +104,19 @@ namespace planit_client_wpf.ViewModel
             {
                 ShowMessageBox(null, "Error getting user.");
             }
+        }
+
+        public void OnSelectedCard(ReadCard card)
+        {
+            if (card != null)
+            {
+                RightViewModel = new CardViewModel(card);
+            }
+            else
+            {
+                RightViewModel = new EmptyViewModel();
+            }
+
         }
 
     }

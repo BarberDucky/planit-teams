@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="planit_client_wpf.View.CommentsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:planit_client_wpf.View"
+             xmlns:model="clr-namespace:planit_client_wpf.Model"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type model:ReadComment}">
+            <Grid Margin="5, 5, 5, 5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="1" Grid.Column="0"
+                       Content="{Binding Username}"></Label>
+                <Label Grid.Row="1" Grid.Column="1"
+                       Content="{Binding TimeStamp}"></Label>
+                <Label Grid.Row="0" Grid.ColumnSpan="2" 
+                       Content="{Binding Text}"></Label>
+            </Grid>
+        </DataTemplate>
+        
+    </UserControl.Resources>
+          <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height = "*"/>
+                <RowDefinition Height = "Auto"/>
+            </Grid.RowDefinitions>
+            <ListBox 
+            Grid.Row="0"
+            ItemsSource="{Binding Comments}">
+            </ListBox>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0, 10, 0, 0">
+            <TextBox Text="{Binding NewComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Height="50" TextWrapping="Wrap"></TextBox>
+            <Button  Content="Add Comment" Command="{Binding NewCommentCommand}" 
+                    Margin="0, 5, 0, 0"
+                     HorizontalAlignment="Right" VerticalAlignment="Center" Width="100"/>
+        </StackPanel>
+
+        </Grid>
+</UserControl>
