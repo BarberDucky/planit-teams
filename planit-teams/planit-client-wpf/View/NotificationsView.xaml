@@ -11,26 +11,48 @@
     
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:Notification}">
-            <Label Content="{Binding NotificationId}">
-                <Label.Style>
-                    <Style TargetType="Label">
-                        <Setter Property="Background" Value="LightBlue" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsRead}" Value="True">
-                                <Setter Property="Background" Value="White" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Label.Style>
-            </Label>
+            <Border BorderBrush="LightGray" BorderThickness="0, 1, 0, 0">
+                <TextBlock Text="{Binding NotificationMessage}" TextWrapping="WrapWithOverflow" Margin="10, 10, 10, 10" >
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Background" Value="LightBlue" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsRead}" Value="True">
+                                    <Setter Property="Background" Value="White" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Border>
         </DataTemplate>
     </UserControl.Resources>
-    <Popup IsOpen="{Binding IsOpen}" Placement="Bottom" HorizontalOffset="-15" VerticalOffset="10" Width="100" 
+    <StackPanel Orientation="Horizontal">
+        <Ellipse Fill="Red" Width="10" Height="10" Margin="5, 0, 0, 0">
+            <Ellipse.Style>
+                <Style TargetType="Ellipse">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsNotificationUnread}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Ellipse.Style>
+        </Ellipse>
+        <Popup IsOpen="{Binding IsOpen}" Placement="Bottom" HorizontalOffset="-215" VerticalOffset="10"
            StaysOpen="False">
-        <StackPanel 
+        <StackPanel  
             Orientation="Vertical" >
             <Button Content="Read all" Command="{Binding ReadAllNotificationsCommand}"></Button>
-            <ListBox ItemsSource="{Binding Notifications}" SelectedItem="{Binding SelectedNotification}" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
+            <ListBox ItemsSource="{Binding Notifications}" 
+                     SelectedItem="{Binding SelectedNotification}" 
+                     HorizontalAlignment="Stretch" 
+                     VerticalAlignment="Top"
+                     Width="300"
+                     MaxHeight="400"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible"/>
         </StackPanel>
     </Popup>
+    </StackPanel>
 </UserControl>

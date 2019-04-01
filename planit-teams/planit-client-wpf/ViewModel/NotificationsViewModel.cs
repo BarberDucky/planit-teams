@@ -16,6 +16,7 @@ namespace planit_client_wpf.ViewModel
     {
         private Notification selectedNotification;
         private bool isOpen;
+        private bool isNotificationUnread;
 
         public CommandBase ReadAllNotificationsCommand { get; private set; }
 
@@ -34,6 +35,12 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
+        public bool IsNotificationUnread
+        {
+            get { return isNotificationUnread; }
+            set { SetProperty(ref isNotificationUnread, value); }
+        }
+
         public bool IsOpen
         {
             get { return isOpen; }
@@ -45,6 +52,15 @@ namespace planit_client_wpf.ViewModel
         #region Message Actions
         Action<object> getNotification;
         #endregion
+
+        public bool FindUnreadFlag()
+        {
+            foreach (Notification n in Notifications)
+            {
+                if (n.IsRead == false) return true;
+            }
+            return false;
+        }
 
         public NotificationsViewModel()
         {
@@ -62,6 +78,7 @@ namespace planit_client_wpf.ViewModel
             {
                 notification.IsRead = true;
             }
+            IsNotificationUnread = FindUnreadFlag();
         }
 
         public async void InitializeNotifications()
@@ -71,6 +88,7 @@ namespace planit_client_wpf.ViewModel
             {
                 Notifications.Add(new Notification(notificationDTO));
             }
+            IsNotificationUnread = FindUnreadFlag();
         }
 
         private async void SelectNotification()
@@ -81,6 +99,7 @@ namespace planit_client_wpf.ViewModel
             if(succ)
             {
                 selectedNotification.IsRead = true;
+                IsNotificationUnread = FindUnreadFlag();
             }
             else
             {
@@ -108,6 +127,7 @@ namespace planit_client_wpf.ViewModel
             if (dto != null)
             {
                 Notifications.Add(new Notification(dto));
+                IsNotificationUnread = FindUnreadFlag();
             }
         }
 
