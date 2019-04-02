@@ -13,7 +13,7 @@ using System.Windows;
 
 namespace planit_client_wpf.ViewModel
 {
-    public class BoardViewModel : ViewModelBase, IPanelContainer
+    public class BoardViewModel : ViewModelBase, IPanelContainer, IPanelOwner
     {
         private ShortBoard shortBoard;
         private ReadBoard board;
@@ -113,7 +113,7 @@ namespace planit_client_wpf.ViewModel
             //Commands
             DeleteBoardCommand = new CommandBase(OnDeleteBoardClick);
             DeleteBoardCommandVisible = false;
-            RenameBoardCommand = new CommandBase(OnRenameBoardClick, CanRenameBoard);
+            RenameBoardCommand = new CommandBase(OnRenameBoardClick);
 
             //Load data
             LoadBoard();
@@ -200,9 +200,7 @@ namespace planit_client_wpf.ViewModel
         {
             if (ActiveUser.IsActive == true && ShortBoard != null)
             {
-                Name = "Nesto";
-                ShowMessageBox(null, "Pravimo se da se otvara dijalog u kome moze da se renamuje board.");
-                
+                InstantiatePanel(new EditBoardViewModel(OnSubmit, new EditBoard(board)));                
             }
             else
             {
@@ -210,10 +208,20 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
-        public bool CanRenameBoard()
+        public void OnSubmit(IEditable model)
         {
-            return !String.IsNullOrWhiteSpace(Name);
+            if(model != null)
+            {
+                EditBoard editBoard = model as EditBoard;
+                Board.Name = editBoard.Name;
+                DestroyPanel();
+            }
         }
+
+        //public bool CanRenameBoard()
+        //{
+        //    return !String.IsNullOrWhiteSpace(Name);
+        //}
 
         #region Subscribe for Notifications
 
@@ -240,6 +248,8 @@ namespace planit_client_wpf.ViewModel
 
         #endregion
 
+        #region IPanelContainer
+
         public void InstantiatePanel(ViewModelBase sidePanel, IPanelOwner newOwner)
         {
             if (sidePanel != null)
@@ -251,5 +261,30 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
+        #endregion
+
+        #region IPanelOwner
+
+        public void InstantiatePanel(ViewModelBase panel)
+        {
+            InstantiatePanel(new EditBoardViewModel(OnSubmit, new EditBoard(board)), this);
+        }
+
+        public void DestroyPanel()
+        {
+            RightViewModel = new EmptyViewModel();
+        }
+
+        public void DestroyPanelObject()
+        {
+            RightViewModel = new EmptyViewModel();
+        }
+
+        public void NotifyPanelClosed()
+        {
+            return;
+        }
+
+        #endregion
     }
 }

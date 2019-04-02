@@ -1,4 +1,6 @@
-﻿using System;
+﻿using planit_client_wpf.Base;
+using planit_client_wpf.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,20 @@ namespace planit_client_wpf.View
         public CommentsView()
         {
             InitializeComponent();
+        }
+
+        void MessageBoxRequest(object sender, MessageBoxEventArgs e)
+        {
+            e.Show();
+        }
+
+        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (DataContext != null && DataContext is CommentsViewModel)
+            {
+                var vm = DataContext as CommentsViewModel;
+                vm.MessageBoxRequest += MessageBoxRequest;
+            }
         }
     }
 }

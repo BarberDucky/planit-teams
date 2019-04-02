@@ -8,59 +8,49 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="320"
              MinHeight="450" MinWidth="320"
-             MaxWidth="400">
+             MaxWidth="400"
+             DataContextChanged="UserControl_DataContextChanged">
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type viewModel:CommentsViewModel}">
             <view:CommentsView/>
         </DataTemplate>
-        <!--<DataTemplate DataType="{x:Type viewModel:EditCardViewModel}">
-            <view:EditCardView/>
-        </DataTemplate>-->
     </UserControl.Resources>
 
-    <!--<Grid 
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch"
-       >-->
-
-        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Margin="10, 10, 10, 10">
-            <Button Content="Edit" 
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Margin="10, 10, 10, 10">
+        <Button Content="Edit" 
                 HorizontalAlignment="Right" VerticalAlignment="Center"
                 MinWidth="100" Width="100" Height="20"
                 Command="{Binding EditCardCommand}"  CommandParameter="{Binding Card}"
                     DockPanel.Dock="Top"></Button>
-            
-            <Grid DockPanel.Dock="Top">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height ="Auto" />
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Grid.Row="1" Content="Card Name:" Margin="10, 10, 10, 10"></Label>
-                <Label Grid.Column="1" Grid.Row="1" Content="{Binding Card.Name}" Margin="10, 10, 10, 10"></Label>
 
-                <Label Grid.Column="0" Grid.Row="2" Content="Description: " Margin="10, 10, 10, 10"></Label>
-                <Label Grid.Column="1" Grid.Row="2" Margin="10, 10, 10, 10"></Label>
-        
-                <Label Grid.Column="0" Grid.Row="3" Content="Created On: " Margin="10, 10, 10, 10"></Label>
-                <Label Grid.Column="1" Grid.Row="3" Content="{Binding Card.Timestamp}" Margin="10, 10, 10, 10"></Label>
+        <Grid DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height ="Auto" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Grid.Row="1" Content="Card Name:" Margin="10, 10, 10, 10"></Label>
+            <Label Grid.Column="1" Grid.Row="1" Content="{Binding Card.Name}" Margin="10, 10, 10, 10"></Label>
 
-                <Label Grid.Column="0" Grid.Row="4" Content="Due Date: " Margin="10, 10, 10, 10"></Label>
-                <Label Grid.Column="1" Grid.Row="4" Content="{Binding Card.DueDate}" Margin="10, 10, 10, 10"></Label>
+            <Label Grid.Column="0" Grid.Row="2" Content="Description: " Margin="10, 10, 10, 10"></Label>
+            <Label Grid.Column="1" Grid.Row="2" Content="{Binding Card.Description}" Margin="10, 10, 10, 10"></Label>
 
-            </Grid>
-            
-            <ContentControl Content = "{Binding Comments}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DockPanel.Dock="Bottom"/>
-        </DockPanel>
+            <Label Grid.Column="0" Grid.Row="3" Content="Created On: " Margin="10, 10, 10, 10"></Label>
+            <Label Grid.Column="1" Grid.Row="3" Content="{Binding Card.Timestamp}" Margin="10, 10, 10, 10"></Label>
 
+            <Label Grid.Column="0" Grid.Row="4" Content="Due Date: " Margin="10, 10, 10, 10"></Label>
+            <Label Grid.Column="1" Grid.Row="4" Content="{Binding Card.DueDate}" Margin="10, 10, 10, 10"></Label>
 
-        <!--<ContentControl Content = "{Binding EditFormViewModel}" />-->
-    <!--</Grid>-->
+        </Grid>
+
+        <ContentControl Content = "{Binding Comments}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DockPanel.Dock="Bottom"/>
+    </DockPanel>
+    
 </UserControl>

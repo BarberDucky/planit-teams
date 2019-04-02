@@ -129,6 +129,10 @@
     <Compile Include="View\CommentsView.xaml.cs">
       <DependentUpon>CommentsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\EditBoardView.xaml.cs">
+      <DependentUpon>EditBoardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\EditBoardViewModel.cs" />
     <Compile Include="View\EditCardView.xaml.cs">
       <DependentUpon>EditCardView.xaml</DependentUpon>
     </Compile>
@@ -193,6 +197,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CommentsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EditBoardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

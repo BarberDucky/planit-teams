@@ -142,4 +142,36 @@ namespace planit_client_wpf.Model
         }
 
     }
+
+    public class EditBoard : BindableBase, IEditable
+    {
+        private int boardId;
+        private string name;
+
+        #region Properties
+
+        public int BoardId
+        {
+            get { return boardId; }
+            set { SetProperty(ref boardId, value); }
+        }
+
+        public string Name
+        {
+            get { return name; }
+            set { SetProperty(ref name, value); }
+        }
+      
+        #endregion
+
+        public EditBoard(ReadBoard board)
+        {
+            if(board != null)
+            {
+                BoardId = board.BoardId;
+                Name = board.Name;
+            }
+        }
+    }
+
 }

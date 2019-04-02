@@ -18,11 +18,11 @@ using System.Windows.Shapes;
 namespace planit_client_wpf.View
 {
     /// <summary>
-    /// Interaction logic for CardView.xaml
+    /// Interaction logic for EditBoardView.xaml
     /// </summary>
-    public partial class CardView : UserControl
+    public partial class EditBoardView : UserControl
     {
-        public CardView()
+        public EditBoardView()
         {
             InitializeComponent();
         }
@@ -34,11 +34,13 @@ namespace planit_client_wpf.View
 
         private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (DataContext != null && DataContext is CardViewModel)
+            if (DataContext != null && DataContext is EditBoardViewModel)
             {
-                var vm = DataContext as CardViewModel;
+                var vm = DataContext as EditBoardViewModel;
                 vm.MessageBoxRequest += MessageBoxRequest;
             }
         }
     }
+
+    
 }
