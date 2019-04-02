@@ -11,19 +11,10 @@
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:ReadUser}">
             <DockPanel>
-                <!--<Label Content="Username: " Margin="5, 5, 5, 5"></Label>
-                <Label Content="{Binding Username}" Margin="5, 5, 5, 5"></Label>
-                <Label Content="First name: " Margin="5, 5, 5, 5"></Label>
-                <Label Content="{Binding FirstName}" Margin="5, 5, 5, 5"></Label>
-                <Label Content="Last name: " Margin="5, 5, 5, 5"></Label>
-                <Label Content="{Binding LastName}" Margin="5, 5, 5, 5"></Label>
-                <Label Content="Email: " Margin="5, 5, 5, 5"></Label>
-                <Label Content="{Binding Email}" Margin="5, 5, 5, 5"></Label>
-                -->
                 <Label Content="{Binding Display}" HorizontalAlignment="Left"/>
                 <Button Content="X" Width="30" Height="30" HorizontalAlignment="Right"
                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.RemoveUserCommand}"
-                       CommandParameter="{Binding}"/>
+                       CommandParameter="{Binding}" />
             </DockPanel>
         </DataTemplate>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
@@ -51,11 +42,7 @@
                 HorizontalAlignment="Right" VerticalAlignment="Center" 
                 Width="100"
                 Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisConverter}}"></Button>
-            <Button 
-                Content="Leave Board" 
-                Command="{Binding LeaveBoardCommmand}" 
-                Visibility="{Binding LeaveBoardCommandVisible, Converter={StaticResource BoolToVisConverter}}"
-                Width="100"/>
+
         </StackPanel>
 
         <ScrollViewer

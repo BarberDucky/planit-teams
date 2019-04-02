@@ -8,36 +8,39 @@
              d:DesignHeight="450" d:DesignWidth="800"
              DataContextChanged="UserControl_DataContextChanged"
              Loaded="UserControl_Loaded">
-    
-    <Grid Margin="50, 50, 50, 50" 
+
+    <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="PlanIT Teams" DockPanel.Dock="Top" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Margin="10, 10, 10, 10"></TextBlock>
+        <Grid Margin="50, 50, 50, 50" DockPanel.Dock="Top"
           HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Grid.RowDefinitions>
-            <RowDefinition Height = "Auto"/>
-            <RowDefinition Height = "Auto" />
-            <RowDefinition Height = "Auto" />
-            <RowDefinition Height = "Auto" />
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height = "Auto"/>
+                <RowDefinition Height = "Auto" />
+                <RowDefinition Height = "Auto" />
+            </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="200"/>
-        </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
 
-        <Label Content="Username" Grid.Row="0" Grid.Column="0" Margin="5, 5, 5, 5"/>
-        <TextBox Grid.Row="0" Grid.Column="1" 
+            <Label Content="Username" Grid.Row="0" Grid.Column="0" Margin="5, 5, 5, 5"/>
+            <TextBox Grid.Row="0" Grid.Column="1" 
                  Text="{Binding Username, Mode=TwoWay, 
             UpdateSourceTrigger=PropertyChanged}" 
                  Margin="5, 5, 5, 5"/>
-        <Label Content="Password" Grid.Row="1" Grid.Column="0" Margin="5, 5, 5, 5"/>
-        <!--<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5, 5, 5, 5"/>-->
-        <PasswordBox Grid.Row="1" Grid.Column="1"  Margin="5, 5, 5, 5" PasswordChanged="PasswordBox_PasswordChanged"></PasswordBox>
-        <StackPanel 
+            <Label Content="Password" Grid.Row="1" Grid.Column="0" Margin="5, 5, 5, 5"/>
+            <!--<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5, 5, 5, 5"/>-->
+            <PasswordBox Grid.Row="1" Grid.Column="1"  Margin="5, 5, 5, 5" PasswordChanged="PasswordBox_PasswordChanged"></PasswordBox>
+            <StackPanel 
             Grid.Row="2" Orientation="Horizontal"
             Grid.ColumnSpan="2"
             HorizontalAlignment="Center" VerticalAlignment="Center"
             Margin="10, 10, 10, 10">
-            <Button  Content="Login" Grid.Column="0" Command="{Binding LoginCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" Width="100"/>
-            <Button  Content="Register" Grid.Column="1" Command="{Binding RegisterCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" Width="100"/>
-        </StackPanel>
-    </Grid>
+                <Button  Content="Login" Grid.Column="0" Command="{Binding LoginCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" Width="100"/>
+                <Button  Content="Register" Grid.Column="1" Command="{Binding RegisterCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" Width="100"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </UserControl>
