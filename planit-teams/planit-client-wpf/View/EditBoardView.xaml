@@ -26,7 +26,7 @@
                      Margin="8.4,14.2,14.2,6.2"></TextBox>
 
             <Button Grid.Row="1" Grid.Column="1"
-                        Content="Sumbit" HorizontalAlignment="Center" 
+                        Content="Submit" HorizontalAlignment="Center" 
                         Margin="57.4,13,56.2,7.8" Width="100"
                         Command="{Binding SubmitCommand}"/>
         </Grid>
