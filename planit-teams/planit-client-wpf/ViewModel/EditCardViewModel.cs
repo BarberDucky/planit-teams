@@ -8,13 +8,17 @@ using System.Threading.Tasks;
 
 namespace planit_client_wpf.ViewModel
 {
-    public class EditCardViewModel : EditViewModelBase, IDisposable
+    public class EditCardViewModel : EditViewModelBase
     {
         private EditCard card;
         public EditCard Card
         {
             get { return card; }
-            set { SetProperty(ref card, value); }
+            set
+            {
+                SetProperty(ref card, value);
+                //RaiseValidateInstanceChanged();
+            }
         }
 
         public EditCardViewModel(Action<IEditable> onExecute, EditCard card)
@@ -34,9 +38,9 @@ namespace planit_client_wpf.ViewModel
             return card;
         }
 
-        public void Dispose()
-        {
+        //public void Dispose()
+        //{
             
-        }
+        //}
     }
 }

@@ -22,13 +22,23 @@ namespace planit_client_wpf.Base
         public void OnSubmit()
         {
             bool succ = ValidateInstance();
-            if(succ == true)
+            if (succ == true)
             {
                 IEditable model = GetInstance();
                 SubmitAction?.Invoke(model);
             }
+            else
+            {
+                ShowMessageBox(null, "Please fill all fields");
+            }
 
         }
+
+        public void RaiseValidateInstanceChanged()
+        {
+            SubmitCommand?.RaiseCanExecuteChanged();
+        }
+
 
         public abstract bool ValidateInstance();
         public abstract IEditable GetInstance();

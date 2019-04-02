@@ -1,22 +1,19 @@
-﻿<UserControl x:Class="planit_client_wpf.View.EditCardView"
+﻿<UserControl x:Class="planit_client_wpf.View.EditBoardView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:planit_client_wpf.View"
-             xmlns:global="clr-namespace:planit_client_wpf"
-             mc:Ignorable="d"
-             MinHeight="200"
+             mc:Ignorable="d" 
+             MinHeight="100"
              MinWidth="320"
              DataContextChanged="UserControl_DataContextChanged">
-
     <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Background="White">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -25,22 +22,13 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Content="Name: " Margin="10,14.2,11.6,6.2"></Label>
-            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Card.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Board.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      Margin="8.4,14.2,14.2,6.2"></TextBox>
 
-            <Label Grid.Row="1" Grid.Column="0" Content="Description: " Margin="10,13.8,11.6,5.8"></Label>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Card.Description,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     Margin="8.4,13.8,14.2,5.8"></TextBox>
-
-            <Label Grid.Row="2" Grid.Column="0" Content="Due Date: " Margin="10,14.2,11.6,7"></Label>
-            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Card.DueDate,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     Margin="8.4,14.2,14.2,7"></TextBox>
-
-            <Button Grid.Row="3" Grid.Column="1"
+            <Button Grid.Row="1" Grid.Column="1"
                         Content="Sumbit" HorizontalAlignment="Center" 
                         Margin="57.4,13,56.2,7.8" Width="100"
                         Command="{Binding SubmitCommand}"/>
         </Grid>
     </DockPanel>
-   
 </UserControl>
