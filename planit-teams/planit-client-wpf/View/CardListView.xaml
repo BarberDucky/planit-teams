@@ -12,7 +12,7 @@
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:ReadCard}">
-            <Border BorderThickness="1" BorderBrush="Gray" 
+            <Border BorderThickness="1" BorderBrush="Gray"
                     CornerRadius="10">
                 <DockPanel HorizontalAlignment="Stretch" Margin="10, 10, 10, 10">
                     <Label Content="{Binding Name}" HorizontalAlignment="Left" VerticalAlignment="Center" ></Label>
@@ -43,12 +43,16 @@
                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </StackPanel>
             
-            <ListBox Grid.Row="1" ItemsSource="{Binding CardList.Cards}" 
+            <ListBox Name="listbox"
+                     Grid.Row="1" ItemsSource="{Binding CardList.Cards}" 
                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      HorizontalContentAlignment="Stretch"
                      Margin="5, 5, 5, 5"
-                     SelectedItem="{Binding SelectedCard}">
+                     SelectedItem="{Binding SelectedCard}"
+                     AllowDrop="True"
+                     MouseMove="listbox_MouseMove"
+                     DragDrop.Drop="ListBox_Drop">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Margin" Value="5"/>
