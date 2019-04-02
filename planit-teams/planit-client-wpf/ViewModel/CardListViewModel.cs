@@ -1,6 +1,7 @@
 ﻿using planit_client_wpf.Base;
 using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.MQ;
 using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
@@ -46,9 +47,18 @@ namespace planit_client_wpf.ViewModel
 
         #region Action and Func
 
-        private Action<ReadCardList> DeleteCardListAction { get;  set; }
+        private Action<ReadCardList> DeleteCardListAction { get; set; }
         private Action<ReadCard> SelectedCardAction { get; set; }
 
+        #endregion
+
+        #region Message Actions
+
+        private Action<object> createCardAction;
+        private Action<object> deleteCardAction;
+        private Action<object> updateCardAction;
+        private Action<object> createCommentAction;
+        private Action<object> updateCardListAction;
         #endregion
 
         public CardListViewModel(ReadCardList list, Action<ReadCardList> onDeleteCardList, Action<ReadCard> onSelectedCard)
@@ -60,6 +70,9 @@ namespace planit_client_wpf.ViewModel
             RenameCardListCommand = new CommandBase<ReadCardList>(OnRenameCardList);
             SelectedCardAction = onSelectedCard;
             DeleteCardCommand = new CommandBase<ReadCard>(OnDeleteCard);
+
+            InitActions();
+            Subscribe();
 
         }
 
@@ -110,5 +123,91 @@ namespace planit_client_wpf.ViewModel
                 ShowMessageBox(null, "Error getting user.");
             }
         }
+
+        #region Subscribe for Notifications
+
+        private void InitActions()
+        {
+            createCardAction = new Action<object>(CreateCardAction);
+            deleteCardAction = new Action<object>(DeleteCardAction);
+            createCommentAction = new Action<object>(CreateCommentAction);
+            updateCardAction = new Action<object>(UpdateCardAction);
+            updateCardListAction = new Action<object>(UpdateCardListAction);
+        }
+
+        private void Subscribe()
+        {
+            MessageBroker.Instance.Subscribe(createCardAction, MessageEnum.CardCreate);
+            MessageBroker.Instance.Subscribe(deleteCardAction, MessageEnum.CardDelete);
+            MessageBroker.Instance.Subscribe(createCommentAction, MessageEnum.CommentCreate);
+            MessageBroker.Instance.Subscribe(updateCardAction, MessageEnum.CardUpdate);
+            MessageBroker.Instance.Subscribe(updateCardListAction, MessageEnum.CardListUpdate);
+        }
+
+        private void CreateCardAction(object obj)
+        {
+            BasicCardDTO card = (BasicCardDTO)obj;
+
+            if (card != null && card.ListId == cardList.ListId)
+            {
+                CardList.Cards.Add(new ReadCard(card));
+            }
+        }
+
+        private void DeleteCardAction(object obj)
+        {
+            int id = (int)obj;
+
+            ReadCard rc = CardList.Cards.FirstOrDefault(x => x.CardId == id);
+
+            if (rc != null)
+            {
+                CardList.Cards.Remove(rc);
+            }
+        }
+
+        private void CreateCommentAction(object obj)
+        {
+            BasicCommentDTO comment = (BasicCommentDTO)obj;
+
+            if (comment != null && comment.CardListId == CardList.ListId)
+            {
+                ReadCard card = CardList.Cards.FirstOrDefault(c => c.CardId == comment.CardId);
+
+                if (card != null)
+                {
+                    card.Comments.Add(new ReadComment(comment));
+                }
+            }
+        }
+
+        //TODO - proveriti da li radi sa interface-om
+        private void UpdateCardAction(object obj)
+        {
+            BasicCardDTO newCard = (BasicCardDTO)obj;
+
+            if (newCard != null)
+            {
+                ReadCard old = CardList.Cards.FirstOrDefault(c => c.CardId == newCard.CardId);
+
+                if (old != null)
+                {
+                    ReadCard.UpdateCard(old, newCard);
+                }
+            }
+        }
+
+        private void UpdateCardListAction(object obj)
+        {
+            BasicCardListDTO newList = (BasicCardListDTO)obj;
+
+            if (newList != null && newList.ListId == cardList.ListId)
+            {
+                ReadCardList.UpdateCardList(CardList, newList);
+            }
+        }
+
+        
+        #endregion
     }
 }

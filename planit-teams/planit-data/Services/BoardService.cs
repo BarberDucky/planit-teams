@@ -51,8 +51,9 @@ namespace planit_data.Services
             using (UnitOfWork unit = new UnitOfWork())
             {
                 Board b = unit.BoardRepository.GetById(boardId);
+                User user = unit.UserRepository.GetUserByUsername(username);
 
-                if (b != null)
+                if (b != null && user != null)
                 {
                     List<User> users = unit.PermissionRepository
                         .GetAllUsersWithPermissionOnBoard(b.BoardId);
@@ -60,7 +61,7 @@ namespace planit_data.Services
                     bool isAdmin = unit.PermissionRepository
                         .IsAdmin(b.BoardId, username);
 
-                    boardDTO = new ReadBoardDTO(b, isAdmin, users);
+                    boardDTO = new ReadBoardDTO(b, username, isAdmin, users);
                 }
             }
 
@@ -139,7 +140,7 @@ namespace planit_data.Services
             return dto;
         }
 
-        public bool UpdateBoard(int boardId, UpdateBoardDTO boardDTO)
+        public bool UpdateBoard(int boardId, UpdateBoardDTO boardDTO, string username)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
@@ -153,13 +154,21 @@ namespace planit_data.Services
                     unit.BoardRepository.Update(board);
                     ret = unit.Save();
                     if (ret)
-                    {
+                    {  
                         BoardNotificationService.ChangeBoardNotifications(board.BoardId);
 
                         BasicBoardDTO dto = new BasicBoardDTO(board);
 
                         RabbitMQService.PublishToExchange(board.ExchangeName,
-                            new MessageContext(new BoardMessageStrategy(dto, MessageType.Update)));
+                            new MessageContext(new BoardMessageStrategy(dto, MessageType.Update, username)));
+
+                        List<User> users = unit.PermissionRepository.GetAllUsersWithPermissionOnBoard(board.BoardId);
+
+                        foreach (var u in users)
+                        {
+                            RabbitMQService.PublishToExchange(u.ExchangeName,
+                            new MessageContext(new BoardMessageStrategy(dto, MessageType.UserUpdate, username)));
+                        }
                     }
                 }
             }

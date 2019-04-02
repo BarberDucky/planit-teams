@@ -43,9 +43,9 @@ namespace planit_api.Controllers
         [Route("api/CardList/{id}")]
         public bool Put(int id, [FromBody]UpdateCardListDTO cardList)
         {
-            if(cardList!=null)
+            if (cardList != null)
             {
-                return service.UpdateCardList(id, cardList);
+                return service.UpdateCardList(id, cardList, User.Identity.Name);
             }
             return false;
         }

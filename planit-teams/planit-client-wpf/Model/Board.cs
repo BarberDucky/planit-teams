@@ -59,6 +59,11 @@ namespace planit_client_wpf.Model
             IsRead = false;
             ExchangeName = dto.ExchangeName;
         }
+
+        public static void UpdateBoard(ShortBoard board, BasicBoardDTO dto)
+        {
+            board.Name = dto.Name;
+        }
     }
 
     public class ReadBoard : BindableBase

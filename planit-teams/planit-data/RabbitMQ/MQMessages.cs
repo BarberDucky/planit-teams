@@ -24,7 +24,8 @@ namespace planit_data.RabbitMQ
         Move,
         Delete,
         BoardNotification,
-        Change
+        Change,
+        UserUpdate
     }
 
     public class MQMessage

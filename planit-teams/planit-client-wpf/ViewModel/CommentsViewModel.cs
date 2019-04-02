@@ -1,6 +1,7 @@
 ﻿using planit_client_wpf.Base;
 using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.MQ;
 using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
@@ -78,5 +79,7 @@ namespace planit_client_wpf.ViewModel
         {
             return !String.IsNullOrWhiteSpace(NewComment);
         }
+
+        
     }
 }

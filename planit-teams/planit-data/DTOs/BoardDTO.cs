@@ -40,7 +40,7 @@ namespace planit_data.DTOs
     public class CreateBoardDTO
     {
         public String Name { get; set; }
-       // public String CreatedByUser { get; set; }
+        // public String CreatedByUser { get; set; }
 
         public Board FromDTO()
         {
@@ -54,7 +54,7 @@ namespace planit_data.DTOs
     public class UpdateBoardDTO
     {
         public String Name { get; set; }
-      //  public int BoardId { get; set; }
+        //  public int BoardId { get; set; }
     }
 
     public class ReadBoardDTO
@@ -66,20 +66,29 @@ namespace planit_data.DTOs
         public List<ReadUserDTO> Users { get; set; }
         public List<ReadCardListDTO> CardList { get; set; }
 
-        public ReadBoardDTO(Board b)
+        private void Load(Board b)
         {
-            CardList = new List<ReadCardListDTO>();
-            Users = new List<ReadUserDTO>();
             this.BoardId = b.BoardId;
             this.Name = b.Name;
             this.ExchangeName = b.ExchangeName;
+
+            CardList = new List<ReadCardListDTO>();
+            Users = new List<ReadUserDTO>();
+        }
+
+        public ReadBoardDTO(Board b)
+        {
+            Load(b);
             CardList = ReadCardListDTO.FromEntityList(b.CardLists.ToList());
         }
 
-        public ReadBoardDTO(Board b, bool isAdmin, List<User> users)
-            : this(b)
+        public ReadBoardDTO(Board b, string username, bool isAdmin, List<User> users)
+            //: this(b)
         {
+            Load(b);
             IsAdmin = isAdmin;
+
+            CardList = ReadCardListDTO.FromEntityList(b.CardLists.ToList(), username);
             Users = ReadUserDTO.FromEntityList(users);
         }
 

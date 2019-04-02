@@ -1,5 +1,7 @@
 ﻿using planit_client_wpf.Base;
+using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
+using planit_client_wpf.MQ;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +46,7 @@ namespace planit_client_wpf.ViewModel
 
         public CardViewModel(ReadCard card)
         {
-            if(card != null)
+            if (card != null)
             {
                 this.card = card;
                 comments = new CommentsViewModel(card.Comments, card.CardId);

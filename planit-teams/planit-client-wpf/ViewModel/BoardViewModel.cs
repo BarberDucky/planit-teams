@@ -5,6 +5,7 @@ using planit_client_wpf.MQ;
 using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace planit_client_wpf.ViewModel
 
         public string Name
         {
-            get { return shortBoard.Name; }
+            get { return ShortBoard.Name; }
             set
             {
                 Board.Name = value;
@@ -83,6 +84,12 @@ namespace planit_client_wpf.ViewModel
 
         #endregion
 
+        #region Message Action
+
+        private Action<object> updateBoardAction;
+
+        #endregion
+
         public BoardViewModel(ShortBoard shortBoard, Action<int> boardDeleted)
         {
             //Partial data
@@ -100,6 +107,8 @@ namespace planit_client_wpf.ViewModel
 
             //Load data
             LoadBoard();
+            InitActions();
+            Subscribe();
         }
 
         public void UnsubscribeFromBoard()
@@ -181,7 +190,9 @@ namespace planit_client_wpf.ViewModel
         {
             if (ActiveUser.IsActive == true && ShortBoard != null)
             {
+                Name = "Nesto";
                 ShowMessageBox(null, "Pravimo se da se otvara dijalog u kome moze da se renamuje board.");
+                
             }
             else
             {
@@ -193,6 +204,31 @@ namespace planit_client_wpf.ViewModel
         {
             return !String.IsNullOrWhiteSpace(Name);
         }
+
+        #region Subscribe for Notifications
+
+        private void InitActions()
+        {
+            updateBoardAction = new Action<object>(UpdateBoardAction);
+        }
+
+        private void Subscribe()
+        {
+            MessageBroker.Instance.Subscribe(updateBoardAction, MessageEnum.BoardUpdate);
+        }
+
+        //TODO - proveriti da li radi sa interface-om
+        private void UpdateBoardAction(object obj)
+        {
+            BasicBoardDTO newBoard = (BasicBoardDTO)obj;
+
+            if (obj != null)
+            {
+                Name = newBoard.Name;
+            }
+        }
+
+        #endregion
 
     }
 }

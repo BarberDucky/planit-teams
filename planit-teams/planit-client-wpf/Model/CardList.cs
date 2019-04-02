@@ -89,5 +89,10 @@ namespace planit_client_wpf.Model
                 Cards = new ObservableCollection<ReadCard>();
             }
         }
+
+        public static void UpdateCardList(ReadCardList list, BasicCardListDTO dto)
+        {
+            list.Name = dto.Name;
+        }
     }
 }

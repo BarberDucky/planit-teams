@@ -43,9 +43,9 @@ namespace planit_api.Controllers
         [Route("api/Board/{boardId:int}")]
         public bool Put(int boardId, [FromBody]UpdateBoardDTO board)
         {
-            if (board != null /*&& PermissionHelper.HasPermissionOnBoard(boardId, User.Identity.Name*/)
+            if (board != null)
             {
-                return service.UpdateBoard(boardId, board);
+                return service.UpdateBoard(boardId, board, User.Identity.Name);
             }
 
             return false;

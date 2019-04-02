@@ -10,13 +10,21 @@ namespace planit_client_wpf.MQ
     {
         Error,
         BoardCreate,
+        BoardUserUpdate,
         BoardDelete,
         BoardBoardNotification,
         NotificationMove,
         NotificationChange,
         CardListCreate,
+        CardListUpdate,
         CardListDelete,
         PermissionCreate,
-        PermissionDelete
+        PermissionDelete,
+        CardCreate,
+        CardUpdate,
+        CardDelete,
+        CardMove,
+        CommentCreate,
+        BoardUpdate,       
     }
 }

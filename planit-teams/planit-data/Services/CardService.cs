@@ -75,7 +75,7 @@ namespace planit_data.Services
                     {
                         cardDto = new BasicCardDTO(card);
                         RabbitMQService.PublishToExchange(list.Board.ExchangeName,
-                            new MessageContext(new CardMessageStrategy(cardDto, MessageType.Create)));
+                            new MessageContext(new CardMessageStrategy(cardDto, MessageType.Create, username)));
 
                         BoardNotificationService.ChangeBoardNotifications(list.Board.BoardId);
                     }
@@ -113,7 +113,7 @@ namespace planit_data.Services
                     {
                         BasicCardDTO cardDto = new BasicCardDTO(card);
                         RabbitMQService.PublishToExchange(card.List.Board.ExchangeName,
-                            new MessageContext(new CardMessageStrategy(cardDto, MessageType.Update)));
+                            new MessageContext(new CardMessageStrategy(cardDto, MessageType.Update, username)));
 
                         BoardNotificationService.ChangeBoardNotifications(card.List.Board.BoardId);
                     }
@@ -150,7 +150,7 @@ namespace planit_data.Services
 
                             BasicCardDTO cardDto = new BasicCardDTO(card);
                             RabbitMQService.PublishToExchange(card.List.Board.ExchangeName,
-                                new MessageContext(new CardMessageStrategy(cardDto, MessageType.Move)));
+                                new MessageContext(new CardMessageStrategy(cardDto, MessageType.Move, username)));
 
                             BoardNotificationService.ChangeBoardNotifications(card.List.Board.BoardId);
                         }
@@ -219,6 +219,23 @@ namespace planit_data.Services
             }
 
             return succ;
+        }
+
+        public static bool IsWatched(int cardId, string username)
+        {
+            bool isWatched = false;
+            using (UnitOfWork unit = new UnitOfWork())
+            {
+                User user = unit.UserRepository.GetUserByUsername(username);
+
+                if (user != null)
+                {
+                    isWatched = unit.CardRepository.IsWatched(cardId, user);
+                }
+                
+            }
+
+            return isWatched;
         }
     }
 }

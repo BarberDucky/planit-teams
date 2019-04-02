@@ -89,7 +89,7 @@ namespace planit_data.Services
         }
 
         //TODO - Hard code username
-        public bool UpdateCardList(int cardlistId, UpdateCardListDTO cardListDTO)
+        public bool UpdateCardList(int cardlistId, UpdateCardListDTO cardListDTO, string username)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
@@ -109,7 +109,7 @@ namespace planit_data.Services
                     {
                         BasicCardListDTO dto = new BasicCardListDTO(cardList);
                         RabbitMQService.PublishToExchange(cardList.Board.ExchangeName,
-                            new MessageContext(new CardListMessageStrategy(dto, MessageType.Update, "Milica")));
+                            new MessageContext(new CardListMessageStrategy(dto, MessageType.Update, username)));
 
                         BoardNotificationService.ChangeBoardNotifications(cardList.Board.BoardId);
                     }
