@@ -178,7 +178,11 @@ namespace planit_client_wpf.ViewModel
             int cardListId = (int)obj;
 
             CardListViewModel vm = CardListViewModels.FirstOrDefault(x => x.CardList.ListId == cardListId);
-            CardListViewModels.Remove(vm);
+
+            if (vm != null)
+            {
+                CardListViewModels.Remove(vm);
+            }       
         }
 
         private void MoveCardAction(object obj)

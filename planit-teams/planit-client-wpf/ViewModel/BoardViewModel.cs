@@ -261,7 +261,7 @@ namespace planit_client_wpf.ViewModel
         {
             BasicBoardDTO newBoard = (BasicBoardDTO)obj;
 
-            if (obj != null)
+            if (newBoard != null)
             {
                 Name = newBoard.Name;
             }

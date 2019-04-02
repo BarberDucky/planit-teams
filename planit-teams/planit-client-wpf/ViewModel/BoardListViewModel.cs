@@ -186,12 +186,16 @@ namespace planit_client_wpf.ViewModel
 
             ShortBoard deleteBoard = Boards.SingleOrDefault(el => el.BoardId == id);
 
-            Boards.Remove(deleteBoard);
-
-            if (selectedBoard != null && selectedBoard.BoardId == deleteBoard.BoardId)
+            if (deleteBoard != null)
             {
-                selectedBoard = null;
+                Boards.Remove(deleteBoard);
+
+                if (selectedBoard != null && selectedBoard.BoardId == deleteBoard.BoardId)
+                {
+                    selectedBoard = null;
+                }
             }
+            
         }
 
         private void UpdateBoardAction(object obj)
