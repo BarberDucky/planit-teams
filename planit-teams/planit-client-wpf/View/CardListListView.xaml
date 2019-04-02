@@ -23,7 +23,7 @@
     </UserControl.Resources>
 
     
-    <Grid>
+    <!--<Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height = "*" />
         </Grid.RowDefinitions>
@@ -35,11 +35,18 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height = "*" />
                 <RowDefinition Height = "Auto" />
-            </Grid.RowDefinitions>
+            </Grid.RowDefinitions>-->
 
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height = "*" />
+                <RowDefinition Height = "Auto" />
+            </Grid.RowDefinitions>
             <ListBox Grid.Row="0" 
                  ItemsSource="{Binding CardListViewModels}"
-                 IsSynchronizedWithCurrentItem="True">
+                 IsSynchronizedWithCurrentItem="True"
+                 DockPanel.Dock="Top">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
@@ -53,10 +60,10 @@
             </ListBox>
 
             <Button Grid.Row="1" Content="Add List" Command="{Binding NewListCommand}"
-                Margin="10, 10, 10, 10" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100"></Button>
-        </Grid>
-        <ContentControl Grid.Row="0" Grid.Column="1" Content = "{Binding RightViewModel}"/>
+                Margin="10, 10, 10, 10" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" DockPanel.Dock="Bottom"></Button>
+            <!--</Grid>-->
+            <!--<ContentControl Grid.Row="0" Grid.Column="1" Content = "{Binding RightViewModel}"/>-->
 
-    </Grid>
-    
+        </Grid>
+    </DockPanel>
 </UserControl>

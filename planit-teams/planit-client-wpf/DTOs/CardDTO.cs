@@ -1,4 +1,5 @@
-﻿using System;
+﻿using planit_client_wpf.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,5 +50,12 @@ namespace planit_client_wpf.DTOs
         public String Description { get; set; }
         public DateTime DueDate { get; set; }
         //public int UpdatedByUser { get; set; }
+
+        public UpdateCardDTO(EditCard card)
+        {
+            Name = card.Name;
+            Description = card.Description;
+            DueDate = card.DueDate;
+        }
     }
 }

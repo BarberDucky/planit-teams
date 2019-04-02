@@ -1,4 +1,5 @@
-﻿using System;
+﻿using planit_client_wpf.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,32 +9,14 @@ namespace planit_client_wpf.Base
 {
     public abstract class EditViewModelBase : ViewModelBase
     {
-        private bool isOpen;
-        //BindableBase model; 
-
-        public bool IsOpen
-        {
-            get { return isOpen; }
-            set
-            {
-                SetProperty(ref isOpen, value);
-            }
-        }
-
-        //public BindableBase Model
-        //{
-        //    get { return model; }
-        //    set { SetProperty(ref model, value); }
-        //}
-
         public CommandBase SubmitCommand { get; protected set; }
 
-        private Func<BindableBase, bool> ExecuteSubmit;
+        private Action<IEditable> SubmitAction;
 
-        public EditViewModelBase(Func<BindableBase, bool> onExecute)
+        public EditViewModelBase(Action<IEditable> onSubmit)
         {
-            ExecuteSubmit = onExecute;
-            //this.model = model;
+            SubmitAction = onSubmit;
+            SubmitCommand = new CommandBase(OnSubmit);
         }
 
         public void OnSubmit()
@@ -41,14 +24,14 @@ namespace planit_client_wpf.Base
             bool succ = ValidateInstance();
             if(succ == true)
             {
-                BindableBase model = GetInstance();
-                ExecuteSubmit?.Invoke(model);
+                IEditable model = GetInstance();
+                SubmitAction?.Invoke(model);
             }
 
         }
 
         public abstract bool ValidateInstance();
-        public abstract BindableBase GetInstance();
+        public abstract IEditable GetInstance();
 
     }
 }

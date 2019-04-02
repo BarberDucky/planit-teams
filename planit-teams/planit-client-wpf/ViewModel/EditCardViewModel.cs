@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace planit_client_wpf.ViewModel
 {
-    public class EditCardViewModel : EditViewModelBase
+    public class EditCardViewModel : EditViewModelBase, IDisposable
     {
-        private ReadCard card;
-        public ReadCard Card
+        private EditCard card;
+        public EditCard Card
         {
             get { return card; }
             set { SetProperty(ref card, value); }
         }
 
-        public EditCardViewModel(Func<BindableBase, bool> onExecute, ReadCard card)
+        public EditCardViewModel(Action<IEditable> onExecute, EditCard card)
             : base(onExecute)
         {
             this.card = card;
@@ -29,9 +29,14 @@ namespace planit_client_wpf.ViewModel
                 !String.IsNullOrWhiteSpace(card.Description);
         }
 
-        public override BindableBase GetInstance()
+        public override IEditable GetInstance()
         {
             return card;
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }

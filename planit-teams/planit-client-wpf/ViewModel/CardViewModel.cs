@@ -14,14 +14,16 @@ namespace planit_client_wpf.ViewModel
     {
         public ReadCard card;
         public ViewModelBase comments;
-        private EditCardViewModel editForm;
 
         #region Properties
 
         public ReadCard Card
         {
             get { return card; }
-            set { SetProperty(ref card, value); }
+            set
+            {
+                SetProperty(ref card, value);
+            }
         }
 
         public ViewModelBase Comments
@@ -30,43 +32,35 @@ namespace planit_client_wpf.ViewModel
             set { SetProperty(ref comments, value); }
         }
 
-        public EditCardViewModel EditFormViewModel
-        {
-            get { return editForm; }
-            set { SetProperty(ref editForm, value); }
-        }
-
         #endregion
 
         #region Commands
 
-        public CommandBase EditCardCommand { get; protected set; }
+        public CommandBase<ReadCard> EditCardCommand { get; protected set; }
 
         #endregion
 
-        public CardViewModel(ReadCard card)
+        #region Actions and Func
+        private Action<EditCard> OnEditButtonClickAction { get; set; }
+
+        #endregion
+
+        public CardViewModel(ReadCard card, Action<EditCard> onEditButtonClick)
         {
             if (card != null)
             {
                 this.card = card;
                 comments = new CommentsViewModel(card.Comments, card.CardId);
-                EditCardCommand = new CommandBase(OnEditCard);
-                EditFormViewModel = null;
+                EditCardCommand = new CommandBase<ReadCard>(OnEditButtonClick);
+                OnEditButtonClickAction = onEditButtonClick;
             }
         }
 
-        public void OnEditCard()
+        public void OnEditButtonClick(ReadCard card)
         {
-            ReadCard c = new ReadCard(new DTOs.BasicCardDTO() { Name = card.Name, Description = card.Description });
-            EditFormViewModel = new EditCardViewModel(OnEditCardExecute, c);
-            EditFormViewModel.IsOpen = true;
+            OnEditButtonClickAction?.Invoke(new EditCard(card));
         }
 
-        public bool OnEditCardExecute(BindableBase model)
-        {
-            ShowMessageBox(null, "radiii");
-            return true;
-        }
-
+   
     }
 }

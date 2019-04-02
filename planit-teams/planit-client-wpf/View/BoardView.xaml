@@ -1,14 +1,14 @@
 ﻿<UserControl x:Class="planit_client_wpf.View.BoardView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:model ="clr-namespace:planit_client_wpf.Model"
-             xmlns:view="clr-namespace:planit_client_wpf.View"
-             xmlns:viewModel="clr-namespace:planit_client_wpf.ViewModel"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             DataContextChanged="UserControl_DataContextChanged" x:Name="BoardControl">
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:model ="clr-namespace:planit_client_wpf.Model"
+			 xmlns:view="clr-namespace:planit_client_wpf.View"
+			 xmlns:viewModel="clr-namespace:planit_client_wpf.ViewModel"
+			 mc:Ignorable="d" 
+			 d:DesignHeight="450" d:DesignWidth="800"
+			 DataContextChanged="UserControl_DataContextChanged" x:Name="BoardControl">
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type viewModel:CardListListViewModel}">
@@ -23,34 +23,56 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height = "Auto" />
-            <RowDefinition Height = "*" />
-        </Grid.RowDefinitions>
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height = "Auto" />
+                <RowDefinition Height = "*" />
+            </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Width="Auto" Grid.Row="0">
-            <Label x:Name="txtName" Content="{Binding Board.Name}" 
-                Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="Auto" Height="Auto"/>
-            <Button Grid.Row="2" Content="Rename Board" 
-                    Command="{Binding RenameBoardCommand}"                     
-                    Margin="10, 10, 10, 10" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100">
-            </Button>
-            <Button Grid.Row="2" Content="Delete Board" 
-                    Command="{Binding DeleteBoardCommand}" 
-                    Visibility="{Binding DeleteBoardCommandVisible, Converter={StaticResource BoolToVisConverter}}"
-                    Margin="10, 10, 10, 10" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-            
-        </StackPanel>
+            <StackPanel Orientation="Horizontal" Width="Auto" Grid.Row="0">
+                <Label x:Name="txtName" Content="{Binding Board.Name}" 
+				Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="Auto" Height="Auto"/>
+                <Button Grid.Row="2" Content="Rename Board" 
+					Command="{Binding RenameBoardCommand}"                     
+					Margin="10, 10, 10, 10" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100">
+                </Button>
+                <Button Grid.Row="2" Content="Delete Board" 
+					Command="{Binding DeleteBoardCommand}" 
+					Visibility="{Binding DeleteBoardCommandVisible, Converter={StaticResource BoolToVisConverter}}"
+					Margin="10, 10, 10, 10" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
 
-        <TabControl Grid.Row="1">
-            <TabItem Header="Lists">
-                <ContentControl Grid.Row="1" Content = "{Binding CardListViewModel}" />
-            </TabItem>
-            <TabItem Header="Users">
-                <ContentControl Grid.Row="1" Content = "{Binding UsersViewModel}" />
-            </TabItem>
-        </TabControl>
-    </Grid>
+            </StackPanel>
+
+            <TabControl Grid.Row="1">
+                <TabItem Header="Lists">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" MinWidth="300"></ColumnDefinition>
+                            <ColumnDefinition Width="5"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <ContentControl Grid.Row="0" Grid.Column="0" DockPanel.Dock="Left" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+									Content = "{Binding CardListViewModel}" />
+                        <GridSplitter Grid.Column="1"
+                            Width="5"
+                            ResizeDirection="Columns"
+                            ResizeBehavior="PreviousAndNext"
+                            HorizontalAlignment="Stretch" />
+                        <ContentControl Grid.Row="0" Grid.Column="2" 
+									Content = "{Binding RightViewModel}" />
+                    </Grid>
+                    <!--</DockPanel>-->
+                </TabItem>
+                <TabItem Header="Users">
+                    <ContentControl Grid.Row="1" Content = "{Binding UsersViewModel}" />
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </DockPanel>
 
 </UserControl>
