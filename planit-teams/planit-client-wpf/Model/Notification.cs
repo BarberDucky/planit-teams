@@ -37,8 +37,8 @@ namespace planit_client_wpf.Model
 
         public String NotificationMessage
         {
-            get { return "Card '" + CardName + "' was " + NotificationType.ToString() + "d, at list '"
-                    + ListName + "', at board '" + BoardName + "', by user '" + Username + "'."; }
+            get { return $"Card '{CardName}' was {NotificationType.ToString()}d, " +
+                    $"at list '{ListName}', at board {BoardName}, by user '{Username}.'"; }
         }
 
         #endregion
@@ -47,7 +47,7 @@ namespace planit_client_wpf.Model
 
         public Notification(ReadNotificationDTO dto)
         {
-            if(dto != null)
+            if (dto != null)
             {
                 NotificationId = dto.NotificationId;
                 TimeStamp = dto.TimeStamp;

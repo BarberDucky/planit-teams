@@ -42,10 +42,18 @@ namespace planit_client_wpf.View
             }
         }
 
-            private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            Window wind = Window.GetWindow(this);
+            wind.WindowState = WindowState.Normal;
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
             {
-                Window wind = Window.GetWindow(this);
-                wind.WindowState = WindowState.Normal;
+                ((LoginViewModel)this.DataContext).Password = ((PasswordBox)sender).Password;
             }
+        }
     }
 }

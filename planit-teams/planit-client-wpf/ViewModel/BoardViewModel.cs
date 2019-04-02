@@ -208,13 +208,35 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
-        public void OnSubmit(IEditable model)
+        public async void OnSubmit(IEditable model)
         {
-            if(model != null)
+            if (model != null)
             {
                 EditBoard editBoard = model as EditBoard;
-                Board.Name = editBoard.Name;
-                DestroyPanel();
+
+                if (editBoard != null)
+                {
+                    if (ActiveUser.IsActive == true)
+                    {
+                        
+                        bool succ = await BoardService.UpdateBoard(ActiveUser.Instance.LoggedUser.Token,
+                            editBoard.BoardId, new UpdateBoardDTO(editBoard));
+                        if (succ == true)
+                        {
+                            Name = editBoard.Name;
+                            DestroyPanel();
+                        }
+                        else
+                        {
+                            ShowMessageBox(null, "Error renaming board.");
+                        }
+                    }
+                    else
+                    {
+                        ShowMessageBox(null, "Error getting user.");
+                    }
+
+                }
             }
         }
 
@@ -235,7 +257,6 @@ namespace planit_client_wpf.ViewModel
             MessageBroker.Instance.Subscribe(updateBoardAction, MessageEnum.BoardUpdate);
         }
 
-        //TODO - proveriti da li radi sa interface-om
         private void UpdateBoardAction(object obj)
         {
             BasicBoardDTO newBoard = (BasicBoardDTO)obj;

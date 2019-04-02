@@ -12,18 +12,20 @@
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:Notification}">
             <Border BorderBrush="LightGray" BorderThickness="0, 1, 0, 0">
-                <TextBlock Text="{Binding NotificationMessage}" TextWrapping="WrapWithOverflow" Margin="10, 10, 10, 10" >
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Background" Value="LightBlue" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsRead}" Value="True">
-                                    <Setter Property="Background" Value="White" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                <StackPanel Width="250">
+                    <TextBlock Text="{Binding NotificationMessage}" TextWrapping="WrapWithOverflow" Margin="10, 10, 10, 10" >
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Background" Value="LightBlue" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsRead}" Value="True">
+                                        <Setter Property="Background" Value="White" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
             </Border>
         </DataTemplate>
     </UserControl.Resources>

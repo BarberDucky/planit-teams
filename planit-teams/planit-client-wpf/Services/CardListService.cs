@@ -84,7 +84,7 @@ namespace planit_client_wpf.Services
                     var byteContent = new ByteArrayContent(buffer);
                     byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                    var response = await client.PostAsync("http://localhost:52816/api/CardList/" + cardListId, byteContent);
+                    var response = await client.PutAsync("http://localhost:52816/api/CardList/" + cardListId, byteContent);
 
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {

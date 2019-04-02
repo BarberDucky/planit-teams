@@ -29,7 +29,8 @@
             UpdateSourceTrigger=PropertyChanged}" 
                  Margin="5, 5, 5, 5"/>
         <Label Content="Password" Grid.Row="1" Grid.Column="0" Margin="5, 5, 5, 5"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5, 5, 5, 5"/>
+        <!--<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5, 5, 5, 5"/>-->
+        <PasswordBox Grid.Row="1" Grid.Column="1"  Margin="5, 5, 5, 5" PasswordChanged="PasswordBox_PasswordChanged"></PasswordBox>
         <StackPanel 
             Grid.Row="2" Orientation="Horizontal"
             Grid.ColumnSpan="2"

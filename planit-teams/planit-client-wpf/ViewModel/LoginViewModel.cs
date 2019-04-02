@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace planit_client_wpf.ViewModel
 {
@@ -72,6 +73,7 @@ namespace planit_client_wpf.ViewModel
             LoginButtonAction = goToHome;
             RegisterAction = goToRegister;
             CanLoginFlag = true;
+
         }
 
 

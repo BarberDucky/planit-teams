@@ -55,6 +55,7 @@ namespace planit_client_wpf.ViewModel
                 comments = new CommentsViewModel(card.Comments, card.CardId);
                 EditCardCommand = new CommandBase<ReadCard>(OnEditButtonClick);
                 OnEditButtonClickAction = onEditButtonClick;
+                WatchCardCommand = new CommandBase(OnWatchCard);
             }
         }
 

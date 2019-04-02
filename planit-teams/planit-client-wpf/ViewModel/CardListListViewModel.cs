@@ -183,7 +183,6 @@ namespace planit_client_wpf.ViewModel
             CardListViewModels.Remove(vm);
         }
 
-        //TODO - testirati sa interface-om
         private void MoveCardAction(object obj)
         {
             BasicCardDTO card = (BasicCardDTO)obj;

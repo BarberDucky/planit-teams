@@ -84,7 +84,7 @@ namespace planit_client_wpf.ViewModel
         public async void InitializeNotifications()
         {
             List<ReadNotificationDTO> list = await UserService.GetUserNotifications(ActiveUser.Instance.LoggedUser.Token);
-            foreach(ReadNotificationDTO notificationDTO in list)
+            foreach (ReadNotificationDTO notificationDTO in list)
             {
                 Notifications.Add(new Notification(notificationDTO));
             }
@@ -96,7 +96,7 @@ namespace planit_client_wpf.ViewModel
             bool succ = await NotificationService.ReadNotification(ActiveUser.Instance.LoggedUser.Token,
                 selectedNotification.NotificationId);
 
-            if(succ)
+            if (succ)
             {
                 selectedNotification.IsRead = true;
                 IsNotificationUnread = FindUnreadFlag();
@@ -126,7 +126,7 @@ namespace planit_client_wpf.ViewModel
 
             if (dto != null)
             {
-                Notifications.Add(new Notification(dto));
+                Notifications.Insert(0, new Notification(dto));
                 IsNotificationUnread = FindUnreadFlag();
             }
         }
