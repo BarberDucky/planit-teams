@@ -16,11 +16,6 @@ namespace planit_client_wpf.ViewModel
     {
         private ReadCardList cardList;
         private ReadCard selectedCard;
-        //private ObservableCollection<CardViewModel> cardViewModels;
-        //IPanelContainer container;
-        //CardViewModel cardViewModel;
-        //IPanelOwner PanelOwner { get; set; }
-
 
         #region Properties
 
@@ -36,51 +31,13 @@ namespace planit_client_wpf.ViewModel
             set
             {
                 SetProperty(ref selectedCard, value);
-                //CardViewModel vm = cardViewModels.FirstOrDefault(x => x.Card.CardId == selectedCard.CardId);
-                //container.InstantiateDetailsPanel(vm);
                 if (selectedCard != null)
                 {
                     var cardViewModel = new CardViewModel(selectedCard, OnEditButtonClick);
                     base.InstantiatePanel(cardViewModel);
-                    //container.InstantiatePanel(cardViewModel, this);
-                }
-                //else
-                //{
-                //    openContainer = null;
-                //    container.InstantiateDetailsPanel(new EmptyViewModel(), null);
-                //}
-
-            }
-        }
-
-        public void OnEditButtonClick(EditCard card)
-        {
-            var panel = new EditCardViewModel(OnEditCardCompleted, card);
-            //DestroyPanel();
-            InstantiatePanel(panel);
-        }
-
-        public void OnEditCardCompleted(IEditable model)
-        {
-            if (model != null)
-            {
-                EditCard editCard = model as EditCard;
-                if (editCard != null)
-                {
-                    var readCard = CardList.Cards.FirstOrDefault(x => x.CardId == editCard.CardId);
-                    readCard?.UpdateEditedFields(editCard);
-                    //container.InstantiatePanel(new EmptyViewModel(), null);
-                    //DestroyPanel();
-                    InstantiatePanel(new CardViewModel(readCard, OnEditButtonClick));
                 }
             }
         }
-
-        //public ObservableCollection<CardViewModel> CardViewModels
-        //{
-        //    get { return cardViewModels; }
-        //    set { SetProperty(ref cardViewModels, value); }
-        //}
 
         #endregion
 
@@ -96,7 +53,7 @@ namespace planit_client_wpf.ViewModel
         #region Action and Func
 
         private Action<ReadCardList> DeleteCardListAction { get; set; }
-        //private Action<ReadCard> SelectedCardAction { get; set; }
+
         private Action<MoveCard> OnMoveCardAction { get; set; }
 
         #endregion
@@ -108,40 +65,26 @@ namespace planit_client_wpf.ViewModel
         private Action<object> updateCardAction;
         private Action<object> createCommentAction;
         private Action<object> updateCardListAction;
+
         #endregion
 
         public CardListViewModel(ReadCardList list, Action<ReadCardList> onDeleteCardList, IPanelContainer container, Action<MoveCard> onMoveCard)
             :base(container)
         {
+            //Data
             this.CardList = list;
-            //this.container = container;
-            //this.cardViewModel = null;
-            //Init
-            //CardViewModels = new ObservableCollection<CardViewModel>();
-            //foreach(ReadCard card in list.Cards)
-            //{
-            //    CardViewModels.Add(new CardViewModel(card, container));
-            //}
-
-            //PanelOwner = new PanelOwnerViewModel(container)
-
+            
             //Commands
             AddCardCommand = new CommandBase(OnAddCardClick);
             DeleteCardListCommand = new CommandBase<ReadCardList>(OnDeleteCardList);
             DeleteCardListAction = onDeleteCardList;
             RenameCardListCommand = new CommandBase<ReadCardList>(OnRenameCardList);
-            //SelectedCardAction = onSelectedCard;
             DeleteCardCommand = new CommandBase<ReadCard>(OnDeleteCard);
             OnMoveCardAction = onMoveCard;
 
             InitActions();
             Subscribe();
 
-        }
-
-        public void OnMoveCard(MoveCard moveCard)
-        {
-            OnMoveCardAction?.Invoke(moveCard);
         }
 
         public async void OnAddCardClick()
@@ -161,6 +104,11 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
+        public void OnMoveCard(MoveCard moveCard)
+        {
+            OnMoveCardAction?.Invoke(moveCard);
+        }
+
         public void OnDeleteCardList(ReadCardList card)
         {
             DeleteCardListAction?.Invoke(card);
@@ -178,31 +126,8 @@ namespace planit_client_wpf.ViewModel
                 bool succ = await CardService.DeleteCard(ActiveUser.Instance.LoggedUser.Token, card.CardId);
                 if (succ == true)
                 {
-                    //if(cardViewModel != null && cardViewModel.Card.CardId == card.CardId)
-                    //{
-                    //    cardViewModel = null;
-                    //    container.InstantiatePanel(new EmptyViewModel(), null);
-                    //}
-                    //if(base.HasPanelOpen)
-                    //    base.DestroyPanel();
 
-                    if(HasPanelOpen == true && OpenPanel is CardViewModel)
-                    {
-                        var panel = OpenPanel as CardViewModel;
-                        if (panel.Card.CardId == card.CardId)
-                        {
-                            DestroyPanel();
-                            SelectedCard = null;
-                        }
-                    }
-                    else if(HasPanelOpen == true && OpenPanel is EditCardViewModel)
-                    {
-                        var panel = OpenPanel as EditCardViewModel;
-                        if (panel.Card.CardId == card.CardId)
-                            DestroyPanel();
-
-                    }
-
+                    DestroyPanelIfOpen(card.CardId);
                     ReadCard rc = CardList.Cards.FirstOrDefault(x => x.CardId == card.CardId);
                     CardList.Cards.Remove(rc);
                 }
@@ -216,6 +141,77 @@ namespace planit_client_wpf.ViewModel
                 ShowMessageBox(null, "Error getting user.");
             }
         }
+
+        #region Right Panel Methods
+
+        //Daje se CardViewModelu preko konstruktora
+        public void OnEditButtonClick(EditCard card)
+        {
+            var panel = new EditCardViewModel(OnEditCardCompleted, card);
+            InstantiatePanel(panel);
+        }
+
+        //Daje se EditCardViewModelu preko konstruktora
+        public async void OnEditCardCompleted(IEditable model)
+        {
+            if (model != null)
+            {
+                EditCard editCard = model as EditCard;
+                if (editCard != null)
+                {
+                    if(ActiveUser.IsActive == true)
+                    {
+                        //bool succ = await CardService.UpdateCard(ActiveUser.Instance.LoggedUser.Token, editCard.CardId, new UpdateCardDTO(editCard));
+                        bool succ = true;
+                        if(succ == true)
+                        {
+                            var readCard = CardList.Cards.FirstOrDefault(x => x.CardId == editCard.CardId);
+                            ReadCard.UpdateCard(readCard, editCard);
+                            InstantiatePanel(new CardViewModel(readCard, OnEditButtonClick));
+                        }
+                        else
+                        {
+                            ShowMessageBox(null, "Error updating card.");
+                        }
+                    }
+                    else
+                    {
+                        ShowMessageBox(null, "Error getting user.");
+                    }
+
+                }
+            }
+        }
+
+        //Zvati pre nego sto se obrise kartica!
+        public void DestroyPanelIfOpen(int cardId)
+        {
+            if (HasPanelOpen == true && OpenPanel is CardViewModel)
+            {
+                var panel = OpenPanel as CardViewModel;
+                if (panel.Card.CardId == cardId)
+                {
+                    DestroyPanel();
+                    SelectedCard = null;
+                }
+            }
+            else if (HasPanelOpen == true && OpenPanel is EditCardViewModel)
+            {
+                var panel = OpenPanel as EditCardViewModel;
+                if (panel.Card.CardId == cardId)
+                {
+                    DestroyPanel();
+                    SelectedCard = null;
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            base.DestroyPanel();
+        }
+
+        #endregion
 
         #region Subscribe for Notifications
 
@@ -255,6 +251,7 @@ namespace planit_client_wpf.ViewModel
 
             if (rc != null)
             {
+                DestroyPanelIfOpen(id);
                 CardList.Cards.Remove(rc);
             }
         }
@@ -272,34 +269,6 @@ namespace planit_client_wpf.ViewModel
                     card.Comments.Add(new ReadComment(comment));
                 }
             }
-        }
-
-        public void OnEditCompleted(IEditable card)
-        {
-            EditCard c = card as EditCard;
-            ShowMessageBox(null, "Editovala sam karticu " + c.Name);
-        }
-
-        //public void NotifyContainerClosing()
-        //{
-        //    //cardViewModel = null;
-        //    //SelectedCard = null;
-        //    hasPanelOpen = false;
-        //}
-
-        //public void Dispose()
-        //{
-        //    if(cardViewModel != null)
-        //    {
-        //        container.InstantiatePanel(new EmptyViewModel(), null);
-        //        cardViewModel.Dispose();
-        //        cardViewModel = null;
-        //    }
-        //}
-
-        public void Dispose()
-        {
-            base.DestroyPanel();
         }
 
         //TODO - proveriti da li radi sa interface-om
@@ -327,7 +296,6 @@ namespace planit_client_wpf.ViewModel
                 ReadCardList.UpdateCardList(CardList, newList);
             }
         }
-
         
         #endregion
     }
