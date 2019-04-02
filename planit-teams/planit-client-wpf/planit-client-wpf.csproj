@@ -103,6 +103,7 @@
     <Compile Include="ViewModel\CardViewModel.cs" />
     <Compile Include="ViewModel\CommentsViewModel.cs" />
     <Compile Include="ViewModel\DetailViewModel.cs" />
+    <Compile Include="ViewModel\EditCardListViewModel.cs" />
     <Compile Include="ViewModel\EditCardViewModel.cs" />
     <Compile Include="ViewModel\EmptyViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
@@ -133,6 +134,9 @@
       <DependentUpon>EditBoardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\EditBoardViewModel.cs" />
+    <Compile Include="View\EditCardListView.xaml.cs">
+      <DependentUpon>EditCardListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\EditCardView.xaml.cs">
       <DependentUpon>EditCardView.xaml</DependentUpon>
     </Compile>
@@ -147,9 +151,6 @@
     </Compile>
     <Compile Include="View\NotificationsView.xaml.cs">
       <DependentUpon>NotificationsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\PopupBase.xaml.cs">
-      <DependentUpon>PopupBase.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
@@ -204,6 +205,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\EditCardListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\EditCardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -221,10 +226,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\NotificationsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\PopupBase.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

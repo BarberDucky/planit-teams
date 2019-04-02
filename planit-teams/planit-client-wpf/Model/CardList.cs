@@ -94,5 +94,51 @@ namespace planit_client_wpf.Model
         {
             list.Name = dto.Name;
         }
+        public static void UpdateCardList(ReadCardList list, EditCardList editCardList)
+        {
+            list.Name = editCardList.Name;
+        }
+
+    }
+
+    public class EditCardList : BindableBase, IEditable
+    {
+        private int listId;
+        private string name;
+        private int boardId;
+
+        #region Properties 
+
+        public int ListId
+        {
+            get { return listId; }
+            set { SetProperty(ref listId, value); }
+        }
+
+        public string Name
+        {
+            get { return name; }
+            set { SetProperty(ref name, value); }
+        }
+
+        
+        public int BoardId
+        {
+            get { return boardId; }
+            set { SetProperty(ref boardId, value); }
+        }
+      
+        #endregion
+
+        public EditCardList(ReadCardList list)
+        {
+            if (list != null)
+            {
+                ListId = list.ListId;
+                Name = list.Name;
+                BoardId = list.BoardId;               
+            }
+        }
+
     }
 }

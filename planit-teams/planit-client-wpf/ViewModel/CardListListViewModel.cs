@@ -112,17 +112,15 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
-        //public void OnSelectedCard(ReadCard card)
+        //public void OnSelectedCard(ReadCardList cardList)
         //{
-        //    if (card != null)
+        //    foreach(CardListViewModel vm in CardListViewModels)
         //    {
-        //        RightViewModel = new CardViewModel(card);
+        //        if(vm.CardList.ListId != cardList.ListId)
+        //        {
+        //            vm.SelectedCard = null;
+        //        }
         //    }
-        //    else
-        //    {
-        //        RightViewModel = new EmptyViewModel();
-        //    }
-
         //}
 
         public async void OnMoveCard(MoveCard moveCard)

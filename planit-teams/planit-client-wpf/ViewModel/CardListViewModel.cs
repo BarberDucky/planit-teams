@@ -31,6 +31,7 @@ namespace planit_client_wpf.ViewModel
             set
             {
                 SetProperty(ref selectedCard, value);
+                //OnCardSelectedAction?.Invoke(cardList);
                 if (selectedCard != null)
                 {
                     var cardViewModel = new CardViewModel(selectedCard, OnEditButtonClick);
@@ -55,6 +56,8 @@ namespace planit_client_wpf.ViewModel
         private Action<ReadCardList> DeleteCardListAction { get; set; }
 
         private Action<MoveCard> OnMoveCardAction { get; set; }
+
+        //private Action<ReadCardList> OnCardSelectedAction { get; set; }
 
         #endregion
 
@@ -81,6 +84,7 @@ namespace planit_client_wpf.ViewModel
             RenameCardListCommand = new CommandBase<ReadCardList>(OnRenameCardList);
             DeleteCardCommand = new CommandBase<ReadCard>(OnDeleteCard);
             OnMoveCardAction = onMoveCard;
+            //OnCardSelectedAction = onCardSelected;
 
             InitActions();
             Subscribe();
@@ -109,6 +113,11 @@ namespace planit_client_wpf.ViewModel
             OnMoveCardAction?.Invoke(moveCard);
         }
 
+        public void OnMoveCardDrag(int moveCardId)
+        {
+            DestroyPanelIfOpen(moveCardId);
+        }
+
         public void OnDeleteCardList(ReadCardList card)
         {
             DeleteCardListAction?.Invoke(card);
@@ -116,7 +125,30 @@ namespace planit_client_wpf.ViewModel
 
         public void OnRenameCardList(ReadCardList cardList)
         {
-            ShowMessageBox(null, "Pravimo se da se otvara rename card list dijalog");
+            var panel = new EditCardListViewModel(OnRenameCardListSubmit, new EditCardList(cardList));
+            InstantiatePanel(panel);
+        }
+
+        public async void OnRenameCardListSubmit(IEditable model)
+        {
+            if (model != null && ActiveUser.IsActive == true && CardList != null)
+            {
+                EditCardList editList = model as EditCardList;
+                bool succ = await CardListService.UpdateCardList(ActiveUser.Instance.LoggedUser.Token, editList.ListId, new UpdateCardListDTO(editList));
+                if (succ == true)
+                {
+                    ReadCardList.UpdateCardList(cardList, editList);
+                    DestroyPanel();
+                }
+                else
+                {
+                    ShowMessageBox(null, "Error renaming card list.");
+                }
+            }
+            else
+            {
+                ShowMessageBox(null, "Error getting user.");
+            }
         }
 
         public async void OnDeleteCard(ReadCard card)
@@ -201,6 +233,14 @@ namespace planit_client_wpf.ViewModel
                 {
                     DestroyPanel();
                     SelectedCard = null;
+                }
+            }
+            else if(HasPanelOpen == true && OpenPanel is EditCardListViewModel)
+            {
+                var panel = OpenPanel as EditCardListViewModel;
+                if(panel.CardList.ListId == CardList.ListId)
+                {
+                    DestroyPanel();
                 }
             }
         }

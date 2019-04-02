@@ -61,15 +61,21 @@ namespace planit_client_wpf.View
             base.OnMouseMove(e);
             if (e.LeftButton == MouseButtonState.Pressed && ((CardListViewModel)DataContext).SelectedCard != null)
             {
-                ReadCardList cardList = ((CardListViewModel)DataContext).CardList;
-                ReadCard card = ((CardListViewModel)DataContext).SelectedCard;
+                if(DataContext is CardListViewModel)
+                {
+                    CardListViewModel cardListVM = DataContext as CardListViewModel;
+                    ReadCardList cardList = cardListVM.CardList;
+                    ReadCard card = cardListVM.SelectedCard;
 
-                MoveCard moveCard = new MoveCard() { CardId = card.CardId, OldListId = cardList.ListId, NewListId = cardList.ListId };
+                    MoveCard moveCard = new MoveCard() { CardId = card.CardId, OldListId = cardList.ListId, NewListId = cardList.ListId };
 
-                DataObject data = new DataObject();
-                data.SetData(typeof(MoveCard), moveCard);
+                    DataObject data = new DataObject();
+                    data.SetData(typeof(MoveCard), moveCard);
 
-                DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
+                    DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
+                    cardListVM.OnMoveCardDrag(card.CardId);
+                }
+               
             }
         }
     }

@@ -15,5 +15,8 @@
         <DataTemplate DataType="{x:Type viewModel:EditBoardViewModel}">
             <view:EditBoardView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:EditCardListViewModel}">
+            <view:EditCardListView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>
