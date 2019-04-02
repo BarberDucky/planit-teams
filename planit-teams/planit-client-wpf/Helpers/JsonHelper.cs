@@ -13,6 +13,8 @@ namespace planit_client_wpf.Helpers
 {
     public class JsonHelper
     {
+        #region Should Delete
+
         public static MQMessage GetMessage(string stringMessage)
         {
             var jsonMessage = GetJObjectFromString(stringMessage);
@@ -86,11 +88,12 @@ namespace planit_client_wpf.Helpers
         {
             BasicMQMessage msg = JsonConvert.DeserializeObject<BasicMQMessage>(stringMessage);
 
-            if(msg.MessageEntity == MessageEntity.Permission)
+            if (msg.MessageEntity == MessageEntity.Permission)
             {
                 return JsonConvert.DeserializeObject<PermissionMessage>(stringMessage);
 
-            } else if (msg.MessageType == MessageType.Delete)
+            }
+            else if (msg.MessageType == MessageType.Delete)
             {
                 return JsonConvert.DeserializeObject<DeleteMessage>(stringMessage);
             }
@@ -124,11 +127,6 @@ namespace planit_client_wpf.Helpers
             }
 
 
-        }
-
-        public static MQMessage GetMessageTestConverter(string json)
-        {
-            return JsonConvert.DeserializeObject<MQMessage>(json, new JsonMessageConverter());
         }
 
         private static JToken GetJTokenByKey(string key, JObject obj)
@@ -168,5 +166,12 @@ namespace planit_client_wpf.Helpers
                 return MessageType.Change;
             }
         }
+        #endregion
+
+
+        public static MQMessage ConvertJsonToMessage(string json)
+        {
+            return JsonConvert.DeserializeObject<MQMessage>(json, new JsonMessageConverter());
+        }    
     }
 }

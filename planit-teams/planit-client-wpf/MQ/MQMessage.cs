@@ -29,11 +29,6 @@ namespace planit_client_wpf.MQ
         UserUpdate
     }
 
-    public interface IMQMessage
-    {
-
-    }
-
     public class BasicMQMessage
     {
         public MessageEntity MessageEntity { get; set; }
@@ -41,11 +36,11 @@ namespace planit_client_wpf.MQ
         public string Username { get; set; }
     }
 
-    public abstract class MQMessage : BasicMQMessage
+    public abstract class MQMessage
     {
-        //public MessageEntity MessageEntity { get; set; }
-        //public MessageType MessageType { get; set; }
-        //public string Username { get; set; }
+        public MessageEntity MessageEntity { get; set; }
+        public MessageType MessageType { get; set; }
+        public string Username { get; set; }
 
         public MessageEnum GetEnum()
         {

@@ -40,29 +40,6 @@ namespace planit_client_wpf.MQ
             tags = new Dictionary<string, string>();
         }
 
-        //public void SubscribeToExchange(string exchangeName, Func<IMQMessage, bool> Method)
-        //{
-        //    //channel.ExchangeDeclare(exchange: exchangeName, type: "fanout");
-
-        //    var queueName = channel.QueueDeclare().QueueName;
-
-        //    channel.QueueBind(queue: queueName,
-        //                      exchange: exchangeName,
-        //                      routingKey: "");
-
-        //    var consumer = new EventingBasicConsumer(channel);
-        //    consumer.Received += (model, ea) =>
-        //    {
-        //        var body = ea.Body;
-        //        var message = Encoding.UTF8.GetString(body);
-        //        IMQMessage msgObj = JsonHelper.GetMessage(message);
-        //        Method(msgObj);
-        //    };
-        //    channel.BasicConsume(queue: queueName,
-        //                         autoAck: true,
-        //                         consumer: consumer);
-        //}
-
         public void SubscribeToExchange(string exchangeName)
         {
             if (tags.ContainsKey(exchangeName))
@@ -81,8 +58,7 @@ namespace planit_client_wpf.MQ
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body);
 
-                MQMessage msg = JsonHelper.GetMessageTestConverter(message);
-                //MQMessage msgTest = JsonHelper.GetMessageTestConverter(message);
+                MQMessage msg = JsonHelper.ConvertJsonToMessage(message);
 
                 if (msg != null && msg.Username != ActiveUser.Instance.LoggedUser.Username)
                 {
