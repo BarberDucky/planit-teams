@@ -80,13 +80,10 @@
     <Compile Include="Model\Notification.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="MQ\IMessageBroker.cs" />
-    <Compile Include="MQ\IUserNotificationHandler.cs" />
     <Compile Include="MQ\MessageBroker.cs" />
     <Compile Include="MQ\MessageEnum.cs" />
     <Compile Include="MQ\MQMessage.cs" />
     <Compile Include="MQ\MQService.cs" />
-    <Compile Include="MQ\UserNotifHandlerFactory.cs" />
-    <Compile Include="MQ\UserNotificationHandler.cs" />
     <Compile Include="Services\BoardNotificationService.cs" />
     <Compile Include="Services\CardListService.cs" />
     <Compile Include="Services\CardService.cs" />

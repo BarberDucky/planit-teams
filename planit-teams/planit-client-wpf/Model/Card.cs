@@ -21,6 +21,7 @@ namespace planit_client_wpf.Model
         //private string listName;
         private int boardId;
         //private string boardName;
+        private bool isWatched;
 
         public int CardId
         {
@@ -76,6 +77,12 @@ namespace planit_client_wpf.Model
         //    set { SetProperty(ref boardName, value); }
         //}
 
+        public bool IsWatched
+        {
+            get { return isWatched; }
+            set { SetProperty(ref isWatched, value); }
+        }
+
         public ReadCard(BasicCardDTO dto)
         {
             if (dto != null)
@@ -87,6 +94,7 @@ namespace planit_client_wpf.Model
                 DueDate = dto.DueDate;
                 BoardId = dto.BoardId;
                 ListId = dto.ListId;
+                IsWatched = false;
                 Comments = new ObservableCollection<ReadComment>();
             }
 
@@ -94,7 +102,7 @@ namespace planit_client_wpf.Model
 
         public ReadCard(ReadCardDTO dto)
         {
-            if(dto != null)
+            if (dto != null)
             {
                 CardId = dto.CardId;
                 Name = dto.Name;
@@ -103,8 +111,9 @@ namespace planit_client_wpf.Model
                 DueDate = dto.DueDate;
                 BoardId = dto.BoardId;
                 ListId = dto.ListId;
+                IsWatched = dto.IsWatched;
                 Comments = new ObservableCollection<ReadComment>();
-                if(dto.Comments != null)
+                if (dto.Comments != null)
                 {
                     foreach (ReadCommentDTO comDTO in dto.Comments)
                     {

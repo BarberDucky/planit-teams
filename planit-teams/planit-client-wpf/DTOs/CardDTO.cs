@@ -38,6 +38,7 @@ namespace planit_client_wpf.DTOs
         public String ListName { get; set; }
         public int BoardId { get; set; }
         public int  ListId { get; set; }
+        public bool IsWatched { get; set; }
         public List<ReadCommentDTO> Comments { get; set; }
     }
 
