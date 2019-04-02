@@ -325,7 +325,6 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
-        //TODO - proveriti da li radi sa interface-om
         private void UpdateCardListAction(object obj)
         {
             BasicCardListDTO newList = (BasicCardListDTO)obj;

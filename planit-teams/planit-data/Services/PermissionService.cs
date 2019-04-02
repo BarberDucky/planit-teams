@@ -134,7 +134,7 @@ namespace planit_data.Services
                         {
                             RabbitMQService.PublishToExchange(u.ExchangeName,
                                 new MessageContext(new BoardMessageStrategy(new BasicBoardDTO(b),
-                                MessageType.Create, dto.Username)));
+                                MessageType.Create, admin)));
 
                             RabbitMQService.PublishToExchange(b.ExchangeName,
                                 new MessageContext(new PermissionMessageStrategy(new ReadUserDTO(u),

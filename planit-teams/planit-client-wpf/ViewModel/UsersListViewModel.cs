@@ -197,7 +197,11 @@ namespace planit_client_wpf.ViewModel
             if (user != null && user.Username != ActiveUser.Instance.LoggedUser.Username)
             {
                 ReadUser u = Users.FirstOrDefault(x => x.username == user.Username);
-                Users.Remove(u);
+
+                if (u != null)
+                {
+                    Users.Remove(u);
+                }              
             }
         }
 
