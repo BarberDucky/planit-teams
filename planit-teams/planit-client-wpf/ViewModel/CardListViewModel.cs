@@ -31,6 +31,7 @@ namespace planit_client_wpf.ViewModel
             set
             {
                 SetProperty(ref selectedCard, value);
+                //OnCardSelectedAction?.Invoke(cardList);
                 if (selectedCard != null)
                 {
                     var cardViewModel = new CardViewModel(selectedCard, OnEditButtonClick);
@@ -55,6 +56,8 @@ namespace planit_client_wpf.ViewModel
         private Action<ReadCardList> DeleteCardListAction { get; set; }
 
         private Action<MoveCard> OnMoveCardAction { get; set; }
+
+        //private Action<ReadCardList> OnCardSelectedAction { get; set; }
 
         #endregion
 
@@ -81,6 +84,7 @@ namespace planit_client_wpf.ViewModel
             RenameCardListCommand = new CommandBase<ReadCardList>(OnRenameCardList);
             DeleteCardCommand = new CommandBase<ReadCard>(OnDeleteCard);
             OnMoveCardAction = onMoveCard;
+            //OnCardSelectedAction = onCardSelected;
 
             InitActions();
             Subscribe();
