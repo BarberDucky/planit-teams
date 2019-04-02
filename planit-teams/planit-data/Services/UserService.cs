@@ -62,7 +62,7 @@ namespace planit_data.Services
 
                 if (u != null)
                 {
-                    list = ReadNotificationDTO.FromList(u.Notifications.ToList());
+                    list = ReadNotificationDTO.FromList(u.Notifications.Reverse().ToList());
                 }
             }
             return list;

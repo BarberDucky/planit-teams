@@ -72,6 +72,7 @@ namespace planit_client_wpf.ViewModel
             LoginButtonAction = goToHome;
             RegisterAction = goToRegister;
             CanLoginFlag = true;
+
         }
 
 

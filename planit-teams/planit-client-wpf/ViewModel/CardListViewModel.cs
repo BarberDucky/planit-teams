@@ -161,8 +161,7 @@ namespace planit_client_wpf.ViewModel
                 {
                     if(ActiveUser.IsActive == true)
                     {
-                        //bool succ = await CardService.UpdateCard(ActiveUser.Instance.LoggedUser.Token, editCard.CardId, new UpdateCardDTO(editCard));
-                        bool succ = true;
+                        bool succ = await CardService.UpdateCard(ActiveUser.Instance.LoggedUser.Token, editCard.CardId, new UpdateCardDTO(editCard));
                         if(succ == true)
                         {
                             var readCard = CardList.Cards.FirstOrDefault(x => x.CardId == editCard.CardId);
@@ -270,8 +269,7 @@ namespace planit_client_wpf.ViewModel
                 }
             }
         }
-
-        //TODO - proveriti da li radi sa interface-om
+ 
         private void UpdateCardAction(object obj)
         {
             BasicCardDTO newCard = (BasicCardDTO)obj;
@@ -287,6 +285,7 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
+        //TODO - proveriti da li radi sa interface-om
         private void UpdateCardListAction(object obj)
         {
             BasicCardListDTO newList = (BasicCardListDTO)obj;
