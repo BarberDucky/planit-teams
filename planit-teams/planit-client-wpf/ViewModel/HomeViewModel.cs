@@ -41,6 +41,11 @@ namespace planit_client_wpf.ViewModel
             set { SetProperty(ref notificationViewModel, value); }
         }
 
+        public String UserInfo
+        {
+            get { return ActiveUser.Instance.LoggedUser.Username; }
+        }
+
         #endregion
 
         #region Commands
