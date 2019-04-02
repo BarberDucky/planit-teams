@@ -140,7 +140,7 @@ namespace planit_data.Services
             return dto;
         }
 
-        public bool UpdateBoard(int boardId, UpdateBoardDTO boardDTO)
+        public bool UpdateBoard(int boardId, UpdateBoardDTO boardDTO, string username)
         {
             bool ret = false;
             using (UnitOfWork unit = new UnitOfWork())
@@ -154,13 +154,21 @@ namespace planit_data.Services
                     unit.BoardRepository.Update(board);
                     ret = unit.Save();
                     if (ret)
-                    {
+                    {  
                         BoardNotificationService.ChangeBoardNotifications(board.BoardId);
 
                         BasicBoardDTO dto = new BasicBoardDTO(board);
 
                         RabbitMQService.PublishToExchange(board.ExchangeName,
-                            new MessageContext(new BoardMessageStrategy(dto, MessageType.Update)));
+                            new MessageContext(new BoardMessageStrategy(dto, MessageType.Update, username)));
+
+                        List<User> users = unit.PermissionRepository.GetAllUsersWithPermissionOnBoard(board.BoardId);
+
+                        foreach (var u in users)
+                        {
+                            RabbitMQService.PublishToExchange(u.ExchangeName,
+                            new MessageContext(new BoardMessageStrategy(dto, MessageType.UserUpdate, username)));
+                        }
                     }
                 }
             }

@@ -14,11 +14,12 @@ namespace planit_data.RabbitMQ
         private BoardMesage boardMessage;
         private DeleteMessage deleteMessage;
 
-        public BoardMessageStrategy(BasicBoardDTO data, MessageType type)
+        public BoardMessageStrategy(BasicBoardDTO data, MessageType type, string username)
         {
-            boardMessage = new BoardMesage()
+            boardMessage = new BoardMesage(username)
             {
-                Data = data
+                Data = data,
+                MessageType = type
             };
         }
 

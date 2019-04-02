@@ -115,5 +115,11 @@ namespace planit_client_wpf.Model
 
         }
 
+        public static void UpdateCard(ReadCard card, BasicCardDTO dto)
+        {
+            card.Description = dto.Description;
+            card.DueDate = dto.DueDate;
+            card.Name = dto.Name;
+        }
     }
 }

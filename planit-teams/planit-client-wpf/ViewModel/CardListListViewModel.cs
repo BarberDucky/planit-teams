@@ -51,6 +51,7 @@ namespace planit_client_wpf.ViewModel
 
         private Action<object> createCardList;
         private Action<object> deleteCardList;
+        private Action<object> moveCardAction;
 
         #endregion
 
@@ -80,7 +81,7 @@ namespace planit_client_wpf.ViewModel
 
                 if (basicCardListDTO != null)
                 {
-                   // ShowMessageBox(null, "Kreirala se lista");
+                    // ShowMessageBox(null, "Kreirala se lista");
                     var list = new ReadCardList(basicCardListDTO);
                     CardListViewModels.Add(new CardListViewModel(list, OnDeleteCardList, OnSelectedCard));
                 }
@@ -136,12 +137,14 @@ namespace planit_client_wpf.ViewModel
         {
             createCardList = new Action<object>(CreateCardListAction);
             deleteCardList = new Action<object>(DeleteCardListAction);
+            moveCardAction = new Action<object>(MoveCardAction);
         }
 
         private void Subscribe()
         {
             MessageBroker.Instance.Subscribe(createCardList, MessageEnum.CardListCreate);
             MessageBroker.Instance.Subscribe(deleteCardList, MessageEnum.CardListDelete);
+            MessageBroker.Instance.Subscribe(moveCardAction, MessageEnum.CardMove);
         }
 
         private void CreateCardListAction(object obj)
@@ -150,17 +153,50 @@ namespace planit_client_wpf.ViewModel
 
             if (cardList != null)
             {
-               CardListViewModels.Add(new CardListViewModel(new ReadCardList(cardList), OnDeleteCardList, OnSelectedCard)); 
+                CardListViewModels.Add(new CardListViewModel(new ReadCardList(cardList), OnDeleteCardList, OnSelectedCard));
             }
         }
 
         private void DeleteCardListAction(object obj)
         {
             int cardListId = (int)obj;
-    
+
             CardListViewModel vm = CardListViewModels.FirstOrDefault(x => x.CardList.ListId == cardListId);
             CardListViewModels.Remove(vm);
         }
+
+        //TODO - testirati sa interface-om
+        private void MoveCardAction(object obj)
+        {
+            BasicCardDTO card = (BasicCardDTO)obj;
+            ReadCard oldCard = null;
+            ReadCardList oldList = null;
+
+            if (card != null)
+            {
+                foreach (var vm in CardListViewModels)
+                {
+
+                    oldCard = vm.CardList.Cards.FirstOrDefault(c => c.CardId == card.CardId);
+                    oldList = vm.CardList;
+
+                    if (oldCard != null)
+                        break;
+                }
+
+                oldList.Cards.Remove(oldCard);
+
+                CardListViewModel newList = CardListViewModels.FirstOrDefault(c => c.CardList.ListId == card.ListId);
+
+                if (newList != null)
+                {
+                    oldCard.ListId = card.ListId;
+                    newList.CardList.Cards.Add(oldCard);
+                }
+
+            }
+        }
+
 
         #endregion
     }

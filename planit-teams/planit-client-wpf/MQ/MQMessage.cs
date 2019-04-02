@@ -25,7 +25,8 @@ namespace planit_client_wpf.MQ
         Move,
         Delete,
         BoardNotification,
-        Change
+        Change,
+        UserUpdate
     }
 
     public interface IMQMessage

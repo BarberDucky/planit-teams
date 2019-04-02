@@ -57,6 +57,7 @@ namespace planit_client_wpf.ViewModel
         #region Message Actions
 
         Action<object> boardNotificationAction;
+        Action<object> updateBoardAction;
         Action<object> addPermissionAction;
         Action<object> deletePermissionAction;
 
@@ -142,6 +143,7 @@ namespace planit_client_wpf.ViewModel
             boardNotificationAction = new Action<object>(BoardNotificationAction);
             addPermissionAction = new Action<object>(AddPermissionUserAction);
             deletePermissionAction = new Action<object>(DeletePermissionUserAction);
+            updateBoardAction = new Action<object>(UpdateBoardAction);
         }
 
         private void Subscribe()
@@ -149,9 +151,9 @@ namespace planit_client_wpf.ViewModel
             MessageBroker.Instance.Subscribe(boardNotificationAction, MessageEnum.BoardBoardNotification);
             MessageBroker.Instance.Subscribe(addPermissionAction, MessageEnum.BoardCreate);
             MessageBroker.Instance.Subscribe(deletePermissionAction, MessageEnum.BoardDelete);
+            MessageBroker.Instance.Subscribe(updateBoardAction, MessageEnum.BoardUserUpdate);
         }
 
-        //TODO - What to do ovde?
         private void BoardNotificationAction(object obj)
         {
             int id = (int)obj;
@@ -162,7 +164,8 @@ namespace planit_client_wpf.ViewModel
             }
             else if (selectedBoard != null && id == selectedBoard.BoardId)
             {
-                BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, id);
+                ReadBoardNotification();
+               // BoardNotificationService.ReadBoardNotification(ActiveUser.Instance.LoggedUser.Token, id);
             }
         }
 
@@ -188,6 +191,22 @@ namespace planit_client_wpf.ViewModel
             if (selectedBoard != null && selectedBoard.BoardId == deleteBoard.BoardId)
             {
                 selectedBoard = null;
+            }
+        }
+
+        //TODO - proveriti sa interface-om
+        private void UpdateBoardAction(object obj)
+        {
+            BasicBoardDTO newBoard = (BasicBoardDTO)obj;
+
+            if (obj != null)
+            {
+                ShortBoard old = Boards.FirstOrDefault(b => b.BoardId == newBoard.BoardId);
+
+                if (old != null)
+                {
+                    ShortBoard.UpdateBoard(old, newBoard);
+                }
             }
         }
 
