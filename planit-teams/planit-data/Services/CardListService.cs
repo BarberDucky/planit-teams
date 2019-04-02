@@ -88,7 +88,6 @@ namespace planit_data.Services
             }
         }
 
-        //TODO - Hard code username
         public bool UpdateCardList(int cardlistId, UpdateCardListDTO cardListDTO, string username)
         {
             bool ret = false;

@@ -40,6 +40,24 @@
             <ListBox MinHeight="100"
             Grid.Row="0"
             ItemsSource="{Binding Comments}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="LightGray" BorderThickness="0, 1, 0, 0">
+                            <Grid  Margin="5, 5, 5, 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Width="300">
+                                    <TextBlock FontStyle="Italic" FontSize="10" Text="{Binding TimeStamp}"></TextBlock>
+                                    <TextBlock FontWeight="Medium"  Text="{Binding Username}"></TextBlock>
+                                    <TextBlock Text="{Binding Text}" Grid.Column="1" TextWrapping="Wrap"></TextBlock>
+                                </StackPanel>
+
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
 
             <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0, 10, 0, 0">

@@ -194,7 +194,6 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
-        //TODO - proveriti sa interface-om
         private void UpdateBoardAction(object obj)
         {
             BasicBoardDTO newBoard = (BasicBoardDTO)obj;

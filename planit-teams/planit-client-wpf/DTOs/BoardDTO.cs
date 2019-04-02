@@ -1,4 +1,5 @@
-﻿using System;
+﻿using planit_client_wpf.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,6 +37,11 @@ namespace planit_client_wpf.DTOs
     {
         public String Name { get; set; }
         //  public int BoardId { get; set; }
+
+        public UpdateBoardDTO(EditBoard board)
+        {
+            Name = board.Name;
+        }
     }
 
     public class ReadBoardDTO

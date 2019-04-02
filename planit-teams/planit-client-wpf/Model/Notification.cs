@@ -37,8 +37,8 @@ namespace planit_client_wpf.Model
 
         public String NotificationMessage
         {
-            get { return $"Card '{CardName}' was {NotificationType.ToString()}d," +
-                    $"\nat list '{ListName}', at board {BoardName},\nby user '{Username}.'"; }
+            get { return $"Card '{CardName}' was {NotificationType.ToString()}d, " +
+                    $"at list '{ListName}', at board {BoardName}, by user '{Username}.'"; }
         }
 
         #endregion
