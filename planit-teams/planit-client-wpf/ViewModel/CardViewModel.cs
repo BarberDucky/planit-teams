@@ -68,6 +68,5 @@ namespace planit_client_wpf.ViewModel
             return true;
         }
 
-        }
     }
 }
