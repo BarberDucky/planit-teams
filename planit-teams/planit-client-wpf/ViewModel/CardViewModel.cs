@@ -2,6 +2,7 @@
 using planit_client_wpf.DTOs;
 using planit_client_wpf.Model;
 using planit_client_wpf.MQ;
+using planit_client_wpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,7 @@ namespace planit_client_wpf.ViewModel
         #region Commands
 
         public CommandBase<ReadCard> EditCardCommand { get; protected set; }
+        public CommandBase WatchCardCommand { get; protected set; }
 
         #endregion
 
@@ -61,6 +63,24 @@ namespace planit_client_wpf.ViewModel
             OnEditButtonClickAction?.Invoke(new EditCard(card));
         }
 
-   
+        public async void OnWatchCard()
+        {
+            bool result, newValue;
+            if (Card.IsWatched)
+            {
+                result = await CardService.UnwatchCard(ActiveUser.Instance.LoggedUser.Token, Card.CardId);
+                newValue = false;
+            }
+            else
+            {
+                result = await CardService.WatchCard(ActiveUser.Instance.LoggedUser.Token, Card.CardId);
+                newValue = true;
+            }
+            if (result)
+            {
+                Card.IsWatched = newValue;
+            }
+        }
+
     }
 }

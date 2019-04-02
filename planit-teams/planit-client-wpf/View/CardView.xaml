@@ -18,6 +18,20 @@
     </UserControl.Resources>
 
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Margin="10, 10, 10, 10">
+        <Button DockPanel.Dock="Top"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Width="100" Command="{Binding WatchCardCommand}">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Content" Value="Watch" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Card.IsWatched}" Value="True">
+                            <Setter Property="Content" Value="Unwatch" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
         <Button Content="Edit" 
                 HorizontalAlignment="Right" VerticalAlignment="Center"
                 MinWidth="100" Width="100" Height="20"
