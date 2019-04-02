@@ -57,7 +57,7 @@ namespace planit_client_wpf.ViewModel
 
             foreach (ReadCardList cardList in cardLists)
             {
-                CardListViewModels.Add(new CardListViewModel(cardList, OnDeleteCardList, detailsContainer, OnMoveCard));
+                CardListViewModels.Add(new CardListViewModel(cardList, OnDeleteCardList, detailsContainer, OnMoveCard, OnSelectedCard));
             }
 
             NewListCommand = new CommandBase(OnNewListClick);
@@ -76,7 +76,7 @@ namespace planit_client_wpf.ViewModel
                 if (basicCardListDTO != null)
                 {
                     var list = new ReadCardList(basicCardListDTO);
-                    CardListViewModels.Add(new CardListViewModel(list, OnDeleteCardList, detailsContainer, OnMoveCard));
+                    CardListViewModels.Add(new CardListViewModel(list, OnDeleteCardList, detailsContainer, OnMoveCard, OnSelectedCard));
                 }
                 else
                 {
@@ -112,16 +112,16 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
-        //public void OnSelectedCard(ReadCardList cardList)
-        //{
-        //    foreach(CardListViewModel vm in CardListViewModels)
-        //    {
-        //        if(vm.CardList.ListId != cardList.ListId)
-        //        {
-        //            vm.SelectedCard = null;
-        //        }
-        //    }
-        //}
+        public void OnSelectedCard(ReadCardList cardList)
+        {
+            foreach (CardListViewModel vm in CardListViewModels)
+            {
+                if (vm.CardList.ListId != cardList.ListId)
+                {
+                    vm.SelectedCard = null;
+                }
+            }
+        }
 
         public async void OnMoveCard(MoveCard moveCard)
         {
@@ -169,7 +169,7 @@ namespace planit_client_wpf.ViewModel
 
             if (cardList != null)
             {
-                CardListViewModels.Add(new CardListViewModel(new ReadCardList(cardList), OnDeleteCardList, detailsContainer, OnMoveCard));
+                CardListViewModels.Add(new CardListViewModel(new ReadCardList(cardList), OnDeleteCardList, detailsContainer, OnMoveCard, OnSelectedCard));
             }
         }
 
