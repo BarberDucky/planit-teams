@@ -12,7 +12,8 @@
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:ReadCard}">
-            <Border BorderThickness="1" BorderBrush="Gray"
+            <Border BorderThickness="1" BorderBrush="Gray" 
+                    MouseMove="listbox_MouseMove"
                     CornerRadius="10">
                 <DockPanel HorizontalAlignment="Stretch" Margin="10, 10, 10, 10">
                     <Label Content="{Binding Name}" HorizontalAlignment="Left" VerticalAlignment="Center" ></Label>
@@ -51,7 +52,6 @@
                      Margin="5, 5, 5, 5"
                      SelectedItem="{Binding SelectedCard}"
                      AllowDrop="True"
-                     MouseMove="listbox_MouseMove"
                      DragDrop.Drop="ListBox_Drop">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">

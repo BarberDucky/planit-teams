@@ -59,7 +59,7 @@ namespace planit_client_wpf.View
         private void listbox_MouseMove(object sender, MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed && ((CardListViewModel)DataContext).SelectedCard != null)
             {
                 ReadCardList cardList = ((CardListViewModel)DataContext).CardList;
                 ReadCard card = ((CardListViewModel)DataContext).SelectedCard;
