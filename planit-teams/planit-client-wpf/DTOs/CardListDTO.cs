@@ -1,4 +1,5 @@
-﻿using System;
+﻿using planit_client_wpf.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,5 +39,13 @@ namespace planit_client_wpf.DTOs
         //public int ListId { get; set; }
         public String Name { get; set; }
         public String Color { get; set; }
+
+        public UpdateCardListDTO(EditCardList list)
+        {
+            if(list !=null)
+            {
+                Name = list.Name;
+            }
+        }
     }
 }
