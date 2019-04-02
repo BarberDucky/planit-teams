@@ -1,9 +1,16 @@
 ﻿<Application x:Class="planit_client_wpf.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:planit_client_wpf"
+             xmlns:global="clr-namespace:planit_client_wpf"
+             xmlns:view="clr-namespace:planit_client_wpf.View"
+             xmlns:viewModel="clr-namespace:planit_client_wpf.ViewModel"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <DataTemplate DataType="{x:Type viewModel:EditCardViewModel}">
+            <view:EditCardView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:CardViewModel}">
+            <view:CardView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

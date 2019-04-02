@@ -13,12 +13,14 @@ using System.Windows;
 
 namespace planit_client_wpf.ViewModel
 {
-    public class BoardViewModel : ViewModelBase
+    public class BoardViewModel : ViewModelBase, IPanelContainer
     {
         private ShortBoard shortBoard;
         private ReadBoard board;
         private ViewModelBase usersViewModel;
         private ViewModelBase cardListViewModel;
+        private ViewModelBase rightViewModel;
+        private IPanelOwner Owner { get; set; }
         public bool deleteBoardCommandVisible;
 
         #region Properties 
@@ -57,14 +59,11 @@ namespace planit_client_wpf.ViewModel
             set { SetProperty(ref cardListViewModel, value); }
         }
 
-        #endregion
-
-        #region Commands
-
-        public CommandBase DeleteBoardCommand { get; private set; }
-
-        //TODO - da li je rename board admin komanda?
-        public CommandBase RenameBoardCommand { get; private set; }
+        public ViewModelBase RightViewModel
+        {
+            get { return rightViewModel; }
+            set { SetProperty(ref rightViewModel, value); }
+        }
 
         public bool DeleteBoardCommandVisible
         {
@@ -75,6 +74,14 @@ namespace planit_client_wpf.ViewModel
                 DeleteBoardCommand.RaiseCanExecuteChanged();
             }
         }
+
+        #endregion
+
+        #region Commands
+
+        public CommandBase DeleteBoardCommand { get; private set; }
+
+        public CommandBase RenameBoardCommand { get; private set; }
 
         #endregion
 
@@ -98,11 +105,14 @@ namespace planit_client_wpf.ViewModel
             //View models
             UsersViewModel = new EmptyViewModel();
             CardListViewModel = new EmptyViewModel();
+            RightViewModel = new EmptyViewModel();
+
+            //Actions
+            BoardDeleted = boardDeleted;
 
             //Commands
             DeleteBoardCommand = new CommandBase(OnDeleteBoardClick);
             DeleteBoardCommandVisible = false;
-            BoardDeleted = boardDeleted;
             RenameBoardCommand = new CommandBase(OnRenameBoardClick, CanRenameBoard);
 
             //Load data
@@ -134,7 +144,7 @@ namespace planit_client_wpf.ViewModel
                     }
 
                     UsersViewModel = new UsersListViewModel(Board.Users, Board.IsAdmin, Board.BoardId);
-                    CardListViewModel = new CardListListViewModel(Board.CardLists, Board.BoardId);
+                    CardListViewModel = new CardListListViewModel(Board.CardLists, Board.BoardId, this);
 
                     //Subscribe to board
                     MQService.Instance.SubscribeToExchange(ShortBoard.ExchangeName);
@@ -229,6 +239,17 @@ namespace planit_client_wpf.ViewModel
         }
 
         #endregion
+
+        public void InstantiatePanel(ViewModelBase sidePanel, IPanelOwner newOwner)
+        {
+            if (sidePanel != null)
+            {
+                var oldOwner = Owner;
+                oldOwner?.NotifyPanelClosed();
+                Owner = newOwner;
+                RightViewModel = sidePanel;
+            }
+        }
 
     }
 }

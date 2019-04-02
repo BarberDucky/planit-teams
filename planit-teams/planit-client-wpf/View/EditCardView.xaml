@@ -5,24 +5,91 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:planit_client_wpf.View"
              xmlns:global="clr-namespace:planit_client_wpf"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d"
+             MinHeight="200"
+             MinWidth="320">
 
+    <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Background="White">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
 
-    <Popup IsOpen="{Binding IsOpen}"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="100"></ColumnDefinition>
+                <ColumnDefinition Width="Auto" MinWidth="100"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Content="Name: " Margin="10,14.2,11.6,6.2"></Label>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Card.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Margin="8.4,14.2,14.2,6.2"></TextBox>
+
+            <Label Grid.Row="1" Grid.Column="0" Content="Description: " Margin="10,13.8,11.6,5.8"></Label>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Card.Description,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Margin="8.4,13.8,14.2,5.8"></TextBox>
+
+            <Label Grid.Row="2" Grid.Column="0" Content="Due Date: " Margin="10,14.2,11.6,7"></Label>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Card.DueDate,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Margin="8.4,14.2,14.2,7"></TextBox>
+
+            <Button Grid.Row="3" Grid.Column="1"
+                        Content="Sumbit" HorizontalAlignment="Center" 
+                        Margin="57.4,13,56.2,7.8" Width="100"
+                        Command="{Binding SubmitCommand}"/>
+        </Grid>
+    </DockPanel>
+    <!--<Popup IsOpen="{Binding IsOpen}"
            PlacementTarget="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:CardListListView}}}"
            Placement="Center"
-           StaysOpen="False"          
+           StaysOpen="True"          
            Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:CardListListView}}}"
            Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:CardListListView}}}"
            AllowsTransparency="True">
         <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Black" Opacity="0.1">
             </Grid>
-            <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Height="500" Width="500" Background="White">
-                <TextBox Text="{Binding Card.Name}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBox>
+            <Grid 
+                VerticalAlignment="Center" HorizontalAlignment="Center" 
+                Height="500" Width="500" Background="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                        Content="X" 
+                        HorizontalAlignment="Right" VerticalAlignment="Center" 
+                        Margin="10, 10, 10, 10" Width="20" Height="20"
+                        Command="{Binding ExitCommand}"></Button>
+                
+                <Label Grid.Row="1" Grid.Column="0" Content="Name: " Margin="10, 10, 10, 10"></Label>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Card.Name}" Margin="10, 10, 10, 10"></TextBox>
+
+                <Label Grid.Row="2" Grid.Column="0" Content="Description: " Margin="10, 10, 10, 10"></Label>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Card.Description}" Margin="10, 10, 10, 10"></TextBox>
+
+                <Label Grid.Row="3" Grid.Column="0" Content="Due Date: " Margin="10, 10, 10, 10"></Label>
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Card.DueDate}" Margin="10, 10, 10, 10"></TextBox>
+
+                <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
+                        Content="Sumbit" HorizontalAlignment="Center" 
+                        Margin="10, 10, 10, 10" Width="100" Height="20"
+                        Command="{Binding SubmitCommand}"></Button>
+                
             </Grid>
         </Grid>
-    </Popup>
+    </Popup>-->
+
 
 </UserControl>

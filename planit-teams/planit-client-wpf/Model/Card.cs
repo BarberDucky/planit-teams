@@ -18,9 +18,7 @@ namespace planit_client_wpf.Model
         private DateTime dueDate;
         private ObservableCollection<ReadComment> comments;
         private int listId;
-        //private string listName;
         private int boardId;
-        //private string boardName;
         private bool isWatched;
 
         public int CardId
@@ -124,12 +122,78 @@ namespace planit_client_wpf.Model
 
         }
 
+        public static void UpdateCard(ReadCard readCard, EditCard editCard)
+        {
+            if(readCard != null && editCard != null)
+            {
+                readCard.Name = editCard.Name;
+                readCard.Description = editCard.Description;
+                readCard.DueDate = editCard.DueDate;
+            }
+        }
+
         public static void UpdateCard(ReadCard card, BasicCardDTO dto)
         {
             card.Description = dto.Description;
             card.DueDate = dto.DueDate;
             card.Name = dto.Name;
         }
+
+    }
+   
+    public class EditCard : BindableBase, IEditable
+    {
+        private int cardId;
+        private string name;
+        private string description;
+        private DateTime timestamp;
+        private DateTime dueDate;
+
+        #region Properties 
+
+        public int CardId
+        {
+            get { return cardId; }
+            set { SetProperty(ref cardId, value); }
+        }
+        public string Name
+        {
+            get { return name; }
+            set { SetProperty(ref name, value); }
+        }
+
+        public string Description
+        {
+            get { return description; }
+            set { SetProperty(ref description, value); }
+        }
+
+        public DateTime Timestamp
+        {
+            get { return timestamp; }
+            set { SetProperty(ref timestamp, value); }
+        }
+
+        public DateTime DueDate
+        {
+            get { return dueDate; }
+            set { SetProperty(ref dueDate, value); }
+        }
+
+        #endregion
+
+        public EditCard(ReadCard card)
+        {
+            if (card != null)
+            {
+                CardId = card.CardId;
+                Name = String.Copy(card.Name);
+                Description = String.Copy(card.Description);
+                Timestamp = card.Timestamp;
+                DueDate = card.DueDate;                
+            }
+        }
+
     }
 
     public class MoveCard

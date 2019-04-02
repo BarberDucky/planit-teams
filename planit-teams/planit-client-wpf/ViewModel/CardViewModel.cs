@@ -14,14 +14,27 @@ namespace planit_client_wpf.ViewModel
     {
         public ReadCard card;
         public ViewModelBase comments;
-        private EditCardViewModel editForm;
+        //private EditCardViewModel editForm;
+        //private IPanelContainer container;
+        //EditCardViewModel openContainer;
 
         #region Properties
 
         public ReadCard Card
         {
             get { return card; }
-            set { SetProperty(ref card, value); }
+            set
+            {
+                SetProperty(ref card, value);
+                //if(card == null)
+                //{
+                //    //if (openContainer != null)
+                //    //{
+                //    //    container.InstantiatePanel(new EmptyViewModel(), null);
+                //    //}
+                //    //InstantiatePanel(new EditCardViewModel())
+                //}
+            }
         }
 
         public ViewModelBase Comments
@@ -30,43 +43,77 @@ namespace planit_client_wpf.ViewModel
             set { SetProperty(ref comments, value); }
         }
 
-        public EditCardViewModel EditFormViewModel
-        {
-            get { return editForm; }
-            set { SetProperty(ref editForm, value); }
-        }
+        //public EditCardViewModel EditFormViewModel
+        //{
+        //    get { return editForm; }
+        //    set { SetProperty(ref editForm, value); }
+        //}
 
         #endregion
 
         #region Commands
 
-        public CommandBase EditCardCommand { get; protected set; }
+        public CommandBase<ReadCard> EditCardCommand { get; protected set; }
 
         #endregion
 
-        public CardViewModel(ReadCard card)
+        #region Actions and Func
+        private Action<EditCard> OnEditButtonClickAction { get; set; }
+
+        #endregion
+
+        public CardViewModel(ReadCard card, Action<EditCard> onEditButtonClick)
         {
             if (card != null)
             {
                 this.card = card;
                 comments = new CommentsViewModel(card.Comments, card.CardId);
-                EditCardCommand = new CommandBase(OnEditCard);
-                EditFormViewModel = null;
+                EditCardCommand = new CommandBase<ReadCard>(OnEditButtonClick);
+                OnEditButtonClickAction = onEditButtonClick;
+                //EditFormViewModel = null;
+                //this.container = container;
+                //openContainer = null;
             }
         }
 
-        public void OnEditCard()
+        public void OnEditButtonClick(ReadCard card)
         {
-            ReadCard c = new ReadCard(new DTOs.BasicCardDTO() { Name = card.Name, Description = card.Description });
-            EditFormViewModel = new EditCardViewModel(OnEditCardExecute, c);
-            EditFormViewModel.IsOpen = true;
+            //var panel = new EditCardViewModel(OnEditCardCompleted, new EditCard(card));
+            //InstantiatePanel(panel);
+            //container.InstantiatePanel(new EditCardViewModel(OnEditCardCompleted, new EditCard(card)), null);
+            OnEditButtonClickAction?.Invoke(new EditCard(card));
         }
 
-        public bool OnEditCardExecute(BindableBase model)
-        {
-            ShowMessageBox(null, "radiii");
-            return true;
-        }
+        //public void OnEditCardCompleted(IEditable model)
+        //{
+        //    if(model != null)
+        //    {
+        //        EditCard editCard = model as EditCard;
+        //        if (editCard != null)
+        //        {
+        //            Card.UpdateEditedFields(editCard);
+        //            //container.InstantiatePanel(new EmptyViewModel(), null);
+        //            DestroyPanel();
+        //        }
+        //    }
+        //}
 
+        //public void NotifyContainerClosed()
+        //{
+        //    openContainer = null;
+        //}
+
+        //public void Dispose()
+        //{
+        //    if(openContainer != null)
+        //    {
+        //        container.InstantiatePanel(new EmptyViewModel(), null);
+        //    }
+        //}
+
+        //public void Dispose()
+        //{
+        //    DisposePanelOwner();
+        //}
     }
 }

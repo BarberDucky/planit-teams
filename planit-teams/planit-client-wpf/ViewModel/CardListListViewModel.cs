@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace planit_client_wpf.ViewModel
 {
-    public class CardListListViewModel : ViewModelBase
+    public class CardListListViewModel : ViewModelBase, IDisposable
     {
         private ObservableCollection<CardListViewModel> cardListViewModels;
         private int parentBoardId;
         //private ReadCardList selectedCardList;
-        private ViewModelBase rightViewModel;
+        private IPanelContainer detailsContainer;
 
         #region Properties
 
@@ -33,12 +33,6 @@ namespace planit_client_wpf.ViewModel
         //    set { SetProperty(ref selectedCardList, value); }
         //}
 
-        public ViewModelBase RightViewModel
-        {
-            get { return rightViewModel; }
-            set { SetProperty(ref rightViewModel, value); }
-        }
-
         #endregion
 
         #region Commands
@@ -47,7 +41,7 @@ namespace planit_client_wpf.ViewModel
 
         #endregion
 
-        #region Message actions
+        #region Message Actions
 
         private Action<object> createCardList;
         private Action<object> deleteCardList;
@@ -55,18 +49,18 @@ namespace planit_client_wpf.ViewModel
 
         #endregion
 
-        public CardListListViewModel(ObservableCollection<ReadCardList> cardLists, int parentBoardId)
+        public CardListListViewModel(ObservableCollection<ReadCardList> cardLists, int parentBoardId, IPanelContainer detailsContainer)
         {
             this.parentBoardId = parentBoardId;
             this.CardListViewModels = new ObservableCollection<CardListViewModel>();
+            this.detailsContainer = detailsContainer;
 
             foreach (ReadCardList cardList in cardLists)
             {
-                CardListViewModels.Add(new CardListViewModel(cardList, OnDeleteCardList, OnSelectedCard, OnMoveCard));
+                CardListViewModels.Add(new CardListViewModel(cardList, OnDeleteCardList, detailsContainer, OnMoveCard));
             }
 
             NewListCommand = new CommandBase(OnNewListClick);
-            RightViewModel = new EmptyViewModel();
 
             InitActions();
             Subscribe();
@@ -81,9 +75,8 @@ namespace planit_client_wpf.ViewModel
 
                 if (basicCardListDTO != null)
                 {
-                    // ShowMessageBox(null, "Kreirala se lista");
                     var list = new ReadCardList(basicCardListDTO);
-                    CardListViewModels.Add(new CardListViewModel(list, OnDeleteCardList, OnSelectedCard, OnMoveCard));
+                    CardListViewModels.Add(new CardListViewModel(list, OnDeleteCardList, detailsContainer, OnMoveCard));
                 }
                 else
                 {
@@ -105,6 +98,7 @@ namespace planit_client_wpf.ViewModel
                 {
                     CardListViewModel vm = CardListViewModels.FirstOrDefault(x => x.CardList.ListId == cardList.ListId);
                     CardListViewModels.Remove(vm);
+                    vm.DestroyPanel();
                     ShowMessageBox(null, "Card list deleted.");
                 }
                 else
@@ -118,18 +112,18 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
-        public void OnSelectedCard(ReadCard card)
-        {
-            if (card != null)
-            {
-                RightViewModel = new CardViewModel(card);
-            }
-            else
-            {
-                RightViewModel = new EmptyViewModel();
-            }
+        //public void OnSelectedCard(ReadCard card)
+        //{
+        //    if (card != null)
+        //    {
+        //        RightViewModel = new CardViewModel(card);
+        //    }
+        //    else
+        //    {
+        //        RightViewModel = new EmptyViewModel();
+        //    }
 
-        }
+        //}
 
         public async void OnMoveCard(MoveCard moveCard)
         {
@@ -177,7 +171,7 @@ namespace planit_client_wpf.ViewModel
 
             if (cardList != null)
             {
-                CardListViewModels.Add(new CardListViewModel(new ReadCardList(cardList), OnDeleteCardList, OnSelectedCard, OnMoveCard));
+                CardListViewModels.Add(new CardListViewModel(new ReadCardList(cardList), OnDeleteCardList, detailsContainer, OnMoveCard));
             }
         }
 
@@ -223,6 +217,14 @@ namespace planit_client_wpf.ViewModel
 
 
         #endregion
+
+        public void Dispose()
+        {
+            foreach(CardListViewModel vm in CardListViewModels)
+            {
+                vm.Dispose();
+            }
+        }
     }
 
 }

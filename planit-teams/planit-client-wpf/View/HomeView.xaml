@@ -24,12 +24,13 @@
             <view:NotificationsView/>
         </DataTemplate>
     </UserControl.Resources>
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height = "Auto" />
-            <RowDefinition Height = "*" />
-        </Grid.RowDefinitions>
+
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height = "Auto" />
+                <RowDefinition Height = "*" />
+            </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
             <TextBlock Text="{Binding UserInfo, StringFormat='Current user: \{0\}'}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
@@ -42,22 +43,21 @@
             <Button Content="Logout" Command="{Binding LogoutCommand}" Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
         </StackPanel>
 
-        <Grid Grid.Row="1">
+            <Grid Grid.Row="1">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height = "*" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height = "*" />
 
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" MinWidth="200"/>
-                <ColumnDefinition Width="*" MinWidth="400"/>
-            </Grid.ColumnDefinitions>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="200"/>
+                    <ColumnDefinition Width="*" MinWidth="400"/>
+                </Grid.ColumnDefinitions>
 
-            <!--<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>-->
+                <ContentControl Grid.Row="0" Grid.Column="0" Content = "{Binding LeftViewModel}" />
+                <ContentControl Grid.Row="0" Grid.Column="1" Content = "{Binding CenterViewModel}" />
+            </Grid>
 
-            <ContentControl Grid.Row="0" Grid.Column="0" Content = "{Binding LeftViewModel}" />
-            <ContentControl Grid.Row="0" Grid.Column="1" Content = "{Binding CenterViewModel}" />
         </Grid>
-
-    </Grid>
+    </DockPanel>
 </UserControl>
