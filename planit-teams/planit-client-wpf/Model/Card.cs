@@ -122,4 +122,11 @@ namespace planit_client_wpf.Model
             card.Name = dto.Name;
         }
     }
+
+    public class MoveCard
+    {
+        public int OldListId { get; set; }
+        public int NewListId { get; set; }
+        public int CardId { get; set; }
+    }
 }

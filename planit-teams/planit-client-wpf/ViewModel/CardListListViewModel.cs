@@ -62,7 +62,7 @@ namespace planit_client_wpf.ViewModel
 
             foreach (ReadCardList cardList in cardLists)
             {
-                CardListViewModels.Add(new CardListViewModel(cardList, OnDeleteCardList, OnSelectedCard));
+                CardListViewModels.Add(new CardListViewModel(cardList, OnDeleteCardList, OnSelectedCard, OnMoveCard));
             }
 
             NewListCommand = new CommandBase(OnNewListClick);
@@ -83,7 +83,7 @@ namespace planit_client_wpf.ViewModel
                 {
                     // ShowMessageBox(null, "Kreirala se lista");
                     var list = new ReadCardList(basicCardListDTO);
-                    CardListViewModels.Add(new CardListViewModel(list, OnDeleteCardList, OnSelectedCard));
+                    CardListViewModels.Add(new CardListViewModel(list, OnDeleteCardList, OnSelectedCard, OnMoveCard));
                 }
                 else
                 {
@@ -131,6 +131,30 @@ namespace planit_client_wpf.ViewModel
 
         }
 
+        public async void OnMoveCard(MoveCard moveCard)
+        {
+            bool result = await CardService.MoveCard(ActiveUser.Instance.LoggedUser.Token, moveCard.CardId, moveCard.NewListId);
+            if (!result)
+            {
+                ShowMessageBox(null, "Error moving card.");
+                return;
+            }
+
+            CardListViewModel oldListVM = CardListViewModels.FirstOrDefault(listVM => listVM.CardList.ListId == moveCard.OldListId);
+            if (oldListVM == null) return;
+
+            ReadCard oldCard = oldListVM.CardList.Cards.FirstOrDefault(card => card.CardId == moveCard.CardId);
+            if (oldCard == null) return;
+
+            oldListVM.CardList.Cards.Remove(oldCard);
+            oldCard.ListId = moveCard.NewListId;
+
+            CardListViewModel newListVM = CardListViewModels.FirstOrDefault(listVM => listVM.CardList.ListId == moveCard.NewListId);
+            if (newListVM == null) return;
+            newListVM.CardList.Cards.Add(oldCard);
+
+        }
+
         #region Subscribe for Notifications
 
         private void InitActions()
@@ -153,7 +177,7 @@ namespace planit_client_wpf.ViewModel
 
             if (cardList != null)
             {
-                CardListViewModels.Add(new CardListViewModel(new ReadCardList(cardList), OnDeleteCardList, OnSelectedCard));
+                CardListViewModels.Add(new CardListViewModel(new ReadCardList(cardList), OnDeleteCardList, OnSelectedCard, OnMoveCard));
             }
         }
 
