@@ -18,7 +18,6 @@ namespace planit_client_wpf.ViewModel
         private bool isAdmin;
         private string newUsername;
         private ReadUser selectedUser;
-        public bool leaveBoardCommandVisible;
         private int parentBoardId;
 
         #region Properties
@@ -54,12 +53,6 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
-        public bool LeaveBoardCommandVisible
-        {
-            get { return leaveBoardCommandVisible; }
-            set { SetProperty(ref leaveBoardCommandVisible, value); }
-        }
-
         #endregion
 
         #region Commands
@@ -83,7 +76,6 @@ namespace planit_client_wpf.ViewModel
             this.Users = users;
             this.isAdmin = isAdmin;
             this.parentBoardId = parentBoardId;
-            leaveBoardCommandVisible = !isAdmin;
             AddUserCommand = new CommandBase(AddUserButtonClick, CanAddUser);
             RemoveUserCommand = new CommandBase<ReadUser>(RemoveUserButtonClick, CanRemoveUser);
             LeaveBoardCommmand = new CommandBase(OnLeaveBoardClick, CanLeaveBoard);
@@ -149,7 +141,6 @@ namespace planit_client_wpf.ViewModel
             }
         }
 
-        //Privremeno dok se ne resi ko koga dodaje i brise
         public bool CanRemoveUser(ReadUser user)
         {
             return isAdmin && ActiveUser.IsActive == true

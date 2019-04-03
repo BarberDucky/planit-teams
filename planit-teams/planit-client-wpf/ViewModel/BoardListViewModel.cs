@@ -177,7 +177,7 @@ namespace planit_client_wpf.ViewModel
             {
                 Boards.Add(new ShortBoard(board));
             }
-            ShowMessageBox(null, "Stigla poruka");
+            //ShowMessageBox(null, "Stigla poruka");
         }
 
         private void DeletePermissionUserAction(object obj)

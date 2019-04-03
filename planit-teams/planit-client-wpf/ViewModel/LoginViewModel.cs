@@ -90,7 +90,7 @@ namespace planit_client_wpf.ViewModel
                     Username = token.userName,
                     Token = "Bearer " + token.access_token
                 };
-                ShowMessageBox(null, "Login successful");
+                //ShowMessageBox(null, "Login successful");
                 LoginButtonAction?.Invoke();
             } 
             else

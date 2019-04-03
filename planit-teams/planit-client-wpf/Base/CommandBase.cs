@@ -11,7 +11,7 @@ namespace planit_client_wpf.Base
     {
         Action<T> _TargetExecuteMethod;
         Func<T, bool> _TargetCanExecuteMethod;
-
+    
         public CommandBase(Action<T> executeMethod)
         {
             _TargetExecuteMethod = executeMethod;
